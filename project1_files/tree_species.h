@@ -1,3 +1,5 @@
+#include "__tree_species.h"
+
 /*******************************************************************************
   Title          : __tree_species.h
   Author         : Marin Pavlinov Marinov 
@@ -5,3 +7,48 @@
   Description    : tree species header file
   Purpose        : Inherit from the __tree_species abstract class
 */
+
+#ifndef Tree_Species_H_
+#define Tree_Species_H_
+
+class TreeSpecies : public __TreeSpecies
+{
+public:
+
+	/** print_all_species(out) prints all species names on out, one per line
+     *  This writes the set of all common names found in the data set to the
+     *  output stream out, one per line. The species names are printed in
+     *  lexicographic order, using the default string comparison ordering
+     *  @param ostream& [in,out]  out  the stream to be modified
+     */
+	virtual void print_all_species(ostream & out) const;
+
+	/** number_of_species() returns the number of distinct species names
+	 *  This returns the total number of distinct species common names found in
+	 *  the data set.
+	 *  @return int  The number of species common names
+	 */
+	virtual int number_of_species() const;
+
+	/** add_species(s)  inserts species s into the container
+	 *  This adds the species to the TreeSpecies container.
+	 *  @param string s [in]  the string to be added.
+	 *  @return int It returns a 0 if the species was already in the
+	 *              TreeSpecies container and a 1 if it was not.
+	 */
+	virtual int add_species( const string & species);
+
+	/** get_matching_species(s) returns a list of species that match s
+	 * @note This returns a list<string> object containing a list of all of the
+	 * actual tree species that match a given parameter string partial_name.
+	 * This method should be case insensitive. The list returned by this
+	 * function should not contain any duplicate names and may be empty.
+	 * The rules for matching are those described above.
+	 * @param string partial_name [in] string to match
+	 * @return list<string> list of matching species names
+	 */
+	virtual list<string> get_matching_species(const string & partial_name) const;
+
+};
+
+#endif /* ___Tree_Species_H__ */

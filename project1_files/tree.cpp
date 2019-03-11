@@ -15,37 +15,96 @@
 #include <vector>
 
 Tree::Tree() {
-	tree_id = 0;
-	tree_dbh = 0;
-	status = "";
-	health = "";
-	spc_common = "";
-	zipcode = 0;
-	address = "";
-	boroname = "";
-	latitude = 0;
+	this->tree_id = 0;
+	this->tree_dbh = 0;
+	this->status = "";
+	this->health = "";
+	this->spc_common = "";
+	this->zipcode = 0;
+	this->address = "";
+	this->boroname = "";
+	this->latitude = 0;
+	this->longitude = 0;
+}
+
+// function that checks if we are at the right position
+bool isCorrectPosition(int pos) {
+	return (pos == 1 || pos == 4 || pos == 7 || pos == 8 || pos == 10 || pos == 25 || pos == 26
+	        || pos == 30 || pos == 38 || pos == 39);
 }
 
 //helper function that splits a string on commas
 vector<string> split(string const& in) {
+	int pos = 1;
 	vector<string> result;
 	string s = "";
-	for(int i = 0; i < in.size(); i++) {
-		if (in[i] != ',') {
+	for (int i = 0; i < in.size(); i++) {
+		if (in[i] != ',' && isCorrectPosition(pos)) {
 			s += in[i];
-		} // takes care of the case if its two comma's next to each other
-		else if (!s.empty()) {
-			result.push_back(s);
-			s = "";
+		}
+		else { // only load into vector if we are at the right position
+			if (isCorrectPosition(pos)) {
+				result.push_back(s);
+				s = "";
+			} // increment the position whenever we encounter a comma
+			pos++;
 		}
 	}
-	// last piece of data does not get loaded so we need to do it here
-	if (!s.empty())
+
+	if (!s.empty()) {
 		result.push_back(s);
+	}
 
 	return result;
 }
 
+bool validate (int id,
+           int diam,
+           string stat,
+           string hlth,
+           string name,
+           int zip,
+           string addr,
+           string boro,
+           double lat,
+           double longtd) {
+	bool invalid = false;
+
+	//diameter/id check
+	if (diam < 0 || id < 0) {
+		invalid = false;
+	}
+
+	//status check
+	if (stat != "Alive" || stat != "Dead" ||
+		stat != "Stump" || stat != "") {
+		invalid = true;
+	}
+
+	// health check
+	if (hlth != "Good" || hlth != "Fair" ||
+		hlth != "Poor" || hlth != "") {
+		invalid = true;
+	}
+	// address check
+	if (!addr.empty()) {
+		invalid = true;
+	}
+
+	// zipcode check
+	if (zip < 0 || zip > 99999) {
+		invalid = true;
+	}
+
+	// borough check
+	if(boro != "Manhattan" || boro != "Bronx" ||
+		boro != "Queens" || boro != "Brooklyn" ||
+		boro != "Staten Island") {
+		invalid = true;
+	}
+
+	return invalid;
+}
 
 Tree::Tree(const string& str) {
 	ifstream csvfile;
@@ -69,19 +128,19 @@ Tree::Tree(const string& str) {
 	// vector to split the extractor by commas
 	vector<string> splitter = split(extractor[0]);
 
-	//load the values we extracted,
-	this->tree_id = stoi(splitter[0]);
-	this->tree_dbh = stoi(splitter[1]);
-	this->status = splitter[2];
-	this->health = splitter[3];
-	this->spc_common = splitter[4];
-	this->zipcode = stoi(splitter[5]);
-	this->address = splitter[6];
-	this->boroname = splitter[7];
-	this->latitude = stod(splitter[8]);
-	this->longitude = stod(splitter[9]);
+	// Validate
+	if (validate(stoi(splitter[0]),stoi(splitter[1]),splitter[2],splitter[3],
+			splitter[4],stoi(splitter[5]),splitter[6],splitter[7],
+			stod(splitter[8]),stod(splitter[9]))) {
+		// If the values were validated, then create new tree object with them
+		Tree(stoi(splitter[0]),stoi(splitter[1]),splitter[2],splitter[3],
+		         splitter[4],stoi(splitter[5]),splitter[6],splitter[7],
+		         stod(splitter[8]),stod(splitter[9]));
+	}
+	else { // if they are not valid then create empty tree
+		Tree();
+	}
 
-	//TODO: VALIDATION
 }
 
 Tree::Tree(int id,
@@ -94,16 +153,16 @@ Tree::Tree(int id,
            string boro,
            double lat,
            double longtd) {
-	tree_id = id;
-	tree_dbh = diam;
-	status = stat;
-	health = hlth;
-	spc_common = name;
-	zipcode = zip;
-	address = addr;
-	boroname = boro;
-	latitude = lat;
-	longitude = longtd;
+	this->tree_id = id;
+	this->tree_dbh = diam;
+	this->status = stat;
+	this->health = hlth;
+	this->spc_common = name;
+	this->zipcode = zip;
+	this->address = addr;
+	this->boroname = boro;
+	this->latitude = lat;
+	this->longitude = longtd;
 
 }
 
@@ -121,10 +180,9 @@ bool operator==(const Tree& t1, const Tree& t2) {
 	return (samename(t1,t2) && t1.id() == t2.id());
 }
 
-bool operator<(const Tree t1, const Tree& t2) {
+bool operator<(const Tree& t1, const Tree& t2) {
 	return (t1.common_name() < t2.common_name() ||
-	        (t1.common_name() == t2.common_name() &&
-			(t1.id() < t2.id())));
+	        (samename(t1,t2) && (t1.id() < t2.id())));
 }
 
 bool samename(const Tree& t1, const Tree& t2) {

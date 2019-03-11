@@ -12,19 +12,28 @@ Write your code in this editor and press "Run" button to compile and execute it.
 
 using namespace std;
 
+bool isCorrectPosition(int pos) {
+	return (pos == 1 || pos == 4 || pos == 7 || pos == 8 || pos == 10 || pos == 25 || pos == 26
+	        || pos == 30 || pos == 38 || pos == 39);
+}
+
 vector<string> split(string const& in) {
+	int pos = 1;
 	vector<string> result;
 	string s = "";
 	for (int i = 0; i < in.size(); i++) {
-		if (in[i] != ',') {
+		if (in[i] != ',' && isCorrectPosition(pos)) {
 			s += in[i];
 		}
-
-		else if (!s.empty()) {
-			result.push_back(s);
-			s = "";
+		else {
+			if (isCorrectPosition(pos)) {
+				result.push_back(s);
+				s = "";
+			}
+			pos++;
 		}
 	}
+
 	if (!s.empty()) {
 		result.push_back(s);
 	}
@@ -33,7 +42,6 @@ vector<string> split(string const& in) {
 }
 
 int main() {
-	const string Test = "5,,,4,,,Alive,,,Good,, Jap something,,,73";
 	ifstream parser;
 	parser.open("testcsv.txt");
 	string reader;
@@ -47,7 +55,7 @@ int main() {
 
 	int i = 0;
 	for (string s : tester) {
-		cout << " index:" << i++ << " value:" << s;
+		cout << " index:" << i++ << " value:" << s << '\n';
 	}
 
 	return 0;
