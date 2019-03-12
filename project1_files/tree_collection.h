@@ -5,8 +5,8 @@
   Description    : tree collection header file
   Purpose        : Inherit from the __tree_collection abstract class
 */
-#ifndef Tree_Collection_H_
-#define Tree_Collection_H_
+#ifndef Tree_Collection_H
+#define Tree_Collection_H
 #include "__tree_collection.h"
 
 class TreeCollection : public __TreeCollection

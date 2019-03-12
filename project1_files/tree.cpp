@@ -15,12 +15,12 @@
 #include <vector>
 
 Tree::Tree() {
-	this->tree_id = 0;
-	this->tree_dbh = 0;
+	this->tree_id = -1;
+	this->tree_dbh = -1;
 	this->status = "";
 	this->health = "";
 	this->spc_common = "";
-	this->zipcode = 0;
+	this->zipcode = -1;
 	this->address = "";
 	this->boroname = "";
 	this->latitude = 0;
@@ -36,7 +36,11 @@ bool isCorrectPosition(int pos) {
 //helper function that splits a string on commas
 vector<string> split(string const& in) {
 	int pos = 1;
+
 	vector<string> result;
+	// reserve 10 spots for the 10 fields (OPTIMIZATION REASONS ONLY)
+	result.reserve(10);
+
 	string s = "";
 	for (int i = 0; i < in.size(); i++) {
 		if (in[i] != ',' && isCorrectPosition(pos)) {
@@ -115,6 +119,7 @@ Tree::Tree(const string& str) {
 		cout << "cannot read from" << str << '\n';
 	}
 
+	// variable to help extract entire string from file
 	string reader;
 
 	// a vector to extra the file as a string
@@ -167,11 +172,16 @@ Tree::Tree(int id,
 }
 
 ostream& operator<<(ostream& os, const Tree& t) {
-	os  << t.spc_common << t.tree_id
-		<< t.tree_dbh << t.status
-		<< t.health << t.zipcode
-		<< t.address << t.boroname
-		<< t.latitude << t.longitude;
+	os  << " common name:" << t.spc_common
+		<< " id:" << t.tree_id
+		<< " diameter: " << t.tree_dbh
+		<< " status:" << t.status
+		<< " health:" << t.health
+		<< " zipcode:" << t.zipcode
+		<< " address:" << t.address
+		<< " borough:" << t.boroname
+		<< " latitude:" << t.latitude
+		<< " longitude:" << t.longitude;
 
 	return os;
 }
@@ -181,7 +191,7 @@ bool operator==(const Tree& t1, const Tree& t2) {
 }
 
 bool operator<(const Tree& t1, const Tree& t2) {
-	return (t1.common_name() < t2.common_name() ||
+	return (islessname(t1,t2) ||
 	        (samename(t1,t2) && (t1.id() < t2.id())));
 }
 
@@ -189,13 +199,15 @@ bool samename(const Tree& t1, const Tree& t2) {
 	bool same = true;
 
 	// if length is different, then we already know they are not the same
-	if (t1.spc_common.length() != t2.spc_common.length()) {
+	if (t1.spc_common.size() != t2.spc_common.size()) {
 		same = false;
-	} // else convert every character to lowercase (avoid case sensitivity) and compare them
+	} // else convert every character to lowercase (to avoid case sensitivity) and compare them
 	else {
-		for (int i = 0; i < t1.spc_common.length(); i++) {
-			if (tolower(t1.spc_common[i] != tolower(t1.spc_common[i])))
+		for (int i = 0; i < t1.spc_common.size(); i++) {
+			if (tolower(t1.spc_common[i] != tolower(t2.spc_common[i]))) {
 				same = false;
+				break;
+			}
 		}
 	}
 
