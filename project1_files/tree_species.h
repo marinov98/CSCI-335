@@ -59,6 +59,8 @@ public:
 
 	friend bool operator==(const string& s1, const string& s2);
 
+	vector<string> get_species_vector();
+
 private:
 	bool has_white_space(const string &species_name) const;
 

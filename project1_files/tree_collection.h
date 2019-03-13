@@ -134,6 +134,27 @@ public:
 	list<string> get_all_near(double latitude, double longitude,
 	                          double  distance) const;
 
+
+
+private:
+	AvlTree<Tree> tree_collection_;
+	int tree_count_;
+
+	bool findSpecies(const string& species_name);
+
+	vector<string> species_data;
+
+	vector<Tree> treeVector;
+	vector<boro> borough_list;
+
+
+	TreeSpecies wrapper;
+
+
+	int species_count_;
+
+//	bool findSpecies(const string& species_name);
+
 };
 
 

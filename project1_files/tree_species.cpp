@@ -29,6 +29,10 @@ int TreeSpecies::number_of_species() const {
 	return _species_size;
 }
 
+vector<string> TreeSpecies::get_species_vector() {
+	return spc_names;
+}
+
 bool TreeSpecies::find(const string &name) const {
 	bool found = false;
 

@@ -11,6 +11,7 @@
 
 *******************************************************************************/
 #include "tree.h"
+#include "tree_collection.h"
 #include <fstream>
 
 Tree::Tree() {
@@ -140,6 +141,7 @@ Tree::Tree(const string& str) {
 		Tree(stoi(splitter[0]),stoi(splitter[1]),splitter[2],splitter[3],
 		         splitter[4],stoi(splitter[5]),splitter[6],splitter[7],
 		         stod(splitter[8]),stod(splitter[9]));
+
 	}
 	else { // if they are not valid then create empty tree
 		Tree();
