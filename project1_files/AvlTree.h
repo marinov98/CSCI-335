@@ -21,7 +21,7 @@
         };
 
         #include "dsexceptions.h"
-        #include <iostream.h>       // For NULL
+        #include <iostream>       // For NULL
 
         // AvlTree class
         //

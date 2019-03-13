@@ -42,6 +42,7 @@ Data Dictionary for Input File:
 
 
 #include <string>
+#include <vector>
 #include <iostream>
 using namespace std;
 
@@ -142,6 +143,10 @@ public:
 
 
 private:
+	bool isCorrectPosition(int pos);
+
+	vector<string> split(string const& in);
+
     int    tree_id;    // unique id that  identifies the tree
     int    tree_dbh;   // specifies tree diameter
     string status;     // valid values: ”Alive”, ”Dead”, ”Stump”, or the 

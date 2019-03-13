@@ -55,11 +55,25 @@ public:
 	 */
 	list<string> get_matching_species(const string & partial_name) const;
 
-	bool find(const string& name);
+	friend bool operator<(const string& s1, const string& s2);
+
+	friend bool operator==(const string& s1, const string& s2);
+
+private:
+	bool has_white_space(const string &species_name) const;
+
+	bool binary_insert(vector<string>& v, int begin, int end, const string item_to_insert);
+
+	int get_number_of_words(const string &fullString) const;
+
+	string get_nth_word(const string &s, int n) const;
+
+	bool find(const string& name) const;
+
+	bool in_list(list<string> list, const string &item) const;
 
 	vector<string> spc_names;
 
-private:
 	int _species_size;
 
 };

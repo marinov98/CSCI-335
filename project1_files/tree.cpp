@@ -12,7 +12,6 @@
 *******************************************************************************/
 #include "tree.h"
 #include <fstream>
-#include <vector>
 
 Tree::Tree() {
 	this->tree_id = -1;
@@ -28,13 +27,13 @@ Tree::Tree() {
 }
 
 // function that checks if we are at the right position
-bool isCorrectPosition(int pos) {
+bool Tree::isCorrectPosition(int pos) {
 	return (pos == 1 || pos == 4 || pos == 7 || pos == 8 || pos == 10 || pos == 25 || pos == 26
 	        || pos == 30 || pos == 38 || pos == 39);
 }
 
 //helper function that splits a string on commas
-vector<string> split(string const& in) {
+vector<string> Tree::split(string const& in) {
 	int pos = 1;
 
 	vector<string> result;
