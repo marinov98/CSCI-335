@@ -1,0 +1,69 @@
+Your Name:
+
+
+1. 
+(a) What is a GIS? Find the description of a GIS in the documentation on the 
+    site and summarize in a sentence or two how it is defined there.
+
+
+
+
+
+
+
+
+
+
+
+
+
+(b) What are the names of the top-level namespaces in this project? You will 
+    have to navigate around the site to find the answer to this question.
+
+
+
+
+2. 
+(a) How many people have contributed to QGIS?
+    
+
+
+
+(b) How many commits have been made?
+    
+
+
+
+
+(c) How many lines of code are in the project?
+    
+
+
+
+3. Why are the numbers of contributors and commits different from those on
+the Open Hub page? 
+
+
+
+
+
+
+
+4. 
+(a) In what namespace is this class? 
+
+
+
+
+(b) Is the code for the PriorityQueue authored by the project organization, or 
+    is it third-party? 
+   
+
+
+
+
+
+(c) What type of software license does it have?
+    
+
+
