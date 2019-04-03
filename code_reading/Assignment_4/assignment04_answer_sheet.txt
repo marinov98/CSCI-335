@@ -5,11 +5,8 @@ Your Name:
 (a) What is a GIS? Find the description of a GIS in the documentation on the 
     site and summarize in a sentence or two how it is defined there.
 
-
-
-
-
-
+A Geographic information system that analyzes maps, gathers data and shares 
+information about what it finds.
 
 
 
@@ -19,24 +16,24 @@ Your Name:
 
 (b) What are the names of the top-level namespaces in this project? You will 
     have to navigate around the site to find the answer to this question.
-
-
-
+i) QgsHstoreUtiles
+ii) QgsGuiUtiles
+iii) QgsServerProjectUtils
 
 2. 
 (a) How many people have contributed to QGIS?
-    
+320
 
 
 
 (b) How many commits have been made?
-    
+54,751
 
 
 
 
 (c) How many lines of code are in the project?
-    
+
 
 
 
