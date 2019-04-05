@@ -26,81 +26,78 @@
  * along with libpal.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+/*
+    Name: Marin Pavlinov Marinov
+*/
 
 #ifndef PAL_PRIORITYQUEUE_H
 #define PAL_PRIORITYQUEUE_H
 
 #define SIP_NO_FILE
 
-
 #include <iostream>
 
-#define LEFT(x) (2*x+1)
-#define RIGHT(x) (2*x+2)
-#define PARENT(x) ((x-1)/2)
+#define LEFT(x) (2 * x + 1)
+#define RIGHT(x) (2 * x + 2)
+#define PARENT(x) ((x - 1) / 2)
 
+namespace pal {
 
-namespace pal
-{
+/**
+ * \ingroup core
+ * \class pal::PriorityQueue
+ * \note not available in Python bindings
+ */
+class PriorityQueue {
+  public:
+	/**
+	 * \brief Create a priority queue of max size n
+	 * \\param n max size of the queuet
+	 * \\param p external vector representing the priority
+	 * \\param min best element has the smalest p when min is True ans has the biggest when min is
+	 * false
+	 */
+	PriorityQueue(int n, int maxId, bool min);
+	~PriorityQueue();
 
-  /**
-   * \ingroup core
-   * \class pal::PriorityQueue
-   * \note not available in Python bindings
-   */
-  class PriorityQueue
-  {
+	//! PriorityQueue cannot be copied.
+	PriorityQueue(const PriorityQueue&) = delete;
+	//! PriorityQueue cannot be copied.
+	PriorityQueue& operator=(const PriorityQueue&) = delete;
 
-    public:
+	void print();
 
-      /**
-       * \brief Create a priority queue of max size n
-       * \\param n max size of the queuet
-       * \\param p external vector representing the priority
-       * \\param min best element has the smalest p when min is True ans has the biggest when min is false
-       */
-      PriorityQueue( int n, int maxId, bool min );
-      ~PriorityQueue();
+	int getSize();
+	int getSizeByPos();
 
-      //! PriorityQueue cannot be copied.
-      PriorityQueue( const PriorityQueue & ) = delete;
-      //! PriorityQueue cannot be copied.
-      PriorityQueue &operator=( const PriorityQueue & ) = delete;
+	bool isIn(int key);
 
-      void print();
+	int getBest(); // O(log n)
 
-      int getSize();
-      int getSizeByPos();
+	void remove(int key);
+	void insert(int key, double p);
 
-      bool isIn( int key );
+	void sort(); // O(n log n)
 
-      int getBest(); // O(log n)
+	void downheap(int id);
+	void upheap(int key);
 
-      void remove( int key );
-      void insert( int key, double p );
+	void decreaseKey(int key);
+	void setPriority(int key, double new_p);
 
-      void sort(); // O(n log n)
+	int getId(int key);
 
-      void downheap( int id );
-      void upheap( int key );
+  private:
+	int size;
+	int maxsize;
+	int maxId;
+	int* heap = nullptr;
+	double* p = nullptr;
+	int* pos = nullptr;
 
-      void decreaseKey( int key );
-      void setPriority( int key, double new_p );
+	bool (*greater)(double l, double r);
+};
 
-
-      int getId( int key );
-    private:
-
-      int size;
-      int maxsize;
-      int maxId;
-      int *heap = nullptr;
-      double *p = nullptr;
-      int *pos = nullptr;
-
-      bool ( *greater )( double l, double r );
-  };
-
-} // namespace
+} // namespace pal
 
 #endif
