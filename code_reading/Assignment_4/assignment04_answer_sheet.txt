@@ -1,4 +1,4 @@
-Your Name:
+Your Name: Marin Pavlinov Marinov
 
 
 1. 
@@ -22,45 +22,45 @@ iii) QgsServerProjectUtils
 
 2. 
 (a) How many people have contributed to QGIS?
-320
+478
 
 
 
 (b) How many commits have been made?
-54,751
+54,736
 
 
 
 
 (c) How many lines of code are in the project?
-
+1.57 million
 
 
 
 3. Why are the numbers of contributors and commits different from those on
 the Open Hub page? 
 
-
-
-
+Open Hub analyzes a recent time frame while Github contains the most recent
+information on commits. Additionally, Github only shows contributors that
+are currently working on the project and not ones that used to work on it. 
 
 
 
 4. 
 (a) In what namespace is this class? 
-
+pal
 
 
 
 (b) Is the code for the PriorityQueue authored by the project organization, or 
     is it third-party? 
-   
+   third-party: libpal
 
 
 
 
 
 (c) What type of software license does it have?
-    
+GNU General Public License
 
 
