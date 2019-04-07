@@ -9,3 +9,17 @@
   Build with     : c++11
 ********************************************************************************/
 #include "hash_table.h"
+
+
+int HashTable::find(__ItemType &item) const {}
+
+
+int HashTable::insert(__ItemType item) {}
+
+
+int HashTable::remove(__ItemType item) {}
+
+
+int HashTable::size() const {}
+
+int HashTable::listall(ostream &os) const {}

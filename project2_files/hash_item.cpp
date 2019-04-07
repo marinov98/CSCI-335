@@ -9,3 +9,15 @@
   Build with     : c++11
 ********************************************************************************/
 #include "hash_item.h"
+
+
+
+ItemType::ItemType() {}
+
+void ItemType::set(string, int) {}
+
+void ItemType::get(string &, int &) {}
+
+bool ItemType::operator==(__ItemType rhs) const {}
+
+unsigned int ItemType::code() {}
