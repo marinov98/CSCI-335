@@ -60,7 +60,7 @@ double haversine(GPS point1, GPS point2) {
 
     // distances
     double dLat = (point2.latitude - point1.latitude)/2;
-    double dLon = (point2.longitude - point2.longitude)/2;
+    double dLon = (point2.longitude - point1.longitude)/2;
 
     double a = sin(dLat);
     double b = sin(dLon);
