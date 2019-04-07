@@ -13,6 +13,7 @@
 #include <cstdio>
 #include <iostream>
 #include <string>
+#include <cmath>
 
 using namespace std;
 
@@ -63,8 +64,12 @@ public:
 
 
 private:
+    // Function to calculate distance between two points on a sphere
+    friend double haversine(GPS point1, GPS point2);
+    
     double longitude;
     double latitude;
+    
 };
 
 
