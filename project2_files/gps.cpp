@@ -21,8 +21,8 @@ GPS::GPS(double lon, double lat) throw (BadPoint()) {
 	throw (BadPoint());
 
     // If code comes here, it means the values are valid
-    this->longitude = lon;
-    this->latitude = lat;
+    this->longitude = move(lon);
+    this->latitude = move(lat);
  }
 
 GPS::GPS(const GPS& location) {
