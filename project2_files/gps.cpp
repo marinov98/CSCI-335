@@ -12,13 +12,13 @@
 #include "gps.h"
 
 
-GPS::GPS(double lon, double lat) throw (BadPoint){
+GPS::GPS(double lon, double lat) throw (BadPoint()) {
     // checking boundaries for latitude
     if (lat <= -90 || lat >= 90)
-	throw BadPoint();
+	throw (BadPoint());
     // checking boundaries for longitude
     if (lon <= -180 || lon >= 180)
-	throw BadPoint();
+	throw (BadPoint());
 
     // If code comes here, it means the values are valid
     this->longitude = lon;

@@ -30,7 +30,7 @@ public:
      *  If the longitude or latitude is out of range, it throws a BadPoint
      *  error.
      */
-    GPS( double lon = 0, double lat = 0) throw (BadPoint);
+    GPS( double lon = 0, double lat = 0) throw (BadPoint());
 
     /** GPS() copy constructor
      *  If the longitude or latitude is out of range, it throws a BadPoint
@@ -64,7 +64,7 @@ public:
 
 
 private:
-    // Function to calculate distance between two points on a sphere
+    // private method to calculate distance between two points on a sphere
     friend double haversine(GPS point1, GPS point2);
     
     double longitude;
