@@ -6,12 +6,12 @@
   Purpose        : To define the minimal requirements of a hash table
   Usage          : Derive a concrete hash table class from this interface
   Build with     : no building
-  Modifications  : 
+  Modifications  :
       4/4/2019 by SW
-      The constructor for the abstract class was removed. Abstract classes 
+      The constructor for the abstract class was removed. Abstract classes
       cannot have constructors. (I should have known that!)
 
-      
+
 
 ******************************************************************************/
 #ifndef __HASH_TABLE_H__
@@ -66,6 +66,15 @@ public:
      *  @return int the number of items in the table
      */
     virtual int size() const = 0;
+
+    /** listall() lists all items currently in the table
+     *  @note   This function writes each item in the tabel onto the given stream.
+     *          Items should be written one per line, in whatever format the
+     *          underlying _ItemType output operator formats them.
+     *  @param  ostream [in,out] the stream onto which items are written
+     *  @return int the number of items written to the stream
+     */
+    virtual int listall ( ostream & os ) const = 0;
 
 };
 

@@ -30,7 +30,7 @@ public:
      *  If the longitude or latitude is out of range, it throws a BadPoint
      *  error.
      */
-    GPS( double lon = 0, double lat = 0) throw (BadPoint());
+    GPS( double lon = 0, double lat = 0) noexcept(false);
 
     /** GPS() copy constructor
      *  If the longitude or latitude is out of range, it throws a BadPoint

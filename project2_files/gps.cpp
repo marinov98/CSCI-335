@@ -12,7 +12,7 @@
 #include "gps.h"
 
 
-GPS::GPS(double lon, double lat) throw (BadPoint()) {
+GPS::GPS(double lon, double lat) noexcept(false) {
     // checking boundaries for latitude
     if (lat <= -90 || lat >= 90)
 	throw (BadPoint());
