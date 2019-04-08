@@ -7,7 +7,7 @@
   Usage          :
   Build with     :
   Modifications  :
-     4/4/2019 by SW - Added a code() member function
+     4/4/2019 by SW
 
 
 ******************************************************************************/
@@ -16,6 +16,7 @@
 #define __HASH_ITEM_H__
 
 #include <string>
+#include <iostream>
 
 using namespace std;
 
@@ -29,11 +30,11 @@ public:
 
     /** set() sets the item's data
      */
-     void set( string, int);
+    void set(string s, int pos = -1) ;
 
     /** get() retrieves the item's data
      */
-     void get( string &, int &);
+    void get(string & s, int & pos);
 
 
     /** operator==() returns true if given parameter equal item
@@ -50,10 +51,21 @@ public:
      *        has the option to assign a different number.
      *  @precondition: item is initialized
      *  @return unsigned int
-     */unsigned int code();
+     */
+     unsigned int code();
+
+    /** operator<<() 
+     *  @precondition: none
+     *  @param  
+     *  @return 
+     */
+    friend ostream&  operator<<(ostream & os, __ItemType item);
+
 
 private:
-  /* You must fill in the private part */
+    string name;
+    int    position;
+
 };
 
 
