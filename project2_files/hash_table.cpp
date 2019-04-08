@@ -85,7 +85,7 @@ int HashTable::insert(__ItemType item) {
 	int helper = 1;
 
 	// check to see if the index already has an item there
-	if (hashTable[index].code() != 0) {
+	if (0 != hashTable[index].code()) {
 		// perform linear probing
 		while (0 != hashTable[index].code()) {
 			index += helper;
