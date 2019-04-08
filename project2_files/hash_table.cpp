@@ -75,7 +75,7 @@ int HashTable::insert(__ItemType item) {
 		return 0;
 
 	// if table is not at least half empty then resize it
-	if (_current_size > _total_size / 2)
+	if (_current_size > (_total_size / 2))
 		resize();
 
 	// get index based on our hash function
