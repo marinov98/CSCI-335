@@ -59,7 +59,7 @@ public:
      *  @param  
      *  @return 
      */
-    friend ostream&  operator<<(ostream & os, __ItemType item);
+    friend ostream&  operator<<(ostream& os, __ItemType item);
 
 
 private:

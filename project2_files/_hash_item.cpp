@@ -18,8 +18,8 @@ __ItemType::__ItemType() {
 }
 
 void __ItemType::set(string s, int pos) {
-    this->name = s;
-    this->position = pos;
+    this->name = move(s);
+    this->position = move(pos);
 }
 
 
