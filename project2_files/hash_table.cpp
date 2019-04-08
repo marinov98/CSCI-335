@@ -140,6 +140,7 @@ int HashTable::listall(ostream& os) const {
 	int items_listed = 0;
 
 	for (int i = 0; i < _total_size; i++) {
+		// print and update list when index has a valid assigned string value
 		if (hashTable[i].code() != 0) {
 			os << hashTable[i];
 			items_listed++;
