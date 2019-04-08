@@ -17,7 +17,7 @@ HashTable::HashTable() {
 }
 
 HashTable::HashTable(int initial_size) {
-	_total_size = INITIAL_SIZE;
+	_total_size = initial_size;
 	_current_size = 0;
 	hashTable = new __ItemType[initial_size];
 }
@@ -88,7 +88,7 @@ int HashTable::insert(__ItemType item) {
 	if (hashTable[index].code() != 0) {
 		// perform linear probing
 		while (0 != hashTable[index].code()) {
-			index += helper % _total_size;
+			index += helper;
 			index %= _total_size;
 			helper++;
 		}
@@ -99,6 +99,9 @@ int HashTable::insert(__ItemType item) {
 		hashTable[index] = item;
 	}
 
+	//increment size
+	_current_size++;
+	
 	return 1;
 }
 
@@ -128,6 +131,9 @@ int HashTable::remove(__ItemType item) {
 	else {
 		hashTable[index].set("");
 	}
+
+	//decrement size
+	_current_size--;
 
 	return 1;
 }
