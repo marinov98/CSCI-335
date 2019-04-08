@@ -45,7 +45,7 @@ unsigned int __ItemType::code() {
 
 		for (const char c : this->name) {
 			// assign number to string
-			assigned_position *= (int) c * (precedence * precedence);
+			assigned_position += (int) c * (precedence * precedence);
 			precedence += 1;
 		}
 	}
