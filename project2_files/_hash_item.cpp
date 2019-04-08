@@ -1,6 +1,6 @@
 
 /******************************************************************************
-  Title          : hash_item.cpp
+  Title          : _hash_item.cpp
   Author         : Marin Pavlinov Marinov
   Created on     : April 3, 2019
   Description    : Cpp file for hash item
