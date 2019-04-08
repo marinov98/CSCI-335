@@ -41,7 +41,7 @@ unsigned int __ItemType::code() {
 	if (this->name != "") {
 		assigned_position++; // make sure we are NOT multiplying by 0
 		// adds an extra number to create more unique positions
-		int precedence = 4;
+		int precedence = 13;
 
 		for (const char c : this->name) {
 			// assign number to string
