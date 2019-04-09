@@ -16,7 +16,14 @@ HashTable::HashTable() {
 
 	// intialize hash table
 	_current_size = 0;
-	hashTable = new __ItemType[_total_size];
+
+	// test if memory could be allocated
+	try {
+		hashTable = new __ItemType[_total_size];
+	}
+	catch (bad_alloc) {
+		cout << "too much memory requested" << '\n';
+	}
 }
 
 HashTable::HashTable(int initial_size) {
@@ -25,12 +32,19 @@ HashTable::HashTable(int initial_size) {
 
 	// initialize hash table
 	_current_size = 0;
-	hashTable = new __ItemType[_total_size];
+
+	try {
+		hashTable = new __ItemType[_total_size];
+	}
+	catch (bad_alloc) {
+		cout << "too much memory rquested" << '\n';
+	}
 }
 
 HashTable::~HashTable() {
 	// delete dynamically allocated array
 	delete[] hashTable;
+	hashTable = nullptr;
 }
 
 bool HashTable::is_prime(int number) {
@@ -114,7 +128,7 @@ void HashTable::resize() {
 	int new_size = get_next_prime(_total_size * 2);
 	HashTable newTable(new_size);
 
-	// re-instert all items into the new table
+	// re-insert all items into the new table
 	for (int i = 0; i < _total_size; i++) {
 		if (0 != hashTable[i].code())
 			newTable.insert(hashTable[i]);
@@ -134,7 +148,7 @@ int HashTable::insert(__ItemType item) {
 		return 0;
 
 	// if table is not at least half empty then resize it
-	if (_current_size > (_total_size / 2))
+	if (_current_size >= (_total_size / 2))
 		resize();
 
 	// get index based on our hash function

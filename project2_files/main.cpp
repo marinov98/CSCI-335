@@ -44,7 +44,7 @@ int main(int argc, char* argv[]) {
 	ostringstream strstream;
 	int result;
 	int num_inserted;
-	HashTable hashtable(2000);
+	HashTable hashtable(29);
 	__ItemType item;
 
 	if (argc < 2) {
@@ -123,5 +123,6 @@ int main(int argc, char* argv[]) {
 		else if (str == "q")
 			break;
 	}
+
 	return 0;
 }
