@@ -37,7 +37,7 @@ HashTable::HashTable(int initial_size) {
 		hashTable = new __ItemType[_total_size];
 	}
 	catch (bad_alloc) {
-		cout << "too much memory rquested" << '\n';
+		cout << "too much memory requested" << '\n';
 	}
 }
 
