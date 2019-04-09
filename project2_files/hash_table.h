@@ -33,6 +33,12 @@ class HashTable : public __HashTable {
 	// copy constructor
 	HashTable(const HashTable& other_table);
 
+	// move constructor
+	HashTable(HashTable&& other_table);
+
+	// safely copy memory from hash table to another
+	HashTable& operator=(HashTable&& other_table);
+
 	// destructor to delete array when it is no longer in use
 	~HashTable();
 
@@ -77,12 +83,6 @@ class HashTable : public __HashTable {
 	 *  @return int the number of items written to the stream
 	 */
 	int listall(ostream& os) const;
-
-	// ensure copying while keeping memory separate
-	HashTable& operator=(const HashTable& other_table);
-
-	// helps when we want to resize the table by properly copying
-	__ItemType* operator=(__ItemType* rtable);
 
   private:
 	/*

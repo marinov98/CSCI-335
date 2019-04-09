@@ -42,31 +42,32 @@ HashTable::HashTable(int initial_size) {
 }
 
 HashTable::HashTable(const HashTable& other_table) {
-	this->_total_size = other_table._total_size;
-	this->_current_size = other_table._current_size;
-	// safely copy memory byte by byte
-	memcpy(hashTable, other_table.hashTable, _total_size);
-}
-
-HashTable& HashTable::operator=(const HashTable& other_table) {
-	// check to make sure we are not copying into ourselves
-	if (this != &other_table) {
+	if (&other_table != this) {
 		this->_total_size = other_table._total_size;
 		this->_current_size = other_table._current_size;
-		memcpy(hashTable, other_table.hashTable, _total_size);
+
+		this->hashTable = other_table.hashTable;
+	}
+}
+
+HashTable::HashTable(HashTable&& other_table) : hashTable(other_table.hashTable) {
+	other_table.hashTable = nullptr;
+}
+
+HashTable& HashTable::operator=(HashTable&& other_table) {
+	// check to make sure we are not copying into ourselves
+	if (this != &other_table) {
+		delete[] hashTable;
+		this->hashTable = move(other_table.hashTable);
+		other_table.hashTable = nullptr;
 	}
 
 	return *this;
 }
 
-__ItemType* HashTable::operator=(__ItemType* rtable) {
-	memcpy(this->hashTable, rtable, _total_size);
-	return this->hashTable;
-}
-
 HashTable::~HashTable() {
 	// delete dynamically allocated array
-	// delete[] hashTable;
+	delete[] hashTable;
 	hashTable = nullptr;
 }
 
@@ -161,8 +162,7 @@ void HashTable::resize() {
 	// update table size
 	_total_size = new_size;
 	// delete old table and make it equal the new table with updated size
-	delete[] hashTable;
-	hashTable = newTable.hashTable;
+	*this = move(newTable);
 }
 
 int HashTable::insert(__ItemType item) {
