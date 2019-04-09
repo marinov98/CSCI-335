@@ -26,7 +26,7 @@ CommentPragmas: '^ NOLINT(NEXTLINE)?'
 ConstructorInitializerAllOnOneLineOrOnePerLine: true
 IndentCaseLabels: true
 IndentPPDirectives: AfterHash
-IndentWidth: 4
+IndentWidth: 2
 KeepEmptyLinesAtTheStartOfBlocks: false
 Language: Cpp
 NamespaceIndentation: Inner
@@ -40,6 +40,6 @@ SpaceAfterCStyleCast: true
 SpaceBeforeParens: ControlStatements
 SpacesInAngles: false
 Standard: Cpp11
-TabWidth: 4
+TabWidth: 2
 UseTab: ForIndentation
 ...
