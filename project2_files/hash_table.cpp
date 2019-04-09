@@ -42,22 +42,26 @@ HashTable::HashTable(int initial_size) {
 }
 
 HashTable::HashTable(const HashTable& other_table) {
-	// safely copy memory byte by byte
-	memcpy(hashTable, other_table.hashTable, _total_size);
-
 	this->_total_size = other_table._total_size;
 	this->_current_size = other_table._current_size;
+	// safely copy memory byte by byte
+	memcpy(hashTable, other_table.hashTable, _total_size);
 }
 
 HashTable& HashTable::operator=(const HashTable& other_table) {
 	// check to make sure we are not copying into ourselves
 	if (this != &other_table) {
-		memcpy(hashTable, other_table.hashTable, _total_size);
 		this->_total_size = other_table._total_size;
 		this->_current_size = other_table._current_size;
+		memcpy(hashTable, other_table.hashTable, _total_size);
 	}
 
 	return *this;
+}
+
+__ItemType* HashTable::operator=(__ItemType* rtable) {
+	memcpy(this->hashTable, rtable, _total_size);
+	return this->hashTable;
 }
 
 HashTable::~HashTable() {
@@ -156,7 +160,6 @@ void HashTable::resize() {
 
 	// update table size
 	_total_size = new_size;
-
 	// delete old table and make it equal the new table with updated size
 	delete[] hashTable;
 	hashTable = newTable.hashTable;

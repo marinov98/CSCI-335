@@ -81,6 +81,9 @@ class HashTable : public __HashTable {
 	// ensure copying while keeping memory separate
 	HashTable& operator=(const HashTable& other_table);
 
+	// helps when we want to resize the table by properly copying
+	__ItemType* operator=(__ItemType* rtable);
+
   private:
 	/*
 	  Purpose of the next two functions:
