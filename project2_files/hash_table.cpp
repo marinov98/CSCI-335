@@ -119,14 +119,6 @@ int HashTable::find(__ItemType& item) const {
 					found = 1;
 					break;
 				}
-				else if (index == initial) {
-					// indexes are repeating, stop infinite loop
-					/*
-					   this will be used to check if there are repeats for the
-					   case where the item was initialized but never inserted into the table
-					*/
-					break;
-				}
 
 				// reset index
 				index = initial;
@@ -135,6 +127,15 @@ int HashTable::find(__ItemType& item) const {
 				index += (prober * prober);
 				index %= _total_size;
 				prober++;
+
+				if (index == initial) {
+					// indexes are repeating, stop infinite loop
+					/*
+					   this will be used to check if there are repeats for the
+					   case where the item was initialized but never inserted into the table
+					*/
+					break;
+				}
 			}
 		}
 	}
