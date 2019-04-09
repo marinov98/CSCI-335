@@ -39,14 +39,17 @@ int HashTable::find(__ItemType& item) const {
 		// constant time case: indicate item is found if the item's keys are equal
 		if (hashTable[index] == item) {
 			found = 1;
-		} // worse case scenario, we have to search entire table for it
+		} // worse case scenario, search entire table for it using linear probing
 		else {
-			for (int i = 0; i < _total_size; i++) {
-				if (hashTable[i] == item) {
-					found = 1;
-					break;
-				}
+		    int prober = 1;
+		    int i = index;
+		    for (i = (i + prober++) % _total_size; i != index;
+			 i = (i + prober++) % _total_size) {
+			if (hashTable[i] == item) {
+			    found = 1;
+			    break;
 			}
+		    }
 		}
 	}
 
