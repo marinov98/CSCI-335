@@ -36,21 +36,21 @@ bool __ItemType::operator==(__ItemType rhs) const {
 
 unsigned int __ItemType::code() {
 	// initialize return type
-	unsigned int assigned_position = 0;
+	unsigned int string_code = 0;
 
 	if (this->name != "") {
-		assigned_position++; // make sure we are NOT multiplying by 0
+		string_code++; // make sure we are NOT multiplying by 0
 		// adds an extra number to create more unique positions
 		int precedence = 13;
 
 		for (const char c : this->name) {
 			// assign number to string
-			assigned_position += (int) c * (precedence * precedence);
+			string_code += (int) c * (precedence * precedence);
 			precedence += 1;
 		}
 	}
 
-	return assigned_position;
+	return string_code;
 }
 
 ostream& operator<<(ostream& os, __ItemType item) {
