@@ -1,6 +1,6 @@
 
 /******************************************************************************
-  Title          : hash_item.cpp
+  Title          : hash_table.cpp
   Author         : Marin Marinov
   Created on     : April 3, 2019
   Description    : Defines an item type that can be used in the project
