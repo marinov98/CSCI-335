@@ -44,7 +44,7 @@ int main(int argc, char* argv[]) {
 	ostringstream strstream;
 	int result;
 	int num_inserted;
-	HashTable hashtable(13);
+	HashTable hashtable(2000);
 	__ItemType item;
 
 	if (argc < 2) {
