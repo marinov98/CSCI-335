@@ -76,7 +76,33 @@ class HashTable : public __HashTable {
 	int listall(ostream& os) const;
 
   private:
+	/*
+	  Purpose of the next two functions:
+	  I want to use quadratic probing,
+	  to do this I must ensure that:
+	  i) the table size is always prime
+	  ii) Table is always at least half empty
+	 */
+
+	/*
+	  function that checks if the number is prime
+	  pre: nothing
+	  post: true if its prime, false if its not prime
+	 */
+	bool is_prime(int number);
+
+	/*
+	  function that gets the next prime number assuming number is not already prime
+	  pre: nothing
+	  post: returns the next bigger prime number
+	 */
+	int get_next_prime(int start);
+
 	// function to resize table if needed
+	/*
+	  pre: table is more than half empty
+	  post: items are reinserted into a table with double the size of the previous one
+	 */
 	void resize();
 
 	// total size is used when resizing occurs and we want to keep track

@@ -11,20 +11,55 @@
 #include "hash_table.h"
 
 HashTable::HashTable() {
-	_total_size = INITIAL_SIZE;
+	// ensure table size is prime
+	_total_size = get_next_prime(INITIAL_SIZE);
+
+	// intialize hash table
 	_current_size = 0;
-	hashTable = new __ItemType[INITIAL_SIZE];
+	hashTable = new __ItemType[_total_size];
 }
 
 HashTable::HashTable(int initial_size) {
-	_total_size = initial_size;
+	// ensure table size is prime
+	_total_size = get_next_prime(initial_size);
+
+	// initialize hash table
 	_current_size = 0;
-	hashTable = new __ItemType[initial_size];
+	hashTable = new __ItemType[_total_size];
 }
 
 HashTable::~HashTable() {
 	// delete dynamically allocated array
 	delete[] hashTable;
+}
+
+bool HashTable::is_prime(int number) {
+	// base cases for small table sizes
+	if (number <= 1)
+		return false;
+	if (number <= 3)
+		return true;
+
+	// checked to skip first five numbers in loop below
+	if (number % 2 == 0 || number % 3 == 0)
+		return false;
+
+	// check up until the square root of the number
+	for (int i = 5; i * i <= number; i += 6) {
+		if (number % i == 0 || number % (i + 2) == 0)
+			return false;
+	}
+
+	// if its not divisible then its prime
+	return true;
+}
+
+int HashTable::get_next_prime(int start) {
+	// search for the next prime number
+	while (!is_prime(start))
+		start++;
+
+	return start;
 }
 
 int HashTable::find(__ItemType& item) const {
@@ -35,21 +70,39 @@ int HashTable::find(__ItemType& item) const {
 		// found is already 0, do nothing
 	}
 	else {
-		unsigned int index = item.code() % _total_size;
+		int index = item.code() % _total_size;
 		// constant time case: indicate item is found if the item's keys are equal
 		if (hashTable[index] == item) {
 			found = 1;
-		} // worse case scenario, search entire table for it using linear probing
+		} // worse case scenario, search the table for it using quadratic probing
 		else {
-		    int prober = 1;
-		    int i = index;
-		    for (i = (i + prober++) % _total_size; i != index;
-			 i = (i + prober++) % _total_size) {
-			if (hashTable[i] == item) {
-			    found = 1;
-			    break;
+			// used to reset the index for probing
+			int initial = index;
+			// variable to be incremented and added to the original
+			int prober = 1;
+			for (;;) {
+				// checkng
+				if (hashTable[index] == item) {
+					found = 1;
+					break;
+				}
+				else if (index == initial) {
+					// indexes are repeating, stop infinite loop
+					/*
+					   this will be used to check if there are repeats for the
+					   case where the item was initialized but never inserted into the table
+					*/
+					break;
+				}
+
+				// reset index
+				index = initial;
+
+				// search with quadratic probing
+				index += (prober * prober);
+				index %= _total_size;
+				prober++;
 			}
-		    }
 		}
 	}
 
@@ -57,19 +110,22 @@ int HashTable::find(__ItemType& item) const {
 }
 
 void HashTable::resize() {
-	// dynamically allocate new size
-	int new_size = _total_size * 2;
-	__ItemType* newTable = new __ItemType[new_size];
+	// create new table, making sure its size is prime
+	int new_size = get_next_prime(_total_size * 2);
+	HashTable newTable(new_size);
 
-	// copy contents of old table to the new table
-	memcpy(newTable, hashTable, _total_size * sizeof(__ItemType));
+	// re-instert all items into the new table
+	for (int i = 0; i < _total_size; i++) {
+		if (0 != hashTable[i].code())
+			newTable.insert(hashTable[i]);
+	}
 
 	// update table size
 	_total_size = new_size;
 
 	// delete old table and make it equal the new table with updated size
 	delete[] hashTable;
-	hashTable = newTable;
+	hashTable = newTable.hashTable;
 }
 
 int HashTable::insert(__ItemType item) {
@@ -84,27 +140,29 @@ int HashTable::insert(__ItemType item) {
 	// get index based on our hash function
 	int index = item.code() % _total_size;
 
-	// used for linear probing support
-	int helper = 1;
+	// used for quadratic probing support
+	int prober = 1;
 
 	// check to see if the index already has an item there
 	if (0 != hashTable[index].code()) {
-		// perform linear probing
+		int initial = index;
+		// perform quadratic probing
 		while (0 != hashTable[index].code()) {
-			index += helper;
+			index = initial;
+			index += (prober * prober);
 			index %= _total_size;
-			helper++;
+			prober++;
 		}
-
+		// insert item when a free slot is found
 		hashTable[index] = item;
 	}
 	else { // slot is empty, item can be inserted in constant time
 		hashTable[index] = item;
 	}
 
-	//increment size
+	// increment size
 	_current_size++;
-	
+
 	return 1;
 }
 
@@ -115,13 +173,15 @@ int HashTable::remove(__ItemType item) {
 
 	int index = item.code() % _total_size;
 
-	// counter for linear probing
+	// counter for quadratic probing
 	int prober = 1;
 	// check to see if item was inserted by linear probing
 	if (hashTable[index].code() != item.code()) {
-		// search using linear probing
+		int initial = index;
+		// search using quadratic probing
 		while (hashTable[index].code() != item.code()) {
-			index += prober % _total_size;
+			index = initial;
+			index += (prober * prober);
 			index %= _total_size;
 			prober++;
 		}
@@ -135,7 +195,7 @@ int HashTable::remove(__ItemType item) {
 		hashTable[index].set("");
 	}
 
-	//decrement size
+	// decrement size
 	_current_size--;
 
 	return 1;
