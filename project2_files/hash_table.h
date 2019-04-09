@@ -30,6 +30,9 @@ class HashTable : public __HashTable {
 	// constrol with table with specified initial size
 	HashTable(int initial_size);
 
+	// copy constructor
+	HashTable(const HashTable& other_table);
+
 	// destructor to delete array when it is no longer in use
 	~HashTable();
 
@@ -74,6 +77,9 @@ class HashTable : public __HashTable {
 	 *  @return int the number of items written to the stream
 	 */
 	int listall(ostream& os) const;
+
+	// ensure copying while keeping memory separate
+	HashTable& operator=(const HashTable& other_table);
 
   private:
 	/*

@@ -71,7 +71,7 @@ double distance_between(GPS point1, GPS point2) {
 }
 
 ostream& operator<<(ostream& out, GPS point) {
-	out << point.longitude << point.latitude;
+	out << "longitude: " << point.longitude << " latitude: " << point.latitude;
 
 	return out;
 }

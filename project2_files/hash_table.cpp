@@ -41,9 +41,28 @@ HashTable::HashTable(int initial_size) {
 	}
 }
 
+HashTable::HashTable(const HashTable& other_table) {
+	// safely copy memory byte by byte
+	memcpy(hashTable, other_table.hashTable, _total_size);
+
+	this->_total_size = other_table._total_size;
+	this->_current_size = other_table._current_size;
+}
+
+HashTable& HashTable::operator=(const HashTable& other_table) {
+	// check to make sure we are not copying into ourselves
+	if (this != &other_table) {
+		memcpy(hashTable, other_table.hashTable, _total_size);
+		this->_total_size = other_table._total_size;
+		this->_current_size = other_table._current_size;
+	}
+
+	return *this;
+}
+
 HashTable::~HashTable() {
 	// delete dynamically allocated array
-	delete[] hashTable;
+	// delete[] hashTable;
 	hashTable = nullptr;
 }
 
