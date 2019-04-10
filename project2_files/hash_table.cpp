@@ -65,7 +65,10 @@ HashTable& HashTable::operator=(const HashTable& other_table) {
 	return *this;
 }
 
-HashTable::HashTable(HashTable&& other_table) : hashTable(other_table.hashTable) {
+HashTable::HashTable(HashTable&& other_table) :
+    _total_size(other_table._total_size),
+    _current_size(other_table._current_size),
+    hashTable(other_table.hashTable) {
 	other_table.hashTable = nullptr;
 }
 
