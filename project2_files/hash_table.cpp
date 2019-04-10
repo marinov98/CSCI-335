@@ -34,21 +34,25 @@ HashTable::HashTable(const HashTable& other_table) :
     _items_inserted(other_table._items_inserted) {
 	// allocate space and fill hashtable with the contents of other table
 	this->hash_table = new __ItemType[other_table._size];
-	memcpy(this->hash_table, other_table.hash_table, _size);
+	memcpy(this->hash_table, other_table.hash_table, sizeof(__ItemType) * _size);
 }
 
 HashTable& HashTable::operator=(const HashTable& other_table) {
-	// make sure object is not copying itself
-	if (this != &other_table) {
-		this->_size = other_table._size;
-		this->_items_inserted = other_table._items_inserted;
+	/*
+	    call copy constructor to copy data of other_table
+	    into a temporary table
+	*/
+	HashTable temp_table = other_table;
 
-		// delete contents of current array
-		// allocate memory in accordance other table's size and point it to other table
-		delete[] this->hash_table;
-		this->hash_table = nullptr;
-		this->hash_table = other_table.hash_table;
-	}
+	/*
+	    Because we do not care about the temp_table existing
+	    after we copy it over , we can just move its contents
+	    into the current table which will call our
+	    move assignment operator that will safely transfer
+	    its contents. We do not move(other_table) because we
+	    care about it existance after the exchange of data is made
+	*/
+	*this = move(temp_table);
 
 	return *this;
 }
@@ -61,17 +65,14 @@ HashTable::HashTable(HashTable&& other_table) :
 }
 
 HashTable& HashTable::operator=(HashTable&& other_table) {
-	// check to make sure we are not copying into ourselves
-	if (this != &other_table) {
-		// ensure size and items inserted are the same
-		this->_size = other_table._size;
-		this->_items_inserted = other_table._items_inserted;
+	// ensure size and items inserted are the same
+	this->_size = other_table._size;
+	this->_items_inserted = other_table._items_inserted;
 
-		delete[] hash_table;
-		// move the data of the other table to the original
-		this->hash_table = move(other_table.hash_table);
-		other_table.hash_table = nullptr;
-	}
+	delete[] this->hash_table;
+	// move the data of the other table to the original
+	this->hash_table = move(other_table.hash_table);
+	other_table.hash_table = nullptr;
 
 	return *this;
 }
