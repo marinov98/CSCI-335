@@ -36,7 +36,7 @@ HashTable::HashTable(const HashTable& other_table) :
     _current_size(other_table._current_size) {
 	// allocate space and fill hashtable with the contents of other table
 	this->hash_table = new __ItemType[other_table._total_size];
-	this->hash_table = other_table.hash_table;
+	memcpy(this->hash_table, other_table.hash_table, _total_size);
 }
 
 HashTable& HashTable::operator=(const HashTable& other_table) {
@@ -45,10 +45,11 @@ HashTable& HashTable::operator=(const HashTable& other_table) {
 		this->_total_size = other_table._total_size;
 		this->_current_size = other_table._current_size;
 
-		// allocate memory in accordance other table's size and copy items over
+		// delete contents of current array
+		// allocate memory in accordance other table's size and point it to other table
 		delete[] this->hash_table;
 		this->hash_table = nullptr;
-		this->hash_table = other_table.hash_table;
+		hash_table = other_table.hash_table;
 	}
 
 	return *this;
