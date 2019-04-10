@@ -27,42 +27,47 @@ class HashTable : public __HashTable {
 	// constructor needed to initialize values
 	HashTable();
 
-	// construct table with specified initial size
-	HashTable(int initial_size);
+	// constructor for table with specified size
+	HashTable(int size);
 
 	// copy constructor
 	/*
-	pre: nothing
-	post: total size and current size are copied to current table
-	into current hashtable object
-	contents of other table are copied into the current table
+	    pre: nothing
+
+	    post: total size and current size are copied to current table
+	    into current hashtable object. Memory allocated in accordance with other table's size
+	    contents of other table are copied byte by byte into the current table
 	*/
 	HashTable(const HashTable& other_table);
 
 	// copy assignment operator
 	/*
-	pre: objects are not eqial
-	post: allocate space in current table in accordance to other table's size
-	and set the current table's pointer to point to other table's pointer
+	    pre: objects are not equal
+
+	    post: allocate space in current table in accordance to other table's size
+	    and set the current table's pointer to point to other table's pointer
 	*/
 	HashTable& operator=(const HashTable& other_table);
 
 	// move constructor
 	/*
-	pre:nothing
-	post: safely move contents of other table over to current table
-	and then ensure other table is not a dangling pointer
+	    pre:nothing
+
+	    post: safely transfers contents of other table over to current table
+	    and sets the other table to point to nullptr when finished
 	*/
 	HashTable(HashTable&& other_table);
 
 	// Move assignment operator:
 	/*
-	pre: objects are not equal
-	post: hashtable of other_table is safely copied into current hashtable object
+	    pre: objects are not equal
+
+	    post: deletes current hashtable and moves the contents of other table
+	    to the current and points the other table to nullptr after all data is transfered
 	*/
 	HashTable& operator=(HashTable&& other_table);
 
-	// destructor to delete array when it is no longer in use
+	// destructor to delete hashtable when it is no longer in use
 	~HashTable();
 
 	/** find() searches in table for given item
@@ -109,40 +114,39 @@ class HashTable : public __HashTable {
 
   private:
 	/*
-	  Purpose of the next two functions:
-	  I want to use quadratic probing,
-	  to do this I must ensure that:
-	  i) the table size is always prime
-	  ii) Table is always at least half empty
+	    Purpose of the next two functions:
+	    I want to use quadratic probing, to do this I must ensure that:
+	        i) the table size is always prime
+	        ii) Table is always at least half empty
 	 */
 
 	/*
-	  function that checks if the number is prime
-	  pre: nothing
-	  post: true if its prime, false if its not prime
+	    function that checks if the number is prime
+	    pre: nothing
+	    post: true if its prime, false if its not prime
 	 */
 	bool is_prime(int number);
 
 	/*
-	  function that gets the next prime number assuming number is not already prime
-	  pre: nothing
-	  post: returns the next bigger prime number
+	    function that gets the next prime number assuming number is not already prime
+	    pre: nothing
+
+	    post: returns the next bigger prime number
 	 */
 	int get_next_prime(int start);
 
 	// function to resize table if needed
 	/*
-	  pre: table is more than half empty
-	  post: items are reinserted into a table with double the size of the previous one
+	    pre: table is more than half empty
+	    post: items are reinserted into a table with double the size of the previous one
 	 */
 	void resize();
 
-	// total size is used when resizing occurs and we want to keep track
-	// of the new size
-	int _total_size;
+	// variable used to keep track of the size of the hashtable
+	int _size;
 
 	// keep track of how many items have been inserted
-	int _current_size;
+	int _items_inserted;
 
 	// actual hash table
 	__ItemType* hash_table;
