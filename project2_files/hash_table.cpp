@@ -45,9 +45,22 @@ HashTable::HashTable(const HashTable& other_table) {
 	if (&other_table != this) {
 		this->_total_size = other_table._total_size;
 		this->_current_size = other_table._current_size;
-
+		// delete dat in the old table and replace it with the new one
+		delete[] hashTable;
 		this->hashTable = other_table.hashTable;
 	}
+}
+
+HashTable& HashTable::operator=(const HashTable& other_table) {
+	// make sure we are not copying ourselves
+	if (this != &other_table) {
+		// allocate memory in accordance other table's size
+		delete[] hashTable;
+		hashTable = nullptr;
+		hashTable = new __ItemType[other_table._total_size];
+	}
+
+	return *this;
 }
 
 HashTable::HashTable(HashTable&& other_table) : hashTable(other_table.hashTable) {
@@ -57,7 +70,12 @@ HashTable::HashTable(HashTable&& other_table) : hashTable(other_table.hashTable)
 HashTable& HashTable::operator=(HashTable&& other_table) {
 	// check to make sure we are not copying into ourselves
 	if (this != &other_table) {
+		// ensure total/current size is the same
+		this->_total_size = other_table._total_size;
+		this->_current_size = other_table._current_size;
+
 		delete[] hashTable;
+		// move the data of the other table to the original
 		this->hashTable = move(other_table.hashTable);
 		other_table.hashTable = nullptr;
 	}
@@ -159,9 +177,7 @@ void HashTable::resize() {
 			newTable.insert(hashTable[i]);
 	}
 
-	// update table size
-	_total_size = new_size;
-	// delete old table and make it equal the new table with updated size
+	// utilize our move constructor to safely copy the data
 	*this = move(newTable);
 }
 

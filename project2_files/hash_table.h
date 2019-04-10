@@ -24,19 +24,41 @@ using namespace std;
 
 class HashTable : public __HashTable {
   public:
-	// constructor needed to initialize some values
+	// constructor needed to initialize values
 	HashTable();
 
-	// constrol with table with specified initial size
+	// construct table with specified initial size
 	HashTable(int initial_size);
 
 	// copy constructor
+	/*
+	pre: other table is not the same than the current table
+	post: total size and current size of other table are copied
+	into current hashtable object
+	contents of other table are copied into the current table
+	*/
 	HashTable(const HashTable& other_table);
 
+	// copy assignment operator
+	/*
+	pre: objects are not eqial
+	post: allocate space in current table in accordance to other table's size
+	*/
+	HashTable& operator=(const HashTable& other_table);
+
 	// move constructor
+	/*
+	pre:nothing
+	post: safely move contents of other table over to current table
+	and then ensure other table is not a dangling pointer
+	*/
 	HashTable(HashTable&& other_table);
 
-	// safely copy memory from hash table to another
+	// Move assignment operator:
+	/*
+	pre: objects are not equal
+	post: hashtable of other_table is safely copied into current hashtable object
+	*/
 	HashTable& operator=(HashTable&& other_table);
 
 	// destructor to delete array when it is no longer in use
