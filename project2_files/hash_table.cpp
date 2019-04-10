@@ -209,7 +209,7 @@ int HashTable::insert(__ItemType item) {
 		hash_table[index] = item;
 	}
 
-	// increment size
+	// add to the amount of items inserted
 	_items_inserted++;
 
 	return 1;
@@ -244,7 +244,7 @@ int HashTable::remove(__ItemType item) {
 		hash_table[index].set("");
 	}
 
-	// decrement size
+	// decrement the number that have been inserted
 	_items_inserted--;
 
 	return 1;
