@@ -32,8 +32,8 @@ class HashTable : public __HashTable {
 
 	// copy constructor
 	/*
-	pre: other table is not the same than the current table
-	post: total size and current size of other table are copied
+	pre: nothing
+	post: total size and current size are copied to current table
 	into current hashtable object
 	contents of other table are copied into the current table
 	*/
@@ -43,6 +43,7 @@ class HashTable : public __HashTable {
 	/*
 	pre: objects are not eqial
 	post: allocate space in current table in accordance to other table's size
+	and set the current table's pointer to point to other table's pointer
 	*/
 	HashTable& operator=(const HashTable& other_table);
 

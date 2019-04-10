@@ -12,14 +12,14 @@
 
 HashTable::HashTable() {
 	// ensure table size is prime
-	_total_size = get_next_prime(INITIAL_SIZE);
+	this->_total_size = get_next_prime(INITIAL_SIZE);
 
 	// intialize hash table
-	_current_size = 0;
+	this->_current_size = 0;
 
 	// test if memory could be allocated
 	try {
-		hashTable = new __ItemType[_total_size];
+		this->hashTable = new __ItemType[_total_size];
 	}
 	catch (bad_alloc) {
 		cout << "too much memory requested" << '\n';
@@ -28,13 +28,13 @@ HashTable::HashTable() {
 
 HashTable::HashTable(int initial_size) {
 	// ensure table size is prime
-	_total_size = get_next_prime(initial_size);
+	this->_total_size = get_next_prime(initial_size);
 
 	// initialize hash table
-	_current_size = 0;
+	this->_current_size = 0;
 
 	try {
-		hashTable = new __ItemType[_total_size];
+		this->hashTable = new __ItemType[_total_size];
 	}
 	catch (bad_alloc) {
 		cout << "too much memory requested" << '\n';
@@ -42,22 +42,24 @@ HashTable::HashTable(int initial_size) {
 }
 
 HashTable::HashTable(const HashTable& other_table) {
-	if (&other_table != this) {
-		this->_total_size = other_table._total_size;
-		this->_current_size = other_table._current_size;
-		// delete dat in the old table and replace it with the new one
-		delete[] hashTable;
-		this->hashTable = other_table.hashTable;
-	}
+	this->_total_size = other_table._total_size;
+	this->_current_size = other_table._current_size;
+
+	// allocate space and fill hashtable with the contents of other table
+	this->hashTable = new __ItemType[other_table._total_size];
+	this->hashTable = other_table.hashTable;
 }
 
 HashTable& HashTable::operator=(const HashTable& other_table) {
-	// make sure we are not copying ourselves
+	// make sure object is not copying itself
 	if (this != &other_table) {
-		// allocate memory in accordance other table's size
-		delete[] hashTable;
-		hashTable = nullptr;
-		hashTable = new __ItemType[other_table._total_size];
+		this->_total_size = other_table._total_size;
+		this->_current_size = other_table._current_size;
+
+		// allocate memory in accordance other table's size and copy items over
+		delete[] this->hashTable;
+		this->hashTable = nullptr;
+		this->hashTable = other_table.hashTable;
 	}
 
 	return *this;
@@ -85,8 +87,8 @@ HashTable& HashTable::operator=(HashTable&& other_table) {
 
 HashTable::~HashTable() {
 	// delete dynamically allocated array
-	delete[] hashTable;
-	hashTable = nullptr;
+	delete[] this->hashTable;
+	this->hashTable = nullptr;
 }
 
 bool HashTable::is_prime(int number) {
