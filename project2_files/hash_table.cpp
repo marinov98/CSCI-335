@@ -10,13 +10,7 @@
 ********************************************************************************/
 #include "hash_table.h"
 
-HashTable::HashTable() {
-	// ensure table size is prime
-	this->_total_size = get_next_prime(INITIAL_SIZE);
-
-	// intialize hash table
-	this->_current_size = 0;
-
+HashTable::HashTable() : _total_size(get_next_prime(INITIAL_SIZE)), _current_size(0) {
 	// test if memory could be allocated
 	try {
 		this->hash_table = new __ItemType[_total_size];
@@ -26,13 +20,9 @@ HashTable::HashTable() {
 	}
 }
 
-HashTable::HashTable(int initial_size) {
-	// ensure table size is prime
-	this->_total_size = get_next_prime(initial_size);
-
-	// initialize hash table
-	this->_current_size = 0;
-
+HashTable::HashTable(int initial_size) :
+    _total_size(get_next_prime(initial_size)),
+    _current_size(0) {
 	try {
 		this->hash_table = new __ItemType[_total_size];
 	}
@@ -41,10 +31,9 @@ HashTable::HashTable(int initial_size) {
 	}
 }
 
-HashTable::HashTable(const HashTable& other_table) {
-	this->_total_size = other_table._total_size;
-	this->_current_size = other_table._current_size;
-
+HashTable::HashTable(const HashTable& other_table) :
+    _total_size(other_table._total_size),
+    _current_size(other_table._current_size) {
 	// allocate space and fill hashtable with the contents of other table
 	this->hash_table = new __ItemType[other_table._total_size];
 	this->hash_table = other_table.hash_table;
