@@ -47,7 +47,7 @@ HashTable& HashTable::operator=(const HashTable& other_table) {
 		// allocate memory in accordance other table's size and point it to other table
 		delete[] this->hash_table;
 		this->hash_table = nullptr;
-		hash_table = other_table.hash_table;
+		this->hash_table = other_table.hash_table;
 	}
 
 	return *this;
