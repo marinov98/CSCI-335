@@ -251,7 +251,7 @@ int HashTable::remove(__ItemType item) {
 }
 
 int HashTable::size() const {
-	return _items_inserted;
+	return _size;
 }
 
 int HashTable::listall(ostream& os) const {

@@ -142,10 +142,19 @@ class HashTable : public __HashTable {
 	 */
 	void resize();
 
-	// variable used to keep track of the size of the hashtable
+	/*
+	    variable used to keep track of the total size of the hashtable
+	    IMPORTANT: the _size variable is only doubled when table is half empty
+	    otherwise it stays as it is during insertion and removal
+	    _items inserted is what keeps track of how many items are left in the table
+	*/
 	int _size;
 
-	// keep track of how many items have been inserted
+	/*
+	    keep track of how many items have been inserted
+	    Also lets the table know when it is not half empty and
+	    needs to be resized
+	*/
 	int _items_inserted;
 
 	// actual hash table
