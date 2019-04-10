@@ -50,7 +50,7 @@ HashTable& HashTable::operator=(const HashTable& other_table) {
 	    into the current table which will call our
 	    move assignment operator that will safely transfer
 	    its contents. We do not move(other_table) because we
-	    care about it existance after the exchange of data is made
+	    care about its existance after the exchange of data is made
 	*/
 	*this = move(temp_table);
 
