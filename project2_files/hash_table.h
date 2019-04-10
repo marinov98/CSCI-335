@@ -145,7 +145,7 @@ class HashTable : public __HashTable {
 	int _current_size;
 
 	// actual hash table
-	__ItemType* hashTable;
+	__ItemType* hash_table;
 };
 
 #endif /* __HASH_TABLE_H__ */
