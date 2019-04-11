@@ -34,13 +34,6 @@ bool __ItemType::operator==(__ItemType rhs) const {
 	return 0;
 }
 
-int fact(int n) {
-	if (n <= 1)
-		return 1;
-	else
-		return n * fact(n - 1);
-}
-
 unsigned int __ItemType::code() {
 	// initialize return type
 	unsigned int string_code = 0;
