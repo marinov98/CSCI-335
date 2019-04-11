@@ -44,7 +44,7 @@ int main(int argc, char* argv[]) {
 	ostringstream strstream;
 	int result;
 	int num_inserted;
-	HashTable hashtable(5);
+	HashTable hashtable(5000);
 	__ItemType item;
 
 	if (argc < 2) {
@@ -62,6 +62,15 @@ int main(int argc, char* argv[]) {
 	// Read each line from the input file, construct an item with the
 	// string from that line and an integer equal to the item's line
 	// number.
+
+	item.set("Deleted");
+	hashtable.insert(item);
+	hashtable.remove(item);
+
+	item.set("MEEP");
+	hashtable.insert(item);
+	hashtable.remove(item);
+
 	num_inserted = 0;
 	while (getline(inputfile, str)) {
 		num_inserted++;

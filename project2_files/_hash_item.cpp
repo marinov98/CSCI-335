@@ -34,19 +34,31 @@ bool __ItemType::operator==(__ItemType rhs) const {
 	return 0;
 }
 
+int fact(int n) {
+	if (n <= 1)
+		return 1;
+	else
+		return n * fact(n - 1);
+}
+
 unsigned int __ItemType::code() {
 	// initialize return type
 	unsigned int string_code = 0;
 
 	if (this->name != "") {
-		string_code++; // make sure we are NOT multiplying by 0
-		// adds an extra number to create more unique positions
-		int precedence = 13;
+		string_code++; // make sure string code does not begin at 0
+		// arbitrary number I chose to use for my hash function, creates more unique keys
+		int precedence = 26;
+
+		/*
+		    The result of the below for loop is the function: 1 + Σ (ASCII value of char) *
+		   precendenc^2 where precendence goes from 26 -> (26 + string length - 1)
+		*/
 
 		for (const char c : this->name) {
 			// assign number to string
 			string_code += (int) c * (precedence * precedence);
-			precedence += 1;
+			precedence++;
 		}
 	}
 

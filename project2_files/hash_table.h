@@ -166,6 +166,8 @@ class HashTable : public __HashTable {
 
 	// actual hash table
 	Item* hash_table;
+
+	int _probe_tester;
 };
 
 #endif /* __HASH_TABLE_H__ */

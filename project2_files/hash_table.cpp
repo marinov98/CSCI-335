@@ -21,6 +21,8 @@ HashTable::HashTable() : _size(get_next_prime(INITIAL_SIZE)), _items_inserted(0)
 }
 
 HashTable::HashTable(int size) : _size(get_next_prime(size)), _items_inserted(0) {
+	_probe_tester = 0;
+
 	try {
 		this->hash_table = new Item[_size];
 	}
@@ -78,6 +80,7 @@ HashTable& HashTable::operator=(HashTable&& other_table) {
 }
 
 HashTable::~HashTable() {
+	cout << "amount of times quadratic probing was used: " << _probe_tester << '\n';
 	delete[] this->hash_table;
 	this->hash_table = nullptr;
 }
@@ -198,6 +201,8 @@ int HashTable::insert(__ItemType item) {
 
 	// check to see if the index already has an item there
 	if (!hash_table[index].is_empty) {
+		_probe_tester++;
+
 		int initial = index;
 		// perform quadratic probing to find an empty index
 		while (!hash_table[index].is_empty) {
