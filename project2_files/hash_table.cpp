@@ -198,8 +198,6 @@ int HashTable::insert(__ItemType item) {
 
 	// check to see if the index already has an item there
 	if (!hash_table[index].is_empty) {
-		_probe_tester++;
-
 		int initial = index;
 		// perform quadratic probing to find an empty index
 		while (!hash_table[index].is_empty) {
