@@ -21,7 +21,7 @@ using namespace std;
 // struct to help implement deletion without using getters and setters
 struct Item {
 	__ItemType data;
-	// true if item is empty or deletion occured, false if
+	// true if item is empty or deletion occured, false if iposition is filled
 	bool is_empty = true;
 };
 

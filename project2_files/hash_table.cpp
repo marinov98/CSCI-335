@@ -118,7 +118,7 @@ void HashTable::resize() {
 
 	// re-insert all items into the new table
 	for (int i = 0; i < _size; i++) {
-		if (0 != hash_table[i].data.code())
+		if (!hash_table[i].is_empty)
 			newTable.insert(hash_table[i].data);
 	}
 

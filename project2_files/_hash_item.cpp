@@ -54,7 +54,7 @@ unsigned int __ItemType::code() {
 }
 
 ostream& operator<<(ostream& os, __ItemType item) {
-	os << "name: " << item.name << " position: " << item.position << '\n';
+	os << "key: " << item.name << "  position: " << item.position << '\n';
 
 	return os;
 }
