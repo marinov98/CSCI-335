@@ -252,7 +252,7 @@ int HashTable::remove(__ItemType item) {
 		hash_table[index].is_empty = true;
 	}
 
-	// decrement the number that have been inserted
+	// decrement the number of items that have been inserted
 	_items_inserted--;
 
 	return 1;
