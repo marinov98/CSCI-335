@@ -21,8 +21,6 @@ HashTable::HashTable() : _size(get_next_prime(INITIAL_SIZE)), _items_inserted(0)
 }
 
 HashTable::HashTable(int size) : _size(get_next_prime(size)), _items_inserted(0) {
-	_probe_tester = 0;
-
 	try {
 		this->hash_table = new Item[_size];
 	}
@@ -80,7 +78,6 @@ HashTable& HashTable::operator=(HashTable&& other_table) {
 }
 
 HashTable::~HashTable() {
-	cout << "amount of times quadratic probing was used: " << _probe_tester << '\n';
 	delete[] this->hash_table;
 	this->hash_table = nullptr;
 }
