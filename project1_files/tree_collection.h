@@ -1,21 +1,20 @@
 /*******************************************************************************
   Title          : __tree_species.h
-  Author         : Marin Pavlinov Marinov 
+  Author         : Marin Pavlinov Marinov
   Created on     : March 1st, 2019
   Description    : tree collection header file
   Purpose        : Inherit from the __tree_collection abstract class
 */
 #ifndef Tree_Collection_H
 #define Tree_Collection_H
+#include "AvlTree.h"
 #include "__tree_collection.h"
 #include "tree.h"
+#include <cmath>
 #include "tree_species.h"
-#include "AvlTree.h"
 
-class TreeCollection : public __TreeCollection
-{
-public:
-
+class TreeCollection : public __TreeCollection {
+  public:
 	/** total_tree_count() returns total number of trees in data set
 	 *  @return int count of trees in collection
 	 */
@@ -25,8 +24,7 @@ public:
 	 * @param  string species_name [in] species name to search for
 	 * @return int the number of trees that have the given species name
 	 */
-	int count_of_tree_species ( const string & species_name );
-
+	int count_of_tree_species(const string& species_name);
 
 	/** count_of_tree_species_in_boro(s,b) returns number of trees with name s
 	 *                                     in boro b
@@ -39,9 +37,7 @@ public:
 	 * @param  string boro_name [in] species borough to look in
 	 * @return int the number of trees in boro that have the given species name
 	 */
-	int count_of_tree_species_in_boro ( const string & species_name,
-	                                    const string & boro_name );
-
+	int count_of_tree_species_in_boro(const string& species_name, const string& boro_name);
 
 	/** get_counts_of_trees_by_boro(s,t) puts number of trees matching name s
 	 *                                     in all boros into param t
@@ -58,23 +54,20 @@ public:
 	 * @post   boro_name[k].count has count of trees of given species in boro[k]
 	 * @return int the total number of trees of given species in all boros
 	 */
-	int get_counts_of_trees_by_boro ( const string & species_name,
-	                                  boro  tree_count[5] );
-
+	int get_counts_of_trees_by_boro(const string& species_name, boro tree_count[5]);
 
 	/** count_of_trees_in_boro(b) returns number of trees of all types in boro b
 	 * @param  string boro_name [in] species borough to look in
 	 * @return int the number of trees in boro boro_name
 	 */
-	int count_of_trees_in_boro( const string & boro_name );
+	int count_of_trees_in_boro(const string& boro_name);
 
 	/** add_tree(t) inserts Tree t into the collection, updates species list and
 	 *              borough counts.
 	 * @param Tree new_tree [in] the tree to be inserted
 	 * @return int the number of trees inserted: 0 if none, 1 if inserted
 	 */
-	int add_tree( Tree & new_tree);
-
+	int add_tree(Tree& new_tree);
 
 	/** print_all_species(out) prints all species names on out, one per line
 	 *  This writes the set of all common names found in the data set to the
@@ -82,7 +75,7 @@ public:
 	 *  lexicographic order, using the default string comparison ordering
 	 *  @param ostream& [in,out]  out  the stream to be modified
 	 */
-	void print_all_species(ostream & out) const;
+	void print_all_species(ostream& out) const;
 
 	/** print(out) prints all tree data on out, one tree per line, sorted
 	 *  @notes
@@ -94,7 +87,7 @@ public:
 	 *  THAT the species common name is printed FIRST.
 	 *  @param ostream& [in,out]  out  the stream to be modified
 	 */
-	void print(ostream & out ) const;
+	void print(ostream& out) const;
 
 	/** get_matching_species(s) returns a list<string> containing a list of all
 	 *                  tree species common names that match species_name.
@@ -105,9 +98,7 @@ public:
 	 * @param string species_name [in] the partial name to match
 	 * @return list<string> a list of species names that match species_name
 	 */
-	list<string> get_matching_species(
-			const string & species_name) const;
-
+	list<string> get_matching_species(const string& species_name) const;
 
 	/** get_all_in_zipcode(z) returns a list<string> containing a list of all
 	 *                  tree species common names in zipcode z.
@@ -131,12 +122,9 @@ public:
 	 * @return list<string> a list of species names within distance km of
 	 *                     GPS point (latitude,logitude)
 	 */
-	list<string> get_all_near(double latitude, double longitude,
-	                          double  distance) const;
+	list<string> get_all_near(double latitude, double longitude, double distance) const;
 
-
-
-private:
+  private:
 	AvlTree<Tree> tree_collection_;
 	int tree_count_;
 
@@ -147,15 +135,13 @@ private:
 	vector<Tree> treeVector;
 	vector<boro> borough_list;
 
+	double haversine(double lat1,double lon1,double lat2,double lon2);
 
 	TreeSpecies wrapper;
 
-
 	int species_count_;
 
-//	bool findSpecies(const string& species_name);
-
+	//	bool findSpecies(const string& species_name);
 };
-
 
 #endif /* ___Tree_Collection_H__ */
