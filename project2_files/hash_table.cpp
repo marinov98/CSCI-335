@@ -13,7 +13,7 @@
 HashTable::HashTable() : _size(get_next_prime(INITIAL_SIZE)), _items_inserted(0) {
 	// test if memory could be allocated
 	try {
-		this->hash_table = new __ItemType[_size];
+		this->hash_table = new Item[_size];
 	}
 	catch (bad_alloc) {
 		cout << "too much memory requested" << '\n';
@@ -22,7 +22,7 @@ HashTable::HashTable() : _size(get_next_prime(INITIAL_SIZE)), _items_inserted(0)
 
 HashTable::HashTable(int size) : _size(get_next_prime(size)), _items_inserted(0) {
 	try {
-		this->hash_table = new __ItemType[_size];
+		this->hash_table = new Item[_size];
 	}
 	catch (bad_alloc) {
 		cout << "too much memory requested" << '\n';
@@ -33,8 +33,8 @@ HashTable::HashTable(const HashTable& other_table) :
     _size(other_table._size),
     _items_inserted(other_table._items_inserted) {
 	// allocate space and fill hashtable with the contents of other table
-	this->hash_table = new __ItemType[other_table._size];
-	memcpy(this->hash_table, other_table.hash_table, sizeof(__ItemType) * _size);
+	this->hash_table = new Item[other_table._size];
+	memcpy(this->hash_table, other_table.hash_table, sizeof(Item) * _size);
 }
 
 HashTable& HashTable::operator=(const HashTable& other_table) {
@@ -111,6 +111,24 @@ int HashTable::get_next_prime(int start) {
 	return start;
 }
 
+void HashTable::resize() {
+	// create new table with double the size, making sure its size is prime
+	int new_size = get_next_prime(_size * 2);
+	HashTable newTable(new_size);
+
+	// re-insert all items into the new table
+	for (int i = 0; i < _size; i++) {
+		if (0 != hash_table[i].data.code())
+			newTable.insert(hash_table[i].data);
+	}
+
+	/*
+	    utilize our move assignment operator to safely copy the data
+	    from the new table object to our current table object
+	*/
+	*this = move(newTable);
+}
+
 int HashTable::find(__ItemType& item) const {
 	int found = 0;
 	// if the code assigned to the string is 0 without the mod table size
@@ -121,17 +139,21 @@ int HashTable::find(__ItemType& item) const {
 	else {
 		int index = item.code() % _size;
 		// constant time case: indicate item is found if the item's keys are equal
-		if (hash_table[index] == item) {
+		if (!hash_table[index].is_empty && hash_table[index].data == item) {
 			found = 1;
-		} // worse case scenario, search the table for it using quadratic probing
+		} // case where its found but its marked as empty
+		else if (hash_table[index].is_empty && hash_table[index].data == item) {
+			// found aready 0 do nothing
+		}
+		// worse case scenario, search the table for it using quadratic probing
 		else {
 			// used to reset the index for probing
 			int initial = index;
 			// variable to be incremented and added to the original
 			int prober = 1;
 			for (;;) {
-				// checking to see if item was found
-				if (hash_table[index] == item) {
+				// checking to see if item was found and not marked empty
+				if (hash_table[index].data == item && !hash_table[index].is_empty) {
 					found = 1;
 					break;
 				}
@@ -159,24 +181,6 @@ int HashTable::find(__ItemType& item) const {
 	return found;
 }
 
-void HashTable::resize() {
-	// create new table with double the size, making sure its size is prime
-	int new_size = get_next_prime(_size * 2);
-	HashTable newTable(new_size);
-
-	// re-insert all items into the new table
-	for (int i = 0; i < _size; i++) {
-		if (0 != hash_table[i].code())
-			newTable.insert(hash_table[i]);
-	}
-
-	/*
-	    utilize our move assignment operator to safely copy the data
-	    from the new table object to our current table object
-	*/
-	*this = move(newTable);
-}
-
 int HashTable::insert(__ItemType item) {
 	// if item is not initialized or found in the table, we are done
 	if (0 == item.code() || 1 == find(item))
@@ -193,20 +197,22 @@ int HashTable::insert(__ItemType item) {
 	int prober = 1;
 
 	// check to see if the index already has an item there
-	if (0 != hash_table[index].code()) {
+	if (!hash_table[index].is_empty) {
 		int initial = index;
-		// perform quadratic probing
-		while (0 != hash_table[index].code()) {
+		// perform quadratic probing to find an empty index
+		while (!hash_table[index].is_empty) {
 			index = initial;
 			index += (prober * prober);
 			index %= _size;
 			prober++;
 		}
-		// insert item when a free slot is found
-		hash_table[index] = item;
+		// insert item when a free slot is found and indicate that it's not empty
+		hash_table[index].data = item;
+		hash_table[index].is_empty = false;
 	}
 	else { // slot is empty, item can be inserted in constant time
-		hash_table[index] = item;
+		hash_table[index].data = item;
+		hash_table[index].is_empty = false;
 	}
 
 	// add to the amount of items inserted
@@ -224,11 +230,16 @@ int HashTable::remove(__ItemType item) {
 
 	// counter for quadratic probing
 	int prober = 1;
-	// check to see if item was inserted by linear probing
-	if (hash_table[index].code() != item.code()) {
+	// constant time case
+	if (hash_table[index].data == item) {
+		// mark as "empty" (this is lazy deletion)
+		hash_table[index].is_empty = true;
+	}
+	// search using quadratic probing
+	else {
 		int initial = index;
 		// search using quadratic probing
-		while (hash_table[index].code() != item.code()) {
+		while (hash_table[index].data.code() != item.code()) {
 			index = initial;
 			index += (prober * prober);
 			index %= _size;
@@ -236,12 +247,9 @@ int HashTable::remove(__ItemType item) {
 		}
 
 		// copy into parameter
-		item = hash_table[index];
+		item = hash_table[index].data;
 		// mark as empty
-		hash_table[index].set("");
-	}
-	else { // constant time case:
-		hash_table[index].set("");
+		hash_table[index].is_empty = true;
 	}
 
 	// decrement the number that have been inserted
@@ -259,8 +267,8 @@ int HashTable::listall(ostream& os) const {
 
 	for (int i = 0; i < _size; i++) {
 		// print and update list when index has a valid assigned string value
-		if (0 != hash_table[i].code()) {
-			os << hash_table[i];
+		if (!hash_table[i].is_empty) {
+			os << hash_table[i].data;
 			items_listed++;
 		}
 	}

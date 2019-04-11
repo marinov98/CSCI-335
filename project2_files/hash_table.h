@@ -18,6 +18,13 @@
 
 using namespace std;
 
+// struct to help implement deletion without using getters and setters
+struct Item {
+	__ItemType data;
+	// true if item is empty or deletion occured, false if
+	bool is_empty = true;
+};
+
 // The INITIAL_SIZE should be large enough that it will not need to be
 // resized, but you might want to implement resizing in your class.
 #define INITIAL_SIZE 4096
@@ -158,7 +165,7 @@ class HashTable : public __HashTable {
 	int _items_inserted;
 
 	// actual hash table
-	__ItemType* hash_table;
+	Item* hash_table;
 };
 
 #endif /* __HASH_TABLE_H__ */
