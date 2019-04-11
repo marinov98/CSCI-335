@@ -13,10 +13,10 @@
 
 GPS::GPS(double lon, double lat) noexcept(false) {
 	// checking boundaries for latitude
-	if (lat <= -90 || lat >= 90)
+	if (lat < -90 || lat > 90)
 		throw(BadPoint());
 	// checking boundaries for longitude
-	if (lon <= -180 || lon >= 180)
+	if (lon < -180 || lon > 180)
 		throw(BadPoint());
 
 	// If code comes here, it means the values are valid
@@ -26,11 +26,11 @@ GPS::GPS(double lon, double lat) noexcept(false) {
 
 GPS::GPS(const GPS& location) {
 	// checking boundaries for latitude
-	if (location.latitude <= -90 || location.latitude >= 90)
+	if (location.latitude < -90 || location.latitude > 90)
 		throw BadPoint();
 
 	// checking boundaries for longitude
-	if (location.longitude <= -180 || location.longitude >= 180)
+	if (location.longitude < -180 || location.longitude > 180)
 		throw BadPoint();
 
 	// If code comes here, values are valid
