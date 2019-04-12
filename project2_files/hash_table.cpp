@@ -159,13 +159,12 @@ int HashTable::find(__ItemType& item) const {
 				index += (collisions * collisions);
 				index %= _size;
 
-
 				// checking to see if item was found and not marked empty
 				if (!hash_table[index].is_empty && hash_table[index].data == item) {
 					found = 1;
 					break;
-				}//item found but marked empty
-				else if(hash_table[index].is_empty && hash_table[index].data == item) {
+				} // item found but marked empty
+				else if (hash_table[index].is_empty && hash_table[index].data == item) {
 					break;
 				}
 				collisions++;
@@ -175,8 +174,8 @@ int HashTable::find(__ItemType& item) const {
 				     ex. say we started at index 1 and table size is 13 and the collisions = 5;
 				     (1 + 25) MOD 13 = 0 ,
 				     (1 + 36) MOD 13 = 11
-				     (1 + 49) MOD 13 = 11 (where indexes start repeating) index == next_index in this case
-				     (1 + 64) MOD 13 = 0
+				     (1 + 49) MOD 13 = 11 (where indexes start repeating) index == next_index in
+				   this case (1 + 64) MOD 13 = 0
 
 				*/
 				int next_index = initial;
