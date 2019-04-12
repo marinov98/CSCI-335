@@ -39,12 +39,12 @@
 using namespace std;
 
 int main(int argc, char* argv[]) {
-	ifstream inputfile("othertest.txt");
+	ifstream inputfile;
 	string str;
 	ostringstream strstream;
 	int result;
 	int num_inserted;
-	HashTable hashtable(100);
+	HashTable hashtable(3);
 	__ItemType item;
 
 	if (argc < 2) {
@@ -59,9 +59,7 @@ int main(int argc, char* argv[]) {
 		exit(1);
 	}
 
-
-	//inputfile.open("othertest.txt");
-
+	// inputfile.open("othertest.txt");
 
 	// Read each line from the input file, construct an item with the
 	// string from that line and an integer equal to the item's line

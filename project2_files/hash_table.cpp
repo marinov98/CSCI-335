@@ -1,7 +1,7 @@
 
 /******************************************************************************
   Title          : hash_table.cpp
-  Author         : Marin Marinov
+  Author         : Marin Pavlinov Marinov
   Created on     : April 3, 2019
   Description    : Defines an item type that can be used in the project
   Purpose        : To define the item type to be hashed
@@ -143,30 +143,47 @@ int HashTable::find(__ItemType& item) const {
 			found = 1;
 		} // case where its found but its marked as empty
 		else if (hash_table[index].is_empty && hash_table[index].data == item) {
-			// found aready 0 do nothing
+			// found already 0 do nothing
 		}
 		// worse case scenario, search the table for it using quadratic probing
 		else {
 			// used to reset the index for probing
 			int initial = index;
 			// variable to be incremented and added to the original
-			int prober = 1;
+			int collisions = 1;
 			for (;;) {
-				// checking to see if item was found and not marked empty
-				if (hash_table[index].data == item && !hash_table[index].is_empty) {
-					found = 1;
-					break;
-				}
-
 				// reset index
 				index = initial;
 
 				// search with quadratic probing
-				index += (prober * prober);
+				index += (collisions * collisions);
 				index %= _size;
-				prober++;
 
-				if (index == initial) {
+
+				// checking to see if item was found and not marked empty
+				if (!hash_table[index].is_empty && hash_table[index].data == item) {
+					found = 1;
+					break;
+				}//item found but marked empty
+				else if(hash_table[index].is_empty && hash_table[index].data == item) {
+					break;
+				}
+				collisions++;
+				// if the next quadratic search gives the same index as the previous, then the
+				// indices are repeating
+				/*
+				     ex. say we started at index 1 and table size is 13 and the collisions = 5;
+				     (1 + 25) MOD 13 = 0 ,
+				     (1 + 36) MOD 13 = 11
+				     (1 + 49) MOD 13 = 11 (where indexes start repeating) index == next_index in this case
+				     (1 + 64) MOD 13 = 0
+
+				*/
+				int next_index = initial;
+				next_index += (collisions * collisions);
+				next_index %= _size;
+
+				if (index == next_index) {
 					// indexes are repeating, stop infinite loop
 					/*
 					   this will be used to check if there are repeats for the
@@ -182,43 +199,53 @@ int HashTable::find(__ItemType& item) const {
 }
 
 int HashTable::insert(__ItemType item) {
-	// if item is not initialized or is found in the table, we are done
-	if (0 == item.code() || 1 == find(item))
-		return 0;
+	int inserted = 0;
+	// base case when nothing was inserted yet and item is initialized
+	if (_items_inserted == 0 && item.code() != 0) {
+		hash_table[item.code() % _size].data = item;
+		hash_table[item.code() % _size].is_empty = false;
+		_items_inserted++;
+		inserted = 1;
+	} // if item is not initialized or is found in the table, we are done
+	else if (0 == item.code() || 1 == find(item)) {
+		// inserted already 0, do nothing
+	} // item can be inserted
+	else {
+		// get index based on our hash function
+		int index = item.code() % _size;
+
+		// used for quadratic probing support when collisions occur
+		int collisions = 1;
+
+		// check to see if the index already has an item there
+		if (!hash_table[index].is_empty) {
+			int initial = index;
+			// perform quadratic probing to find an empty index
+			while (!hash_table[index].is_empty) {
+				index = initial;
+				index += (collisions * collisions);
+				index %= _size;
+				collisions++;
+			}
+			// insert item when a free slot is found and indicate that it's not empty
+			hash_table[index].data = item;
+			hash_table[index].is_empty = false;
+		}
+		else { // slot is empty, item can be inserted in constant time
+			hash_table[index].data = item;
+			hash_table[index].is_empty = false;
+		}
+
+		// add to the amount of items inserted
+		inserted = 1;
+		_items_inserted++;
+	}
 
 	// if table is not at least half empty then resize it
 	if (_items_inserted >= (_size / 2))
 		resize();
 
-	// get index based on our hash function
-	int index = item.code() % _size;
-
-	// used for quadratic probing support when collisions occur
-	int prober = 1;
-
-	// check to see if the index already has an item there
-	if (!hash_table[index].is_empty) {
-		int initial = index;
-		// perform quadratic probing to find an empty index
-		while (!hash_table[index].is_empty) {
-			index = initial;
-			index += (prober * prober);
-			index %= _size;
-			prober++;
-		}
-		// insert item when a free slot is found and indicate that it's not empty
-		hash_table[index].data = item;
-		hash_table[index].is_empty = false;
-	}
-	else { // slot is empty, item can be inserted in constant time
-		hash_table[index].data = item;
-		hash_table[index].is_empty = false;
-	}
-
-	// add to the amount of items inserted
-	_items_inserted++;
-
-	return 1;
+	return inserted;
 }
 
 int HashTable::remove(__ItemType item) {
@@ -229,7 +256,7 @@ int HashTable::remove(__ItemType item) {
 	int index = item.code() % _size;
 
 	// counter for quadratic probing
-	int prober = 1;
+	int collisions = 1;
 	// constant time case
 	if (hash_table[index].data == item) {
 		// mark as "empty" (this is lazy deletion)
@@ -241,9 +268,9 @@ int HashTable::remove(__ItemType item) {
 		// search using quadratic probing
 		while (hash_table[index].data.code() != item.code()) {
 			index = initial;
-			index += (prober * prober);
+			index += (collisions * collisions);
 			index %= _size;
-			prober++;
+			collisions++;
 		}
 		// mark as empty
 		hash_table[index].is_empty = true;
