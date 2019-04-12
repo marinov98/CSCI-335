@@ -39,12 +39,12 @@
 using namespace std;
 
 int main(int argc, char* argv[]) {
-	ifstream inputfile;
+	ifstream inputfile("othertest.txt");
 	string str;
 	ostringstream strstream;
 	int result;
 	int num_inserted;
-	HashTable hashtable(5000);
+	HashTable hashtable(100);
 	__ItemType item;
 
 	if (argc < 2) {
@@ -59,17 +59,13 @@ int main(int argc, char* argv[]) {
 		exit(1);
 	}
 
+
+	//inputfile.open("othertest.txt");
+
+
 	// Read each line from the input file, construct an item with the
 	// string from that line and an integer equal to the item's line
 	// number.
-
-	item.set("Deleted");
-	hashtable.insert(item);
-	hashtable.remove(item);
-
-	item.set("MEEP");
-	hashtable.insert(item);
-	hashtable.remove(item);
 
 	num_inserted = 0;
 	while (getline(inputfile, str)) {
@@ -89,6 +85,19 @@ int main(int argc, char* argv[]) {
 
 	// Display all items stored in the hash table (using a method not in the
 	// abstract interface
+
+	//	item.set("HI");
+	//	hashtable.insert(item);
+	//
+	//	item.set("bye");
+	//	hashtable.insert(item);
+	//
+	//	item.set("kobra");
+	//	hashtable.insert(item);
+	//
+	//	item.set("kai");
+	//	hashtable.insert(item);
+	//
 	int count = hashtable.listall(cout);
 
 	// and print how many were displayed
@@ -105,7 +114,7 @@ int main(int argc, char* argv[]) {
 
 	// now check how the find and remove functions work
 
-	while (1) {
+	while (true) {
 		cout << "Enter 'f', to find, 'r' to remove, or 'q' to quit: ";
 		getline(cin, str);
 		if (str == "f") {

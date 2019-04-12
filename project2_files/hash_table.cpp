@@ -34,7 +34,7 @@ HashTable::HashTable(const HashTable& other_table) :
     _items_inserted(other_table._items_inserted) {
 	// allocate space and fill hashtable with the contents of other table
 	this->hash_table = new Item[other_table._size];
-	memcpy(this->hash_table, other_table.hash_table, sizeof(Item) * _size);
+	copy(other_table.hash_table, (other_table.hash_table + _size), this->hash_table);
 }
 
 HashTable& HashTable::operator=(const HashTable& other_table) {
@@ -50,28 +50,28 @@ HashTable& HashTable::operator=(const HashTable& other_table) {
 	    into the current table which will call our
 	    move assignment operator that will safely transfer
 	    its contents. We do not move(other_table) because we
-	    care about its existance after the exchange of data is made
+	    care about its existence after the exchange of data is made
 	*/
 	*this = move(temp_table);
 
 	return *this;
 }
 
-HashTable::HashTable(HashTable&& other_table) :
+HashTable::HashTable(HashTable&& other_table) noexcept :
     _size(other_table._size),
     _items_inserted(other_table._items_inserted),
     hash_table(other_table.hash_table) {
 	other_table.hash_table = nullptr;
 }
 
-HashTable& HashTable::operator=(HashTable&& other_table) {
+HashTable& HashTable::operator=(HashTable&& other_table) noexcept {
 	// ensure size and items inserted are the same
 	this->_size = other_table._size;
 	this->_items_inserted = other_table._items_inserted;
 
 	delete[] this->hash_table;
-	// move the data of the other table to the original
-	this->hash_table = move(other_table.hash_table);
+	// move the data of the other table to the original now that other_table is an rvalue
+	this->hash_table = other_table.hash_table;
 	other_table.hash_table = nullptr;
 
 	return *this;
@@ -135,7 +135,7 @@ int HashTable::find(__ItemType& item) const {
 	// then it was never initialized
 	if (0 == item.code()) {
 		// found is already 0, do nothing
-	}
+	} // else: item is initialized but may or may not be in the table
 	else {
 		int index = item.code() % _size;
 		// constant time case: indicate item is found if the item's keys are equal
@@ -182,7 +182,7 @@ int HashTable::find(__ItemType& item) const {
 }
 
 int HashTable::insert(__ItemType item) {
-	// if item is not initialized or found in the table, we are done
+	// if item is not initialized or is found in the table, we are done
 	if (0 == item.code() || 1 == find(item))
 		return 0;
 
@@ -245,9 +245,6 @@ int HashTable::remove(__ItemType item) {
 			index %= _size;
 			prober++;
 		}
-
-		// copy into parameter
-		item = hash_table[index].data;
 		// mark as empty
 		hash_table[index].is_empty = true;
 	}

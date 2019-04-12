@@ -13,6 +13,7 @@
 #define HASH_TABLE_H
 
 #include "_hash_table.h"
+#include <algorithm>
 #include <cstring>
 #include <string>
 
@@ -52,27 +53,31 @@ class HashTable : public __HashTable {
 	    pre: objects are not equal
 
 	    post: allocate space in current table in accordance to other table's size
-	    and set the current table's pointer to point to other table's pointer
+	    and copy the contents of other_table over to current object file
 	*/
 	HashTable& operator=(const HashTable& other_table);
 
 	// move constructor
 	/*
-	    pre:nothing
+	 *  NOTE: I use noexcept because standard containers disable moves if the contained object's
+	 move constructor throws pre:nothing
 
 	    post: safely transfers contents of other table over to current table
 	    and sets the other table to point to nullptr when finished
 	*/
-	HashTable(HashTable&& other_table);
+	HashTable(HashTable&& other_table) noexcept;
 
 	// Move assignment operator:
 	/*
+	 *  NOTE: similarly to the move constructor, noexcept is used to let the library know it can
+	 move
+
 	    pre: objects are not equal
 
 	    post: deletes current hashtable and moves the contents of other table
 	    to the current and points the other table to nullptr after all data is transfered
 	*/
-	HashTable& operator=(HashTable&& other_table);
+	HashTable& operator=(HashTable&& other_table) noexcept;
 
 	// destructor to delete hashtable when it is no longer in use
 	~HashTable();
@@ -151,7 +156,7 @@ class HashTable : public __HashTable {
 
 	/*
 	    variable used to keep track of the total size of the hashtable
-	    IMPORTANT: the _size variable is only doubled when table is half empty
+	    * IMPORTANT: the _size variable is only doubled when table is half empty
 	    otherwise it stays as it is during insertion and removal
 	    _items inserted is what keeps track of how many items are left in the table
 	*/
