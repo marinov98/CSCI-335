@@ -173,7 +173,7 @@ int HashTable::insert(__ItemType item) {
 		return 0;
 
 	/*
-	    for loop will excecute once if a free spot is found right away
+	    for loop will execute once if a free spot is found right away
 	    other wise it will iterate at most n times where n is the size
 	*/
 	int index;
