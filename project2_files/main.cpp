@@ -319,7 +319,8 @@ int main(int argc, char* argv[]) {
 	if (count != num_inserted) {
 		cout << "number of items displayed is not equal to number in table.\n";
 	}
-
+	item.set("notintable");
+	cout << "test:" << hashtable.find(item) << '\n';
 	// now check how the find and remove functions work
 	// item.set("eto");
 	// hashtable.insert(item);

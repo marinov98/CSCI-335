@@ -136,13 +136,30 @@ int HashTable::find(__ItemType& item) const {
 	}
 
 	int index;
+	int next_index;
+	int collisions = 0;
 	// quadratic probing
-	for (int i = 0; i < _size; i++) {
-		index = (item.code() + i * i) % _size;
+	while (true) {
+		index = (item.code() + collisions * collisions) % _size;
+
+		// item is found and indicated as non_empty
 		if (!this->hash_table[index].is_empty && this->hash_table[index].data == item) {
 			return 1;
 		} // if item is found but is empty then exit the loop
 		else if (this->hash_table[index].is_empty && this->hash_table[index].data == item) {
+			break;
+		}
+
+		collisions++;
+
+		next_index = (item.code() + collisions * collisions) % _size;
+		/*
+		    when moding with a prime number there
+		    always comes a case where when we probe one
+		    more time, we get the same result as the
+		    previous probe and the indeces start repeating
+		*/
+		if (index == next_index) {
 			break;
 		}
 	}
@@ -157,12 +174,13 @@ int HashTable::insert(__ItemType item) {
 
 	/*
 	    for loop will excecute once if a free spot is found right away
-	    other wise it will iterate at most n times where n is the size_
+	    other wise it will iterate at most n times where n is the size
 	*/
 	int index = item.code() % _size;
 	for (int i = 0; i < _size; i++) {
 		index = (item.code() + i * i) % _size;
 		if (this->hash_table[index].is_empty) {
+			// insert into first empty slot and increment items inserted
 			this->hash_table[index].data = item;
 			this->hash_table[index].is_empty = false;
 			_items_inserted++;
