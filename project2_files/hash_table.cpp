@@ -15,7 +15,7 @@ HashTable::HashTable() : _size(get_next_prime(INITIAL_SIZE)), _items_inserted(0)
 	try {
 		this->hash_table = new Item[_size];
 	}
-	catch (bad_alloc) {
+	catch (bad_alloc&) {
 		cout << "too much memory requested" << '\n';
 	}
 }
@@ -24,7 +24,7 @@ HashTable::HashTable(int size) : _size(get_next_prime(size)), _items_inserted(0)
 	try {
 		this->hash_table = new Item[_size];
 	}
-	catch (bad_alloc) {
+	catch (bad_alloc&) {
 		cout << "too much memory requested" << '\n';
 	}
 }
@@ -176,7 +176,7 @@ int HashTable::insert(__ItemType item) {
 	    for loop will excecute once if a free spot is found right away
 	    other wise it will iterate at most n times where n is the size
 	*/
-	int index = item.code() % _size;
+	int index;
 	for (int i = 0; i < _size; i++) {
 		index = (item.code() + i * i) % _size;
 		if (this->hash_table[index].is_empty) {
