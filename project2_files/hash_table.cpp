@@ -82,7 +82,7 @@ HashTable::~HashTable() {
 	this->hash_table = nullptr;
 }
 
-bool HashTable::is_prime(int number) {
+bool HashTable::is_prime(int number) const {
 	// base cases for small table sizes
 	if (number <= 1)
 		return false;
@@ -103,7 +103,7 @@ bool HashTable::is_prime(int number) {
 	return true;
 }
 
-int HashTable::get_next_prime(int start) {
+int HashTable::get_next_prime(int start) const {
 	// search for the next prime number
 	while (!is_prime(start))
 		start++;
@@ -111,7 +111,7 @@ int HashTable::get_next_prime(int start) {
 	return start;
 }
 
-void HashTable::resize() {
+void HashTable::rehash() {
 	// create new table with double the size, making sure its size is prime
 	int new_size = get_next_prime(_size * 2);
 	HashTable newTable(new_size);
@@ -130,121 +130,51 @@ void HashTable::resize() {
 }
 
 int HashTable::find(__ItemType& item) const {
-	int found = 0;
-	// if the code assigned to the string is 0 without the mod table size
-	// then it was never initialized
-	if (0 == item.code()) {
-		// found is already 0, do nothing
-	} // else: item is initialized but may or may not be in the table
-	else {
-		int index = item.code() % _size;
-		// constant time case: indicate item is found if the item's keys are equal
-		if (!hash_table[index].is_empty && hash_table[index].data == item) {
-			found = 1;
-		} // case where its found but its marked as empty
-		else if (hash_table[index].is_empty && hash_table[index].data == item) {
-			// found already 0 do nothing
-		}
-		// worse case scenario, search the table for it using quadratic probing
-		else {
-			// used to reset the index for probing
-			int initial = index;
-			// variable to be incremented and added to the original
-			int collisions = 1;
-			for (;;) {
-				// reset index
-				index = initial;
+	// item not initialized or table is empty
+	if (0 == item.code() || 0 == _items_inserted) {
+		return 0;
+	}
 
-				// search with quadratic probing
-				index += (collisions * collisions);
-				index %= _size;
-
-				// checking to see if item was found and not marked empty
-				if (!hash_table[index].is_empty && hash_table[index].data == item) {
-					found = 1;
-					break;
-				} // item found but marked empty
-				else if (hash_table[index].is_empty && hash_table[index].data == item) {
-					break;
-				}
-				collisions++;
-				// if the next quadratic search gives the same index as the previous, then the
-				// indices are repeating
-				/*
-				     ex. say we started at index 1 and table size is 13 and the collisions = 5;
-				     (1 + 25) MOD 13 = 0 ,
-				     (1 + 36) MOD 13 = 11
-				     (1 + 49) MOD 13 = 11 (where indexes start repeating) index == next_index in
-				   this case (1 + 64) MOD 13 = 0
-
-				*/
-				int next_index = initial;
-				next_index += (collisions * collisions);
-				next_index %= _size;
-
-				if (index == next_index) {
-					// indexes are repeating, stop infinite loop
-					/*
-					   this will be used to check if there are repeats for the
-					   case where the item was initialized but never inserted into the table
-					*/
-					break;
-				}
-			}
+	int index;
+	// quadratic probing
+	for (int i = 0; i < _size; i++) {
+		index = (item.code() + i * i) % _size;
+		if (!this->hash_table[index].is_empty && this->hash_table[index].data == item) {
+			return 1;
+		} // if item is found but is empty then exit the loop
+		else if (this->hash_table[index].is_empty && this->hash_table[index].data == item) {
+			break;
 		}
 	}
 
-	return found;
+	return 0;
 }
 
 int HashTable::insert(__ItemType item) {
-	int inserted = 0;
-	// base case when nothing was inserted yet and item is initialized
-	if (_items_inserted == 0 && item.code() != 0) {
-		hash_table[item.code() % _size].data = item;
-		hash_table[item.code() % _size].is_empty = false;
-		_items_inserted++;
-		inserted = 1;
-	} // if item is not initialized or is found in the table, we are done
-	else if (0 == item.code() || 1 == find(item)) {
-		// inserted already 0, do nothing
-	} // item can be inserted
-	else {
-		// get index based on our hash function
-		int index = item.code() % _size;
+	// index is already in the table or not initialized
+	if (0 == item.code() || 1 == find(item))
+		return 0;
 
-		// used for quadratic probing support when collisions occur
-		int collisions = 1;
-
-		// check to see if the index already has an item there
-		if (!hash_table[index].is_empty) {
-			int initial = index;
-			// perform quadratic probing to find an empty index
-			while (!hash_table[index].is_empty) {
-				index = initial;
-				index += (collisions * collisions);
-				index %= _size;
-				collisions++;
-			}
-			// insert item when a free slot is found and indicate that it's not empty
-			hash_table[index].data = item;
-			hash_table[index].is_empty = false;
+	/*
+	    for loop will excecute once if a free spot is found right away
+	    other wise it will iterate at most n times where n is the size_
+	*/
+	int index = item.code() % _size;
+	for (int i = 0; i < _size; i++) {
+		index = (item.code() + i * i) % _size;
+		if (this->hash_table[index].is_empty) {
+			this->hash_table[index].data = item;
+			this->hash_table[index].is_empty = false;
+			_items_inserted++;
+			break;
 		}
-		else { // slot is empty, item can be inserted in constant time
-			hash_table[index].data = item;
-			hash_table[index].is_empty = false;
-		}
-
-		// add to the amount of items inserted
-		inserted = 1;
-		_items_inserted++;
 	}
 
-	// if table is not at least half empty then resize it
-	if (_items_inserted >= (_size / 2))
-		resize();
+	// resize table if its not half empty anymore
+	if (_items_inserted > (_size / 2))
+		rehash();
 
-	return inserted;
+	return 1;
 }
 
 int HashTable::remove(__ItemType item) {
@@ -252,23 +182,20 @@ int HashTable::remove(__ItemType item) {
 	if (0 == find(item))
 		return 0;
 
-	int index = item.code() % _size;
-
-	// counter for quadratic probing
-	int collisions = 1;
 	// constant time case
-	if (hash_table[index].data == item) {
+	if (hash_table[item.code() % _size].data == item) {
 		// mark as "empty" (this is lazy deletion)
-		hash_table[index].is_empty = true;
+		hash_table[item.code() % _size].is_empty = true;
 	}
 	// search using quadratic probing
 	else {
-		int initial = index;
+		int index = item.code() % _size;
+		// counter for quadratic probing
+		int collisions = 1;
+
 		// search using quadratic probing
 		while (hash_table[index].data.code() != item.code()) {
-			index = initial;
-			index += (collisions * collisions);
-			index %= _size;
+			index = (item.code() + collisions * collisions) % _size;
 			collisions++;
 		}
 		// mark as empty

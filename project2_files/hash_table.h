@@ -22,7 +22,7 @@ using namespace std;
 // struct to help implement deletion without using getters and setters
 struct Item {
 	__ItemType data;
-	// true if item is empty or deletion occured, false if iposition is filled
+	// true if item is empty or deletion occured, false if position is filled
 	bool is_empty = true;
 };
 
@@ -137,7 +137,7 @@ class HashTable : public __HashTable {
 	    pre: nothing
 	    post: true if its prime, false if its not prime
 	 */
-	bool is_prime(int number);
+	bool is_prime(int number) const;
 
 	/*
 	    function that gets the next prime number assuming number is not already prime
@@ -145,14 +145,14 @@ class HashTable : public __HashTable {
 
 	    post: returns the next bigger prime number
 	 */
-	int get_next_prime(int start);
+	int get_next_prime(int start) const;
 
 	// function to resize table if needed
 	/*
 	    pre: table is more than half empty
 	    post: items are reinserted into a table with double the size of the previous one
 	 */
-	void resize();
+	void rehash();
 
 	/*
 	    variable used to keep track of the total size of the hashtable
