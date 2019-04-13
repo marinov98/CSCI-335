@@ -154,10 +154,10 @@ int HashTable::find(__ItemType& item) const {
 
 		next_index = (item.code() + collisions * collisions) % _size;
 		/*
-		    when moding with a prime number there
+		    when modding with a prime number there
 		    always comes a case where when we probe one
 		    more time, we get the same result as the
-		    previous probe and the indeces start repeating
+		    previous probe and the indices start repeating
 		*/
 		if (index == next_index) {
 			break;
