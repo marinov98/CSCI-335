@@ -48,7 +48,7 @@ unsigned int __ItemType::code() {
 		   precedence^2 where precedence goes from 26 -> (26 + string length - 1)
 		*/
 
-		for (const char c : this->name) {
+		for (const char& c : this->name) {
 			// assign number to string
 			string_code += (int) c * (precedence * precedence);
 			precedence++;
