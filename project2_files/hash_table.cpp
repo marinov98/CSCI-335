@@ -118,8 +118,8 @@ void HashTable::rehash() {
 	}
 
 	/*
-	    utilize our move assignment operator to safely copy the data
-	    from the new table object to our current table object
+	    utilize our move assignment operator to safely transfer the data
+	    from the new temporary table object to our current table object
 	*/
 	*this = move(newTable);
 }
