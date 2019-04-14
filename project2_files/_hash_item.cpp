@@ -26,7 +26,7 @@ void __ItemType::get(string& s, int& pos) {
 }
 
 bool __ItemType::operator==(__ItemType rhs) const {
-	if (rhs.name != "") {
+	if (!rhs.name.empty()) {
 		if (rhs.name == this->name)
 			return 1;
 	}
@@ -38,7 +38,7 @@ unsigned int __ItemType::code() {
 	// initialize return type
 	unsigned int string_code = 0;
 
-	if (this->name != "") {
+	if (!this->name.empty()) {
 		string_code++; // make sure string code does not begin at 0
 		// arbitrary number I chose to use for my hash function, creates more unique keys
 		int precedence = 26;
