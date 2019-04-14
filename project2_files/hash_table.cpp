@@ -38,21 +38,17 @@ HashTable::HashTable(const HashTable& other_table) :
 }
 
 HashTable& HashTable::operator=(const HashTable& other_table) {
-	/*
-	    call copy constructor to copy data of other_table
-	    into a temporary table
-	*/
-	HashTable temp_table = other_table;
 
-	/*
-	    Because we do not care about the temp_table existing
-	    after we copy it over , we can just move its contents
-	    into the current table which will call our
-	    move assignment operator that will safely transfer
-	    its contents. We do not move(other_table) because we
-	    care about its existence after the exchange of data is made
-	*/
-	*this = move(temp_table);
+	// copy over size and items_inserted
+	this->_items_inserted = other_table._items_inserted;
+	this->_size = other_table._size;
+
+	// delete and reallocate memory
+	delete[] this->hash_table;
+	this->hash_table = new Item[other_table._size];
+
+	// copy data from other_table to current hash_table
+	copy(other_table.hash_table, (other_table.hash_table + _size), this->hash_table);
 
 	return *this;
 }
