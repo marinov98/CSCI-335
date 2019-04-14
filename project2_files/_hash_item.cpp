@@ -45,7 +45,7 @@ unsigned int __ItemType::code() {
 
 		/*
 		    The result of the below for loop is the function: 1 + Σ (ASCII value of char) *
-		   precendenc^2 where precendence goes from 26 -> (26 + string length - 1)
+		   precedence^2 where precedence goes from 26 -> (26 + string length - 1)
 		*/
 
 		for (const char c : this->name) {
