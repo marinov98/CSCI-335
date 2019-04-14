@@ -32,7 +32,6 @@ HashTable::HashTable(int size) : _size(get_next_prime(size)), _items_inserted(0)
 HashTable::HashTable(const HashTable& other_table) :
     _size(other_table._size),
     _items_inserted(other_table._items_inserted) {
-
 	// allocate space and fill hashtable with the contents of other table
 	this->hash_table = new Item[other_table._size];
 	copy(other_table.hash_table, (other_table.hash_table + _size), this->hash_table);
