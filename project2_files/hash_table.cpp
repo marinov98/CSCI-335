@@ -162,7 +162,7 @@ int HashTable::find(__ItemType& item) const {
 	return 0;
 }
 
-int HashTable::insert(__ItemType item) {
+int HashTable::insert(__ItemType& item) {
 	// index is already in the table or not initialized
 	if (0 == item.code() || 1 == find(item))
 		return 0;
@@ -217,7 +217,7 @@ int HashTable::insert(__ItemType&& item) {
 	return 1;
 }
 
-int HashTable::remove(__ItemType item) {
+int HashTable::remove(__ItemType& item) {
 	// if item is not found in the table, no need to delete
 	if (0 == find(item))
 		return 0;

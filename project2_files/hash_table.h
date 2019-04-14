@@ -97,7 +97,7 @@ class HashTable : public __HashTable {
 	 *  @param  ItemType [in] item : item to insert
 	 *  @return int 0 if item is not inserted in table, and 1 if it is
 	 */
-	int insert(__ItemType item) override;
+	int insert(__ItemType& item) override;
 
 	/** insert() inserts the given item into the table
 	 *  @pre: item is initialized
@@ -114,7 +114,7 @@ class HashTable : public __HashTable {
 	 *  @param  ItemType [in, out] item : item to remove
 	 *  @return int 0 if item is not removed from the table, and 1 if it is
 	 */
-	int remove(__ItemType item) override;
+	int remove(__ItemType& item) override;
 
 	/** size() returns the number of items in the table
 	 *  @precondition: none
