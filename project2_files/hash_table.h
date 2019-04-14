@@ -36,7 +36,7 @@ class HashTable : public __HashTable {
 	HashTable();
 
 	// constructor for table with specified size
-	HashTable(int size);
+	explicit HashTable(int size);
 
 	// copy constructor
 	/*
@@ -75,7 +75,7 @@ class HashTable : public __HashTable {
 	    pre: objects are not equal
 
 	    post: deletes current hashtable and moves the contents of other table
-	    to the current and points the other table to nullptr after all data is transfered
+	    to the current and points the other table to nullptr after all data is transferred
 	*/
 	HashTable& operator=(HashTable&& other_table) noexcept;
 
@@ -89,7 +89,7 @@ class HashTable : public __HashTable {
 	 *  @param  ItemType [in,out] item : item to search for
 	 *  @return int 0 if item is not in table, and 1 if it is
 	 */
-	int find(__ItemType& item) const;
+	int find(__ItemType& item) const override;
 
 	/** insert() inserts the given item into the table
 	 *  @precondition: item is initialized
@@ -97,7 +97,15 @@ class HashTable : public __HashTable {
 	 *  @param  ItemType [in] item : item to insert
 	 *  @return int 0 if item is not inserted in table, and 1 if it is
 	 */
-	int insert(__ItemType item);
+	int insert(__ItemType item) override;
+
+	/** insert() inserts the given item into the table
+	 *  @pre: item is initialized
+	 *  @post: if item is not in table already, it is inserted
+	 *  @param:  rvalue item : temporary object to be inserted
+	 *  @return int 0 if item is not inserted in table, and 1 if it is
+	 */
+	 int insert(__ItemType&& item);
 
 	/** remove() removes the specified  item from the table, if it is there
 	 *  @precondition: item's key is initialized
@@ -106,14 +114,22 @@ class HashTable : public __HashTable {
 	 *  @param  ItemType [in, out] item : item to remove
 	 *  @return int 0 if item is not removed from the table, and 1 if it is
 	 */
-	int remove(__ItemType item);
+	int remove(__ItemType item) override;
 
 	/** size() returns the number of items in the table
 	 *  @precondition: none
 	 *  @postcondition: none
 	 *  @return int the number of items in the table
 	 */
-	int size() const;
+	int size() const override;
+
+	/*
+	 * pre: nothing
+	 *
+	 * post: returns true if table is empty, false if its not
+	 */
+	bool empty() const;
+
 
 	/** listall() lists all items currently in the table
 	 *  @note   This function writes each item in the tabel onto the given stream.
@@ -122,7 +138,7 @@ class HashTable : public __HashTable {
 	 *  @param  ostream [in,out] the stream onto which items are written
 	 *  @return int the number of items written to the stream
 	 */
-	int listall(ostream& os) const;
+	int listall(ostream& os) const override;
 
   private:
 	/*

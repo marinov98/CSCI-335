@@ -131,7 +131,7 @@ void HashTable::rehash() {
 
 int HashTable::find(__ItemType& item) const {
 	// item not initialized or table is empty
-	if (0 == item.code() || 0 == _items_inserted) {
+	if (0 == item.code() || empty()) {
 		return 0;
 	}
 
@@ -195,6 +195,33 @@ int HashTable::insert(__ItemType item) {
 	return 1;
 }
 
+int HashTable::insert(__ItemType&& item) {
+	// index is already in the table or not initialized
+	if (0 == item.code() || 1 == find(item))
+		return 0;
+
+	/*
+	    Same process as normal insert but this time we are inserting a temp object
+	*/
+	int index;
+	for (int i = 0; i < _size; i++) {
+		index = (item.code() + i * i) % _size;
+		if (this->hash_table[index].is_empty) {
+			// MOVE contents of item and insert into table
+			this->hash_table[index].data = move(item);
+			this->hash_table[index].is_empty = false;
+			_items_inserted++;
+			break;
+		}
+	}
+
+	// resize table if its not half empty anymore
+	if (_items_inserted > (_size / 2))
+		rehash();
+
+	return 1;
+}
+
 int HashTable::remove(__ItemType item) {
 	// if item is not found in the table, no need to delete
 	if (0 == find(item))
@@ -224,6 +251,10 @@ int HashTable::remove(__ItemType item) {
 	_items_inserted--;
 
 	return 1;
+}
+
+bool HashTable::empty() const {
+	return _items_inserted == 0;
 }
 
 int HashTable::size() const {
