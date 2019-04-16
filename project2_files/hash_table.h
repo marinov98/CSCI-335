@@ -105,7 +105,7 @@ class HashTable : public __HashTable {
 	 *  @param:  rvalue item : temporary object to be inserted
 	 *  @return int 0 if item is not inserted in table, and 1 if it is
 	 */
-	 int insert(__ItemType&& item);
+	int insert(__ItemType&& item);
 
 	/** remove() removes the specified  item from the table, if it is there
 	 *  @precondition: item's key is initialized
@@ -129,7 +129,6 @@ class HashTable : public __HashTable {
 	 * post: returns true if table is empty, false if its not
 	 */
 	bool empty() const;
-
 
 	/** listall() lists all items currently in the table
 	 *  @note   This function writes each item in the tabel onto the given stream.
