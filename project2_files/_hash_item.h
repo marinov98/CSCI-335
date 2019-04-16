@@ -28,6 +28,12 @@ public:
      */
     __ItemType();
 
+    /** ItemType constructor with two parameters
+     *
+     * Creates an item with set key and value;
+     */
+    __ItemType(string key, int value);
+
     /** set() sets the item's data
      */
     void set(string s, int pos = -1) ;
@@ -52,7 +58,7 @@ public:
      *  @precondition: item is initialized
      *  @return unsigned int
      */
-     unsigned int code();
+     unsigned int code() const;
 
     /** operator<<() 
      *  @precondition: none

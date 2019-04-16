@@ -15,9 +15,14 @@ __ItemType::__ItemType() {
 	this->position = 0;
 }
 
+__ItemType::__ItemType(string key, int value) {
+	this->name = move(key);
+	this->position = value;
+}
+
 void __ItemType::set(string s, int pos) {
 	this->name = move(s);
-	this->position = move(pos);
+	this->position = pos;
 }
 
 void __ItemType::get(string& s, int& pos) {
@@ -28,13 +33,13 @@ void __ItemType::get(string& s, int& pos) {
 bool __ItemType::operator==(__ItemType rhs) const {
 	if (!rhs.name.empty()) {
 		if (rhs.name == this->name)
-			return 1;
+			return true;
 	}
 
-	return 0;
+	return false;
 }
 
-unsigned int __ItemType::code() {
+unsigned int __ItemType::code() const {
 	// initialize return type
 	unsigned int string_code = 0;
 

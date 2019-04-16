@@ -40,7 +40,7 @@ public:
      *  @param  ItemType [in,out] item : item to search for
      *  @return int 0 if item is not in table, and 1 if it is
      */
-    virtual int find   ( __ItemType& item ) const = 0;
+    virtual int find   (const __ItemType& item ) const = 0;
 
     /** insert() inserts the given item into the table
      *  @precondition: item is initialized
@@ -48,7 +48,7 @@ public:
      *  @param  ItemType [in] item : item to insert
      *  @return int 0 if item is not inserted in table, and 1 if it is
      */
-    virtual int insert ( __ItemType& item   ) = 0;
+    virtual int insert (const __ItemType& item   ) = 0;
 
     /** remove() removes the specified  item from the table, if it is there
      *  @precondition: item's key is initialized
@@ -57,7 +57,7 @@ public:
      *  @param  ItemType [in, out] item : item to remove
      *  @return int 0 if item is not removed from the table, and 1 if it is
      */
-    virtual int remove ( __ItemType&  item ) = 0;
+    virtual int remove (const __ItemType&  item ) = 0;
 
 
     /** size() returns the number of items in the table

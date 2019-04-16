@@ -322,10 +322,10 @@ int main(int argc, char* argv[]) {
 	}
 	//item.set("granitse");
 	hashTable2 = hashtable;
+	//item.set("granitse");
+	cout << "insert: " << hashTable2.insert(__ItemType("granitse",1)) << '\n';
 	item.set("granitse");
-	cout << "insert" << hashTable2.insert(move(item)) << '\n';
-	item.set("granitse");
-	cout << "find granitse:" << hashTable2.find(item) << '\n';
+	cout << "find granitse: " << hashTable2.find(item) << '\n';
 	cout << "copy assignment operator:" << '\n';
 	count = hashTable2.listall(cout);
 	// now check how the find and remove functions work
