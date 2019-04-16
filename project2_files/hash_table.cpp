@@ -126,9 +126,8 @@ void HashTable::rehash() {
 
 int HashTable::find(const __ItemType& item) const {
 	// item not initialized or table is empty
-	if (0 == item.code() || empty()) {
+	if (0 == item.code() || empty())
 		return 0;
-	}
 
 	int index;
 	int next_index;
