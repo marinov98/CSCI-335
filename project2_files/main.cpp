@@ -64,7 +64,7 @@ int main(int argc, char* argv[]) {
 	// Read each line from the input file, construct an item with the
 	// string from that line and an integer equal to the item's line
 	// number.
-	HashTable hashTable2(50);
+	// HashTable hashTable2(50);
 
 	num_inserted = 0;
 	//		item.set("cock");
@@ -320,46 +320,48 @@ int main(int argc, char* argv[]) {
 	if (count != num_inserted) {
 		cout << "number of items displayed is not equal to number in table.\n";
 	}
-	//item.set("granitse");
-	hashTable2 = hashtable;
-	//item.set("granitse");
-	cout << "insert: " << hashTable2.insert(__ItemType("granitse",1)) << '\n';
-	item.set("granitse");
-	cout << "find granitse: " << hashTable2.find(item) << '\n';
-	cout << "copy assignment operator:" << '\n';
-	count = hashTable2.listall(cout);
+	// item.set("bez ");
+	// cout << hashtable.find(item);
+	// item.set("granitse");
+	// hashTable2 = hashtable;
+	// item.set("granitse");
+	// cout << "insert: " << hashTable2.insert(__ItemType("granitse",1)) << '\n';
+	// item.set("granitse");
+	// cout << "find granitse: " << hashTable2.find(item) << '\n';
+	// cout << "copy assignment operator:" << '\n';
+	// count = hashTable2.listall(cout);
 	// now check how the find and remove functions work
 	// item.set("eto");
 	// hashtable.insert(item);
 	// int x = hashtable.find(item);
 	// cout << x << " me!" << '\n';
-	//	while (true) {
-	//		cout << "Enter 'f', to find, 'r' to remove, or 'q' to quit: ";
-	//		getline(cin, str);
-	//		if (str == "f") {
-	//			cout << "Enter item key:";
-	//			getline(cin, str);
-	//			item.set(str);
-	//			result = hashtable.find(item);
-	//			if (result)
-	//				cout << str << " is in the table\n";
-	//			else
-	//				cout << str << " is not in the table\n";
-	//		}
-	//		else if (str == "r") {
-	//			cout << "Enter item key:";
-	//			getline(cin, str);
-	//			item.set(str);
-	//			result = hashtable.remove(item);
-	//			if (result)
-	//				cout << str << " was removed from the table\n";
-	//			else
-	//				cout << str << " is not in the table\n";
-	//			cout << " Table size is " << hashtable.size() << "\n.";
-	//		}
-	//		else if (str == "q")
-	//			break;
-	//	}
+	while (true) {
+		cout << "Enter 'f', to find, 'r' to remove, or 'q' to quit: ";
+		getline(cin, str);
+		if (str == "f") {
+			cout << "Enter item key:";
+			getline(cin, str);
+			item.set(str);
+			result = hashtable.find(item);
+			if (result)
+				cout << str << " is in the table\n";
+			else
+				cout << str << " is not in the table\n";
+		}
+		else if (str == "r") {
+			cout << "Enter item key:";
+			getline(cin, str);
+			item.set(str);
+			result = hashtable.remove(item);
+			if (result)
+				cout << str << " was removed from the table\n";
+			else
+				cout << str << " is not in the table\n";
+			cout << " Table size is " << hashtable.size() << "\n.";
+		}
+		else if (str == "q")
+			break;
+	}
 
 	return 0;
 }

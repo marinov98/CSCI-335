@@ -133,7 +133,7 @@ int HashTable::find(const __ItemType& item) const {
 	int next_index;
 	int collisions = 0;
 	// quadratic probing
-	while (true) {
+	while (collisions != _size) {
 		index = (item.code() + collisions * collisions) % _size;
 
 		// item is found and indicated as non_empty
@@ -167,12 +167,14 @@ int HashTable::insert(const __ItemType& item) {
 		return 0;
 
 	/*
-	    for loop will execute once if a free spot is found right away
+	    while loop will execute once if a free spot is found right away
 	    other wise it will iterate at most n times where n is the size
 	*/
 	int index;
-	for (int i = 0; i < _size; i++) {
-		index = (item.code() + i * i) % _size;
+	int collisions = 0;
+	while (collisions != _size) {
+		index = (item.code() + collisions * collisions) % _size;
+
 		if (this->hash_table[index].is_empty) {
 			// insert into first empty slot and increment items inserted
 			this->hash_table[index].data = item;
@@ -180,6 +182,8 @@ int HashTable::insert(const __ItemType& item) {
 			_items_inserted++;
 			break;
 		}
+
+		collisions++;
 	}
 
 	// resize table if its not half empty anymore
@@ -198,8 +202,10 @@ int HashTable::insert(__ItemType&& item) {
 	    Same process as normal insert but this time we are inserting a temp object
 	*/
 	int index;
-	for (int i = 0; i < _size; i++) {
-		index = (item.code() + i * i) % _size;
+	int collisions = 0;
+	while (collisions != _size) {
+		index = (item.code() + collisions * collisions) % _size;
+
 		if (this->hash_table[index].is_empty) {
 			// MOVE contents of item and insert into table
 			this->hash_table[index].data = move(item);
@@ -207,6 +213,8 @@ int HashTable::insert(__ItemType&& item) {
 			_items_inserted++;
 			break;
 		}
+
+		collisions++;
 	}
 
 	// resize table if its not half empty anymore
@@ -221,28 +229,21 @@ int HashTable::remove(const __ItemType& item) {
 	if (0 == find(item))
 		return 0;
 
-	// constant time case
-	if (hash_table[item.code() % _size].data == item) {
-		// mark as "empty" (this is lazy deletion)
-		hash_table[item.code() % _size].is_empty = true;
-	}
-	// search using quadratic probing
-	else {
-		int index = item.code() % _size;
-		// counter for quadratic probing
-		int collisions = 1;
+	int index;
+	int collisions = 0;
+	while (collisions != _size) {
+		index = (item.code() + collisions * collisions) % _size;
 
-		// search using quadratic probing
-		while (hash_table[index].data.code() != item.code()) {
-			index = (item.code() + collisions * collisions) % _size;
-			collisions++;
+		if (this->hash_table[index].data == item && !this->hash_table[index].is_empty) {
+			// mark as empty
+			this->hash_table[index].is_empty = true;
+			// decrement the number of items that have been inserted
+			_items_inserted--;
+			break;
 		}
-		// mark as empty
-		hash_table[index].is_empty = true;
-	}
 
-	// decrement the number of items that have been inserted
-	_items_inserted--;
+		collisions++;
+	}
 
 	return 1;
 }
