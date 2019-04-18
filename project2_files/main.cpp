@@ -29,6 +29,7 @@
 #include <cstring>
 #include <errno.h>
 #include <fstream>
+#include <doctest/doctest.h>
 #include <iostream>
 #include <limits.h>
 #include <sstream>
@@ -44,7 +45,7 @@ int main(int argc, char* argv[]) {
 	ostringstream strstream;
 	int result;
 	int num_inserted;
-	HashTable hashtable(197);
+	HashTable hashtable(1);
 	__ItemType item;
 
 	if (argc < 2) {
