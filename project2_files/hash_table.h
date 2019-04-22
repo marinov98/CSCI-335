@@ -71,7 +71,7 @@ class HashTable : public __HashTable {
 
 	// Move assignment operator:
 	/*
-	 *  NOTE: similarly reason as above , noexcept is used to let the library know it can move
+	 *  NOTE: similar reason as above , noexcept is used to let the library know it can move
 
 	    pre: nothing
 
