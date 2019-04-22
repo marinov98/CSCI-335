@@ -172,7 +172,7 @@ class HashTable : public __HashTable {
 
 	/*
 	    variable used to keep track of the total size of the hashtable
-	    * IMPORTANT: the _size variable is only doubled when table is half empty
+	    * IMPORTANT: the _size variable is only doubled when table is less than half empty
 	    otherwise it stays as it is during insertion and removal
 	    _items inserted is what keeps track of how many items are left in the table
 	*/
