@@ -60,7 +60,9 @@ class HashTable : public __HashTable {
 	// move constructor
 	/*
 	 *  NOTE: I use noexcept because standard containers disable moves if the contained object's
-	 move constructor throws pre:nothing
+	 *  move constructor throws
+
+	    pre: nothing
 
 	    post: safely transfers contents of other table over to current table
 	    and sets the other table to point to nullptr when finished
@@ -69,10 +71,9 @@ class HashTable : public __HashTable {
 
 	// Move assignment operator:
 	/*
-	 *  NOTE: similarly to the move constructor, noexcept is used to let the library know it can
-	 move
+	 *  NOTE: similarly reason as above , noexcept is used to let the library know it can move
 
-	    pre: objects are not equal
+	    pre: nothing
 
 	    post: deletes current hashtable and moves the contents of other table
 	    to the current and points the other table to nullptr after all data is transferred
