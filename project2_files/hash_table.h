@@ -159,7 +159,8 @@ class HashTable : public __HashTable {
 	    function that gets the next prime number assuming number is not already prime
 	    pre: nothing
 
-	    post: returns the next bigger prime number
+	    post: returns the next prime number
+	    if input is already prime, the function does not do anything
 	 */
 	int get_next_prime(int start) const;
 
