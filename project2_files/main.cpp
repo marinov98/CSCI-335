@@ -29,7 +29,7 @@
 #include <cstring>
 #include <errno.h>
 #include <fstream>
-#include <doctest/doctest.h>
+//#include <doctest/doctest.h>
 #include <iostream>
 #include <limits.h>
 #include <sstream>

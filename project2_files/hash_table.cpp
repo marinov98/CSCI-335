@@ -108,13 +108,12 @@ int HashTable::get_next_prime(int start) const {
 
 void HashTable::rehash() {
 	// create new table with double the size, making sure its size is prime
-	int new_size = get_next_prime(_size * 2);
-	HashTable newTable(new_size);
+	HashTable newTable(get_next_prime(_size * 2));
 
 	// re-insert all items into the new table
 	for (int i = 0; i < _size; i++) {
 		if (!hash_table[i].is_empty)
-			newTable.insert(hash_table[i].data);
+			newTable.insert(move(hash_table[i].data));
 	}
 
 	/*
