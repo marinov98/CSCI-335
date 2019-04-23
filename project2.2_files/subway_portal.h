@@ -1,34 +1,38 @@
 /******************************************************************************
-  Title          : _subway_portal.h
-  Author         : Stewart Weiss
-  Created on     : April 18, 2018
-  Description    : Interface file for the SubwayPortal object
-  Purpose        : Encapsulates data and methods of a subway portal
+  Title          : subway_portal.h
+  Author         : Marin Pavlinov Marinov
+  Created on     : April 22, 2018
+  Description    : Subway Portal header
+  Purpose        : override the interface
   Usage          :
-  Build with     :
+  Build with     : c++11
   Modifications  :
 
 ******************************************************************************/
 
-#ifndef __SUBWAY_PORTAL_H__
-#define __SUBWAY_PORTAL_H__
+#ifndef SUBWAY_PORTAL_H
+#define SUBWAY_PORTAL_H
 
-#include "gps.h"
-#include "subway_route.h"
-#include <string>
-#include <vector>
+#include "_subway_portal.h"
 
-using namespace std;
-
-struct Invalid_Portal_Data {};
-
-class SubwayStation;
-
-class _SubwayPortal {
+class SubwayPortal : public _SubwayPortal {
   public:
-	
+	SubwayPortal();
+	SubwayPortal(string data_row);
+
 	/** returns the distance between station and a gps location  */
 	double distance_from(double latitude, double longitude);
+
+	/** returns the distance between the two portals  */
+	friend double distance_between(SubwayPortal portal1, SubwayPortal portal2);
+
+	/** returns true if the two portals have the exact same set of routes  */
+	friend bool same_routes(SubwayPortal portal1, SubwayPortal portal2);
+
+	/** returns true if the two portals belong to the same station */
+	friend bool same_station(SubwayPortal portal1, SubwayPortal portal2);
+
+	friend ostream& operator<<(ostream& out, SubwayPortal e);
 
 	friend class SubwayStation;
 
@@ -53,4 +57,4 @@ class _SubwayPortal {
 	route_set routes() const;
 };
 
-#endif /* __SUBWAY_PORTAL_H__ */
+#endif /* SUBWAY_PORTAL_H */

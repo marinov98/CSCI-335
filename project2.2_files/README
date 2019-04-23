@@ -1,0 +1,7 @@
+# Compiling
+
+# Changes 
+    - I mentionened it before in the files, but if I treated a file as an interface, I removed
+    its constructors because interfaces should not have have constructors 
+
+# strategy 
