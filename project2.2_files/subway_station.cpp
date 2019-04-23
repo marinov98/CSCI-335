@@ -5,7 +5,7 @@ Created on     : April 22, 2018
 Description    : cpp file for Subway Station
 Purpose        : Implements subway Station
 Usage          :
-Build with     : no build
+Build with     :c++11
 Modifications  :
 
 ******************************************************************************/
