@@ -1,27 +1,35 @@
-CXXFLAGS=-std=c++11 -Wall -fPIC
-#export CXXFLAGS="$(CXXFLAGS) -fPIC"
+# Makefile for project 2
 
-main: main.o subway_system.o subway_route.o subway_station.o subway_portal.o
-	g++ -o main main.o subway_portal.o subway_route.o subway_station.o subway_system.o
+CXX 		:= g++
+CXXFLAGS	:= $(CXXFLAGS) -std=c++11 -Wall 
+CPPS 		:= subway_portal.cpp subway_route.cpp subway_station.cpp subway_system.cpp
+OBJS 		:= $(patsubst %.cpp, %.o, $(CPPS)) main.o
+EXEC 		:= main
 
-subway_route.o: subway_route.cpp subway_route.h
-	g++ $(CXXFLAGS) -c subway_route.cpp
+$(EXEC): $(OBJS)
+	@echo 'building executable...'
+	$(CXX) -o $@ $^
 
-subway_portal.o: subway_portal.cpp subway_portal.h
-	g++ $(CXXFLAGS) -c subway_portal.cpp
+main.o: main.o.in
+	cp -f $< $@
 
-subway_station.o: subway_station.h subway_station.cpp
-	g++ $(CXXFLAGS) -c subway_station.cpp
+%.o: %.cpp %.h
+	@echo 'building object => $@'
+	$(CXX) $(CXXFLAGS) -c $<
 
-subway_system.o: subway_system.h subway_system.cpp
-	g++ $(CXXFLAGS) -c subway_system.cpp
-
-debug: CXXFLAGS:=$(CXXFLAGS) -g
+debug: CXXFLAGS:=$(CXXFLAGS) -g -fsanitize=address,undefined
 
 debug: main
 
+.PHONY: clean cleanall 
+
+cleanall:
+	@echo 'removing all objects and executables...'
+	$(RM) $(EXEC) $(OBJS)
+
 clean:
-	rm -f main subway_route.o subway_portal.o subway_system.o subway_station.o
+	@echo 'removing executable and objects without main.o...'
+	$(RM) $(EXEC) subway_portal.o subway_route.o subway_station.o subway_system.o
 
 run:
 	./main
