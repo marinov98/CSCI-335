@@ -55,6 +55,20 @@ class SubwayPortal : public _SubwayPortal {
 
 	/**  routes() returns route set of portal */
 	route_set routes() const;
+
+  private:
+	/*
+	     pre: nothing
+
+	     post: takes row from data and turns it into an unique name
+	*/
+	string create_name(string input);
+
+	// longitude and latitude of the portal
+	GPS _location;
+
+	// name of the portal
+	string _name;
 };
 
 #endif /* SUBWAY_PORTAL_H */
