@@ -16,7 +16,6 @@
  *                    Functions related to subway routes                        *
  ******************************************************************************/
 
-// function to check if string contains numbers 1 - 7
 bool is_valid_num(string s) {
 	return (s[0] == '1' || s[0] == '2' || s[0] == '3' || s[0] == '4' || s[0] == '5' || s[0] == '6'
 	        || s[0] == '7');
@@ -35,7 +34,7 @@ bool is_route_id(string s) {
 	if (is_valid_num(s))
 		return true;
 
-	// case 3: Letters A - Z
+	// case 3: Letters A - Z (lowercase works as well)
 	if (isalpha(s[0]))
 		return true;
 
