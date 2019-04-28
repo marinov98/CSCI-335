@@ -29,11 +29,8 @@ typedef string route_id;
  *                    Functions related to subway routes                        *
  ******************************************************************************/
 
-// check if string contains letters A - Z
-bool is_upper(string s);
-
 // function to check if string contains numbers 1 - 7
-bool valid_num(string s);
+bool is_valid_num(string s);
 
 /** is_route_id() validates whether a string is a valid route name
  *  Strings are valid route ids if they are one of the digits 1,...,7 or a

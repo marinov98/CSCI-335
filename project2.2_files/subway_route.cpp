@@ -15,53 +15,32 @@
 /*******************************************************************************
  *                    Functions related to subway routes                        *
  ******************************************************************************/
-// check if string contains letters A - Z
-bool is_valid_letter(string s) {
-	if (s.empty())
-		return false;
-
-	// iterate over string, if its not alphanumeric return false
-	// if its lowercase, turn it into uppercase
-	for (char& c : s) {
-		if (!isalnum(c))
-			return false;
-		else if (isalpha(c) && !isupper(c))
-			c = toupper(c);
-	}
-
-	return true;
-}
 
 // function to check if string contains numbers 1 - 7
-bool valid_num(string s) {
-	if (s.empty())
-		return false;
-
-	for (const char& c : s) {
-		if (c != '1' || c != '2' || c != '3' || c != '4' || c != '5' || c != '6' || c != '7') {
-			return false;
-		}
-	}
-
-	return true;
+bool is_valid_num(string s) {
+	return (s[0] == '1' || s[0] == '2' || s[0] == '3' || s[0] == '4' || s[0] == '5' || s[0] == '6'
+	        || s[0] == '7');
 }
 
 bool is_route_id(string s) {
-	bool is_valid = false;
+	// if string is empty, no need to do further checks
+	if (s.empty())
+		return false;
 
 	// case 1: GS or FS
 	if (s == "GS" || s == "FS")
-		is_valid = true;
+		return true;
 
 	// case 2: Numbers 1 through 7
-	if (valid_num(s))
-		is_valid = true;
+	if (is_valid_num(s))
+		return true;
 
 	// case 3: Letters A - Z
-	if (is_valid_letter(s))
-		is_valid = true;
+	if (isalpha(s[0]))
+		return true;
 
-	return is_valid;
+	// none of the 3 cases are true if program comes here
+	return false;
 }
 
 string str_from_routeset(route_set s) {
@@ -71,7 +50,9 @@ string str_from_routeset(route_set s) {
 		int bit = (s | s << i);
 		// AND bit to check if its 1 or 0
 		if ((bit & 1) == 1) {
-			str += int2route_id(i) + ',';
+			str += int2route_id(i);
+			// separate routes by ,
+			str += ',';
 		}
 	}
 
@@ -87,13 +68,14 @@ int routestring2int(string s) {
 		return 9;
 
 	// A-Z case
-	// if its an alphabetical letter the ascii value of its uppercase minus 30
-	// falls within the range of [0,63]
-	// the -55 makes the values start at 10 and end at 35
-	for (const char& c : s) {
-		if (isalpha(c))
-			return ((int) toupper(c) - 55);
-	}
+	/*
+	    if its an alphabetical letter the ascii value of its uppercase minus 55
+	    falls within the range of [0,63]
+	    the -55 (Assuming letter is uppercase) makes the values start at 10 and end at 35
+	    that is why I use toupper so that lowercase inputs are valid and still yield the same result
+	 */
+	if (isalpha(s[0]))
+		return ((int) toupper(s[0]) - 55);
 
 	// 1-7 case
 	return stoi(s);
