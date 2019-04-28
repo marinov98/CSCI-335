@@ -1,35 +1,46 @@
 # Makefile for project 2
 
 CXX 		:= g++
-CXXFLAGS	:= $(CXXFLAGS) -std=c++11 -Wall 
-CPPS 		:= subway_portal.cpp subway_route.cpp subway_station.cpp subway_system.cpp
+CXXFLAGS	:= $(CXXFLAGS) -std=c++11 
+CPPS 		:= subway_portal.cpp subway_route.cpp subway_station.cpp subway_system.cpp _hash_item.cpp hash_table.cpp gps.cpp
+HDRS		:= $(patsubst %.cpp, %.h, $(CPPS))
 OBJS 		:= $(patsubst %.cpp, %.o, $(CPPS)) main.o
 EXEC 		:= main
+# Doctest executable
+TEST 		:= tests
 
 $(EXEC): $(OBJS)
 	@echo 'building executable...'
 	$(CXX) -o $@ $^
 
-main.o: main.o.in
-	cp -f $< $@
+#main.o: main.o.in
+#	cp -f $< $@
 
 %.o: %.cpp %.h
 	@echo 'building object => $@'
 	$(CXX) $(CXXFLAGS) -c $<
 
+
+$(TEST): test.cpp $(CPPS)
+	$(CXX) -o $(TEST) $^
+
 debug: CXXFLAGS:=$(CXXFLAGS) -g -fsanitize=address,undefined
 
 debug: main
 
-.PHONY: clean cleanall 
+.PHONY: clean cleanall cleantests
 
 cleanall:
 	@echo 'removing all objects and executables...'
 	$(RM) $(EXEC) $(OBJS)
 
+cleantests:
+	@echo 'removing tests executable'
+	$(RM) $(TEST) 
+
 clean:
-	@echo 'removing executable and objects without main.o...'
-	$(RM) $(EXEC) subway_portal.o subway_route.o subway_station.o subway_system.o
+	@echo 'removing executable and objects except main.o...'
+	$(RM) $(EXEC) subway_portal.o subway_route.o subway_station.o subway_system.o gps.o _hash_item.o hash_table.o
 
 run:
 	./main
