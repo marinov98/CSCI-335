@@ -12,7 +12,10 @@
 
 #include "subway_portal.h"
 
-SubwayPortal::SubwayPortal() {}
+SubwayPortal::SubwayPortal() {
+	this->_name = "";
+	// GPS will call its default constructor and set latitude and longitute to 0
+}
 
 string SubwayPortal::create_name(string s) {
 	string name = "";
