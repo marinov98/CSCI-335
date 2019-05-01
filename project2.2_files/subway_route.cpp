@@ -53,7 +53,7 @@ string str_from_routeset(route_set s) {
 		// get ith bit
 		bool bit = (s & (s << i));
 		// check if bit is one or 0
-		if ((bit && 1) == 1) {
+		if (bit == 1) {
 			route_str += int2route_id(i);
 			// separate routes by  a space
 			route_str += " ";
