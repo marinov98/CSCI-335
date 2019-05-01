@@ -51,9 +51,9 @@ string str_from_routeset(route_set s) {
 
 	for (int i = 1; i < 36; i++) {
 		// get ith bit
-		int bit = (s & (s << i));
-		// AND bit to check if its 1 or 0
-		if ((bit & 1) == 1) {
+		bool bit = (s & (s << i));
+		// check if bit is one or 0
+		if ((bit && 1) == 1) {
 			route_str += int2route_id(i);
 			// separate routes by  a space
 			route_str += " ";
@@ -112,8 +112,7 @@ string int2route_id(int k) {
 		return to_string(k);
 
 	// None of the above
-	if (k == 0)
-		return "";
+	return "";
 }
 
 /*******************************************************************************
