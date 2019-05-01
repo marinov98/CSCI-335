@@ -25,6 +25,11 @@ bool is_route_id(string s) {
 	if (s.empty())
 		return false;
 
+	// convert to upper case if necessary
+	for (unsigned int i = 0; i < s.size(); i++)
+		if (isalpha(s[i]) && islower(s[i]))
+			s[i] = toupper(s[i]);
+
 	// case 1: GS or FS
 	if (s == "GS" || s == "FS")
 		return true;
@@ -33,7 +38,7 @@ bool is_route_id(string s) {
 	if (is_valid_num(s))
 		return true;
 
-	// case 3: Letters A - Z (lowercase works as well)
+	// case 3: Letters A - Z
 	if (isalpha(s[0]))
 		return true;
 
@@ -80,7 +85,11 @@ int routestring2int(string s) {
 		return (static_cast<int>(toupper(s[0]) - 55));
 
 	// 1-7 case
-	return stoi(s);
+	if (is_valid_num(s))
+		return stoi(s);
+
+	// None of the above
+	return 0;
 }
 
 string int2route_id(int k) {
@@ -101,6 +110,10 @@ string int2route_id(int k) {
 	// 1-7
 	if (k > 0 || k < 8)
 		return to_string(k);
+
+	// None of the above
+	if (k == 0)
+		return "";
 }
 
 /*******************************************************************************

@@ -23,8 +23,8 @@ vector<string> SubwayPortal::get_contents(string s) {
 	// vector to store contents of each row
 	vector<string> collector;
 
-	// researve space
-	collector.reserve(32);
+	// researve space, I use 33 because I know that there are 33 fields in total
+	collector.reserve(33);
 
 	for (unsigned int i = 0; i < s.size(); i++) {
 		if (s[i] != ',') {
