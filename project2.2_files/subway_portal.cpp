@@ -94,15 +94,17 @@ SubwayPortal::SubwayPortal(string data_row) {
 	vector<string> data = get_contents(data_row);
 
 	// this will intitialize name,NS/EW street,corner,id and check for emptiness
+	// Indeces (25-28)
 	this->_name = create_name(data);
 
 	// Initialize all other fields from data
+	// Indeces (0-2)
 	this->division = data[0];
 	this->line = data[1];
 	this->station_name = data[2];
 
 	/*
-	    LOCATION INITIALIZATION
+	    LOCATION INITIALIZATION {3-4,29-30}
 	*/
 	// station
 	this->_s_latitude = stod(data[3]);
@@ -120,7 +122,7 @@ SubwayPortal::SubwayPortal(string data_row) {
 	this->p_routes = set_routes(data);
 
 	/*
-	    OTHERS
+	    OTHERS (16-24)
 	*/
 	this->entrance_type = data[16];
 	this->entry = (data[17] == "YES");
