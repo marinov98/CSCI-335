@@ -77,17 +77,17 @@ string SubwayPortal::create_name(vector<string> dataset) {
 }
 
 route_set SubwayPortal::set_routes(vector<string> dataset) {
-	this->p_routes = 0;
+	route_set routes = 0;
 	// Indeces 5 to 16 contain the necessary information needed to set route bits
 	for (int i = 5; i < 16; i++) {
 		// ensure a route exists in current index
 		if (dataset[i] != "") {
 			int k = routestring2int(dataset[i]);
-			this->p_routes |= (1 << (k - 1));
+			routes |= (1 << (k - 1));
 		}
 	}
 
-	return this->p_routes;
+	return routes;
 }
 
 SubwayPortal::SubwayPortal(string data_row) {
