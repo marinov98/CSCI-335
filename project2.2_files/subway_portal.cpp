@@ -86,7 +86,7 @@ route_set SubwayPortal::set_routes(vector<string> dataset) {
 		// ensure a route exists in current index
 		if (dataset[i] != "") {
 			int k = routestring2int(dataset[i]);
-			// set ith bit
+			// set kth bit
 			routes |= (1 << k);
 		}
 	}
