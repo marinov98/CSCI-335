@@ -23,12 +23,15 @@ vector<string> SubwayPortal::get_contents(string s) {
 	// vector to store contents of each row
 	vector<string> collector;
 
+	// researve space
+	collector.reserve(32);
+
 	for (unsigned int i = 0; i < s.size(); i++) {
 		if (s[i] != ',') {
 			name += s[i];
 		}
 		else {
-			collector.push_back(name);
+			collector.emplace_back(name);
 			// reset name to add next field
 			name = "";
 		}
