@@ -51,7 +51,7 @@ string str_from_routeset(route_set s) {
 
 	for (int i = 1; i < 36; i++) {
 		// get ith bit
-		bool bit = (s & (s << i));
+		bool bit = (s & (1 << i));
 		// check if bit is one or 0
 		if (bit == 1) {
 			route_str += int2route_id(i);
