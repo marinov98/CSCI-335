@@ -17,8 +17,7 @@
  ******************************************************************************/
 
 bool is_valid_num(string s) {
-	return (s[0] == '1' || s[0] == '2' || s[0] == '3' || s[0] == '4' || s[0] == '5' || s[0] == '6'
-	        || s[0] == '7');
+	return (s[0] >= '1' && s[0] <= '7');
 }
 
 bool is_route_id(string s) {
@@ -43,19 +42,23 @@ bool is_route_id(string s) {
 }
 
 string str_from_routeset(route_set s) {
-	string str = "";
+	string route_str("");
+
 	for (int i = 1; i < 36; i++) {
 		// get ith bit
 		int bit = (s | s << i);
 		// AND bit to check if its 1 or 0
 		if ((bit & 1) == 1) {
-			str += int2route_id(i);
-			// separate routes by ,
-			str += ',';
+			route_str += int2route_id(i);
+			// separate routes by  a space
+			route_str += " ";
 		}
 	}
 
-	return str;
+	// remove space at the back
+	route_str.pop_back();
+
+	return route_str;
 }
 
 int routestring2int(string s) {
@@ -74,7 +77,7 @@ int routestring2int(string s) {
 	    that is why I use toupper so that lowercase inputs are valid and still yield the same result
 	 */
 	if (isalpha(s[0]))
-		return ((int) toupper(s[0]) - 55);
+		return (static_cast<int>(toupper(s[0]) - 55));
 
 	// 1-7 case
 	return stoi(s);
@@ -90,10 +93,9 @@ string int2route_id(int k) {
 
 	// A-Z case
 	if (k > 9 || k < 36) {
-		string s = "";
-		char c = (char) (k + 55);
-		s += c;
-		return s;
+		// utilize c++11 string contructor
+		string id(1, static_cast<char>(k + 55));
+		return id;
 	}
 
 	// 1-7

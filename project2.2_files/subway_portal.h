@@ -60,15 +60,61 @@ class SubwayPortal : public _SubwayPortal {
 	/*
 	     pre: nothing
 
-	     post: takes row from data and turns it into an unique name
+	     post: takes row from data and stores contents into a vector
 	*/
-	string create_name(string input);
+	vector<string> get_contents(string input);
 
-	// longitude and latitude of the portal
-	GPS _location;
+	// takes appropraite fields and creates unique name from vector
+	string create_name(vector<string> dataset);
+
+	// removes excessive white whitespace
+	string remove_excess(string s);
+
+	// sets appropriate bits for routes
+	route_set set_routes(vector<string> dataset);
 
 	// name of the portal
 	string _name;
+
+	/*
+	    FIELDS BELOW ARE MEANT TO CORRESPOND TO DATASET
+	*/
+	string division;
+	string line;
+	string station_name;
+
+	// station longitude and latitude
+	double _s_latitude;
+	double _s_longitude;
+
+	// routes 1-11
+	route_set p_routes;
+
+	// entrance and ADA
+	string entrance_type;
+	bool entry;
+	bool exit_only;
+	bool vending;
+	string staffing;
+	string staff_hours;
+	bool ada;
+	string ada_notes;
+	bool free_crossover;
+
+	// fields necessary for naming
+	string n_s_street;
+	string e_w_street;
+	string corner;
+	int id;
+
+	double _e_latitude;
+	double _e_longitude;
+
+	// station location
+	GPS _s_location;
+
+	// entrance location
+	GPS _e_location;
 };
 
 #endif /* SUBWAY_PORTAL_H */
