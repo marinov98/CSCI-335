@@ -27,7 +27,7 @@ vector<string> SubwayPortal::get_contents(string s) {
 	collector.reserve(33);
 
 	for (unsigned int i = 0; i < s.size(); i++) {
-		if (s[i] != ',') {
+		if (',' != s[i]) {
 			name += s[i];
 		}
 		else {
@@ -84,7 +84,7 @@ route_set SubwayPortal::set_routes(vector<string> dataset) {
 	// Indeces 5 to 16 contain the necessary information needed to set route bits
 	for (int i = 5; i < 16; i++) {
 		// ensure a route exists in current index
-		if (dataset[i] != "") {
+		if ("" != dataset[i]) {
 			int k = routestring2int(dataset[i]);
 			// set kth bit
 			routes |= (1 << k);
@@ -170,7 +170,7 @@ string SubwayPortal::name() const {
 }
 
 bool SubwayPortal::can_access(route_set route) const {
-	return (p_routes && route) != 0;
+	return (0 != (p_routes && route));
 }
 
 GPS SubwayPortal::p_location() const {

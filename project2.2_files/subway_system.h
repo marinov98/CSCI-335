@@ -4,7 +4,7 @@
   Created on     : April 22, 2018
   Description    : Subway System header file
   Purpose        : overidde the _subway_system interface
-  
+
   Usage          :
   Build with     : c++11
   Modifications  :
@@ -15,6 +15,7 @@
 #define SUBWAY_SYSTEM_H
 
 #include "_subway_system.h"
+#include "hash_table.h"
 
 class SubwaySystem : public _SubwaySystem {
   public:
@@ -83,6 +84,10 @@ class SubwaySystem : public _SubwaySystem {
 	 *  @return string       representation of set of routes
 	 */
 	string nearest_routes(double latitude, double longitude) const;
+
+  private:
+	// hashtable
+	HashTable hash_table;
 };
 
 #endif /* SUBWAY_SYSTEM_H */
