@@ -13,7 +13,7 @@
 #include "subway_system.h"
 
 int SubwaySystem::add_portal(SubwayPortal portal) {
-	bool res = _portals.insert(pair<SubwayPortal, int>(portal, this->_portal_index));
+	bool res = _portals.insert(pair<SubwayPortal, int>(portal, this->_portal_index)).second;
 
 	// insert station name into the hashtable I implemented
 	// my hashtable will not insert the name if its already in the set
@@ -34,9 +34,9 @@ void SubwaySystem::list_all_stations(ostream& out) const {
 
 void SubwaySystem::list_all_portals(ostream& out, string station_name) const {
 	for (const auto& portal : this->_portals) {
-		auto curr_portal = this->_portals.find(portal);
-		if (curr_portal->first.get_station_name() == station_name)
-			out << curr_portal->first.get_station_name();
+		auto curr_portal = portal.first;
+		if (curr_portal.get_station_name() == station_name)
+			out << curr_portal.get_station_name();
 	}
 }
 
@@ -69,10 +69,10 @@ string SubwaySystem::nearest_portal(double latitude, double longitude) const {
 	// string to keep track of which portal ends upbeing the lowest
 	string closest_portal_name("");
 	for (const auto& portal : this->_portals) {
-		auto curr_portal = this->_portals.find(portal);
+		auto curr_portal = portal.first;
 
-		GPS curr_portal_location = curr_portal->first.p_location();
-		string curr_portal_name(curr_portal->first.name());
+		GPS curr_portal_location = curr_portal.p_location();
+		string curr_portal_name(curr_portal.name());
 
 		double distance = distance_between(curr_portal_location, GPS(longitude, latitude));
 
@@ -97,10 +97,10 @@ string SubwaySystem::nearest_routes(double latitude, double longitude) const {
 	route_set closest_routes = 0;
 
 	for (const auto& portal : this->_portals) {
-		auto curr_portal = this->_portals.find(portal);
+		auto curr_portal = portal.first;
 
-		GPS curr_portal_location = curr_portal->first.p_location();
-		route_set curr_portal_route = curr_portal->first.routes();
+		GPS curr_portal_location = curr_portal.p_location();
+		route_set curr_portal_route = curr_portal.routes();
 
 		double distance = distance_between(curr_portal_location, GPS(longitude, latitude));
 

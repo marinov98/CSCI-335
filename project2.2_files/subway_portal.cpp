@@ -12,10 +12,31 @@
 
 #include "subway_portal.h"
 
-SubwayPortal::SubwayPortal() {
-	this->_name = "";
-	// GPS will call its default constructor and set latitude and longitute to 0
-}
+SubwayPortal::SubwayPortal() :
+    _name(""),
+    division(""),
+    line(""),
+    station_name(""),
+    _s_latitude(0),
+    _s_longitude(0),
+    p_routes(0),
+    entrance_type(""),
+    entry(true),
+    exit_only(false),
+    vending(false),
+    staffing(""),
+    staff_hours(""),
+    ada(false),
+    ada_notes(""),
+    free_crossover(false),
+    n_s_street(""),
+    e_w_street(""),
+    corner(""),
+    id(1),
+    _e_latitude(0),
+    _e_longitude(0),
+    _s_location({0, 0}),
+    _e_location({0, 0}) {}
 
 vector<string> SubwayPortal::get_contents(string s) {
 	string name("");
