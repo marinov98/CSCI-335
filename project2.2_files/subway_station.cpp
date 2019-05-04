@@ -41,13 +41,11 @@ bool connected(SubwayStation s1, SubwayStation s2) {
 }
 
 int SubwayStation::add_station_name(string newname) {
-	// if its found, we do not need to insert
-	if (this->m_station_names.find(newname) != m_station_names.end())
+	// set returns a bolean indicated whether insetion was successful
+	if (!this->m_station_names.emplace(newname).second)
 		return 0;
-	else {
-		this->m_station_names.emplace(newname);
-		return 1;
-	}
+
+	return 1;
 }
 
 list<string> SubwayStation::names() const {
