@@ -16,7 +16,8 @@ SubwayStation::SubwayStation() : m_parent_id(-1), portal_unique_name("") {}
 
 SubwayStation::SubwayStation(SubwayPortal portal) :
     portal(portal),
-    portal_unique_name(portal.name()) {
+    portal_unique_name(portal.name()),
+    m_parent_id(-1) {
 	// insert into set of station names
 	// because its a hash set, it will not store dublicates
 	this->m_station_names.emplace(portal.station_name);
@@ -41,7 +42,7 @@ bool connected(SubwayStation s1, SubwayStation s2) {
 }
 
 int SubwayStation::add_station_name(string newname) {
-	// set returns a bolean indicated whether insetion was successful
+	// set returns a pair<iterator,bool> indicated whether insetion was successful
 	if (!this->m_station_names.emplace(newname).second)
 		return 0;
 
