@@ -22,7 +22,7 @@ class Priority_Queue {
 	int currentSize;
 	vector<Comparable> array;
 
-	void buildHelp();
+	void buildHeap();
 
 	void percolateDown(int hole);
 };
