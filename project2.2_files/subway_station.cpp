@@ -30,7 +30,7 @@ void SubwayStation::set_parent(int newparent) {
 }
 
 void SubwayStation::add_child(int child) {
-	this->children.push_back(child);
+	this->children.emplace_back(child);
 }
 bool connected(SubwayStation s1, SubwayStation s2) {
 	// according to specifications two stations are connected if:
