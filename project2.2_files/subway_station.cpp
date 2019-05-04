@@ -12,22 +12,17 @@ Modifications  :
 
 #include "subway_station.h"
 
-SubwayStation::SubwayStation() {
-	this->m_parent_id = 0;
-	this->portal_unique_name = "";
-	// some initialization more :
-}
+SubwayStation::SubwayStation() : m_parent_id(-1), portal_unique_name("") {}
 
-SubwayStation::SubwayStation(SubwayPortal portal) {
-	this->portal = portal;
-	this->portal_unique_name = portal.name();
-
+SubwayStation::SubwayStation(SubwayPortal portal) :
+    portal(portal),
+    portal_unique_name(portal.name()) {
 	// insert into set of station names
 	// because its a hash set, it will not store dublicates
-	this->m_station_names.insert(portal.station_name);
+	this->m_station_names.emplace(portal.station_name);
 
 	// id insertion
-	this->children.push_back(portal.id);
+	this->children.emplace_back(portal.id);
 }
 
 void SubwayStation::set_parent(int newparent) {
@@ -50,21 +45,27 @@ int SubwayStation::add_station_name(string newname) {
 	if (this->m_station_names.find(newname) != m_station_names.end())
 		return 0;
 	else {
-		this->m_station_names.insert(newname);
+		this->m_station_names.emplace(newname);
 		return 1;
 	}
 }
 
 list<string> SubwayStation::names() const {
 	list<string> names;
+
 	// store station names in a list and return
 	for (const auto& name : this->m_station_names)
-		names.push_back(name);
+		names.emplace_back(name);
 
 	return names;
 }
 
 string SubwayStation::primary_name() const {
+	// in case nothing was ever added to the set
+	// avoids seg faults
+	if (0 == this->m_station_names.size())
+		return "";
+
 	return *(this->m_station_names).begin();
 }
 

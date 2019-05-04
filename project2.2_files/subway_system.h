@@ -95,7 +95,7 @@ class SubwaySystem : public _SubwaySystem {
 	unordered_map<SubwayPortal, int> _portals;
 
 	// index to keep track of where portal was inserted
-	int _portal_index = 0;
+	int _array_index = 0;
 
 	// array of route_masks
 	route_set route_masks[MAX_STATIONS];
