@@ -56,6 +56,9 @@ class SubwayPortal : public _SubwayPortal {
 	/**  routes() returns route set of portal */
 	route_set routes() const;
 
+	// returns the station the portal belongs to
+	string get_station_name() const;
+
   private:
 	/*
 	     pre: nothing

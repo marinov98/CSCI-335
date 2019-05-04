@@ -16,6 +16,8 @@
 
 #include "_subway_system.h"
 #include "hash_table.h"
+#include <limits>
+#include <unordered_map>
 
 class SubwaySystem : public _SubwaySystem {
   public:
@@ -86,8 +88,17 @@ class SubwaySystem : public _SubwaySystem {
 	string nearest_routes(double latitude, double longitude) const;
 
   private:
-	// hashtable
-	HashTable hash_table;
+	// using my hashtable to store station names
+	HashTable _names;
+
+	// hashtable to store portals
+	unordered_map<SubwayPortal, int> _portals;
+
+	// index to keep track of where portal was inserted
+	int _portal_index = 0;
+
+	// array of route_masks
+	route_set route_masks[MAX_STATIONS];
 };
 
 #endif /* SUBWAY_SYSTEM_H */

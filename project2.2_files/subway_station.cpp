@@ -13,7 +13,7 @@ Modifications  :
 #include "subway_station.h"
 
 SubwayStation::SubwayStation() {
-	this->m_parent_id = -1;
+	this->m_parent_id = 0;
 	this->portal_unique_name = "";
 	// some initialization more :
 }
@@ -55,10 +55,17 @@ int SubwayStation::add_station_name(string newname) {
 	}
 }
 
-list<string> SubwayStation::names() const {}
+list<string> SubwayStation::names() const {
+	list<string> names;
+	// store station names in a list and return
+	for (const auto& name : this->m_station_names)
+		names.push_back(name);
+
+	return names;
+}
 
 string SubwayStation::primary_name() const {
-	return *(m_station_names).begin();
+	return *(this->m_station_names).begin();
 }
 
 int SubwayStation::parent_id() const {

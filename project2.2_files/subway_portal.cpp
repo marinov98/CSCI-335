@@ -184,3 +184,7 @@ GPS SubwayPortal::s_location() const {
 route_set SubwayPortal::routes() const {
 	return this->p_routes;
 }
+
+string SubwayPortal::get_station_name() const {
+	return this->station_name;
+}
