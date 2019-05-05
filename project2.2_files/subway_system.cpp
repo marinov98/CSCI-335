@@ -35,7 +35,7 @@ void SubwaySystem::list_all_portals(ostream& out, string station_name) const {
 	for (const auto& portal : this->_portals) {
 		SubwayPortal curr_portal = portal.first;
 		if (curr_portal.get_station_name() == station_name)
-			out << curr_portal.get_station_name();
+			out << curr_portal.name();
 	}
 }
 
