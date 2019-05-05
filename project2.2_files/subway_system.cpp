@@ -58,10 +58,7 @@ bool SubwaySystem::get_portal(string name_to_find, SubwayPortal& portal) const {
 		// iterator to store the portal object found in a variable
 		SubwayPortal curr_portal = portals.first;
 
-		// create string to compare with name_to_find
-		string name(curr_portal.name());
-
-		if (name == name_to_find) {
+		if (curr_portal.name() == name_to_find) {
 			// copy into parameter
 			portal = curr_portal;
 			return true;
