@@ -41,6 +41,7 @@ void SubwaySystem::list_all_portals(ostream& out, string station_name) const {
 }
 
 void SubwaySystem::list_stations_of_route(ostream& out, route_id route) const {
+	// probably wrong to be fixed later
 	out << route;
 }
 
