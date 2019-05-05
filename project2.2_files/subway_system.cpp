@@ -25,6 +25,8 @@ int SubwaySystem::add_portal(SubwayPortal portal) {
 			return 1;
 		}
 	}
+
+	return 0;
 }
 
 void SubwaySystem::list_all_stations(ostream& out) const {
