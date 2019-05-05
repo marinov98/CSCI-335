@@ -124,7 +124,7 @@ list<int> SubwayRoute::station_list() const {
 }
 
 void SubwayRoute::add_station_to_route(int station_id) {
-	stations.push_back(station_id);
+	stations.emplace_back(station_id);
 }
 
 route_set SubwayRoute::get_routeset() const {

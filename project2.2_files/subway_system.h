@@ -21,7 +21,7 @@
 
 class SubwaySystem : public _SubwaySystem {
   public:
-	/** add_portal()  adds the given portal to the array of portals
+		/** add_portal()  adds the given portal to the array of portals
 	 *  It also creates a hash table entry for this portal that points to
 	 *  its location in the array.
 	 *  @param  SubwayPortal [in] portal: an initialized portal

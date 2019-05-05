@@ -16,7 +16,7 @@ int SubwaySystem::add_portal(SubwayPortal portal) {
 	// make sure we have not passed our limit
 	if (this->_array_index < MAX_STATIONS) {
 		// check if insertion was successful
-		if (!_portals.emplace(make_pair(portal, this->_array_index)).second;)
+		if (!_portals.emplace(make_pair(portal, this->_array_index)).second)
 			return 0;
 		else {
 			// store bit mask into array and increment index
