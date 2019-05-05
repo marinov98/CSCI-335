@@ -33,9 +33,8 @@ void SubwaySystem::list_all_stations(ostream& out) const {
 
 void SubwaySystem::list_all_portals(ostream& out, string station_name) const {
 	for (const auto& portal : this->_portals) {
-		SubwayPortal curr_portal = portal.first;
-		if (curr_portal.get_station_name() == station_name)
-			out << curr_portal.name();
+		if (portal.first.get_station_name() == station_name)
+			out << portal.first.name();
 	}
 }
 
@@ -55,12 +54,9 @@ int SubwaySystem::form_stations() {
 
 bool SubwaySystem::get_portal(string name_to_find, SubwayPortal& portal) const {
 	for (const auto& portals : this->_portals) {
-		// iterator to store the portal object found in a variable
-		SubwayPortal curr_portal = portals.first;
-
-		if (curr_portal.name() == name_to_find) {
+		if (portals.first.name() == name_to_find) {
 			// copy into parameter
-			portal = curr_portal;
+			portal = portals.first.name();
 			return true;
 		}
 	}
@@ -73,17 +69,12 @@ string SubwaySystem::nearest_portal(double latitude, double longitude) const {
 	// string to keep track of which portal ends upbeing the lowest
 	string closest_portal_name("");
 	for (const auto& portal : this->_portals) {
-		SubwayPortal curr_portal = portal.first;
-
-		GPS curr_portal_location = curr_portal.p_location();
-		string curr_portal_name(curr_portal.name());
-
-		double distance = distance_between(curr_portal_location, GPS(longitude, latitude));
+		double distance = distance_between(portal.first.p_location(), GPS(longitude, latitude));
 
 		// keep track of distance and portal name
 		if (distance < min) {
 			min = distance;
-			closest_portal_name = curr_portal_name;
+			closest_portal_name = portal.first.name();
 		}
 
 		// if distance is 0, we can automatically confirm that its the closest portal because it is
@@ -101,17 +92,12 @@ string SubwaySystem::nearest_routes(double latitude, double longitude) const {
 	route_set closest_routes = 0;
 
 	for (const auto& portal : this->_portals) {
-		SubwayPortal curr_portal = portal.first;
-
-		GPS curr_portal_location = curr_portal.p_location();
-		route_set curr_portal_route = curr_portal.routes();
-
-		double distance = distance_between(curr_portal_location, GPS(longitude, latitude));
+		double distance = distance_between(portal.first.p_location(), GPS(longitude, latitude));
 
 		// keep track of min and the routes of the portal
 		if (distance < min) {
 			min = distance;
-			closest_routes = curr_portal_route;
+			closest_routes = portal.first.routes();
 		}
 
 		// if distance is 0, we can automatically confirm that its the closest portal because it is
