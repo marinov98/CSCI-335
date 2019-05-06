@@ -15,7 +15,13 @@
 int SubwaySystem::add_portal(SubwayPortal portal) {
 	// make sure we have not passed our limit
 	if (this->p_array_index < MAX_STATIONS) {
-		if (-1 == this->_p_names.insert(__ItemType(portal.name(), this->p_array_index)))
+		// create subway station object
+		SubwayStation object_to_insert(portal);
+
+		int res =
+		    this->_p_names.insert(__ItemType(object_to_insert.portal_name(), this->p_array_index));
+
+		if (-1 == res)
 			return 0;
 		else {
 			// store in array of parent trees
@@ -34,15 +40,79 @@ void SubwaySystem::list_all_stations(ostream& out) const {
 }
 
 void SubwaySystem::list_all_portals(ostream& out, string station_name) const {
-	for (unsigned int i = 0; i < MAX_STATIONS; i++) {
-		if (this->_parents[i].get_station_name() == station_name)
-			out << this->_parents[i].name();
+	int position = this->_s_names.find(__ItemType(station_name, 0));
+	// in case item was not found
+	if (position != -1) {
+		list<string> names = this->_parents[position].names();
+
+		for (const auto& name : names) {
+			out << name;
+		}
 	}
 }
 
 void SubwaySystem::list_stations_of_route(ostream& out, route_id route) const {
 	// probably wrong to be fixed later
-	out << route;
+	for (unsigned int i = 0; i < MAX_STATIONS; i++) {
+		SubwayPortal portal;
+		this->_parents[i].get_portal(portal);
+		if (portal.routes() == routestring2int(route)) {
+			list<string> names = this->_parents[i].names();
+
+			for (const auto& name : names) {
+				out << name;
+			}
+		}
+	}
+}
+
+int SubwaySystem::find(int index) {
+	if (this->_parents[index].parent_id() < 0)
+		return index;
+	else
+		return find(this->_parents[index].parent_id());
+}
+
+void SubwaySystem::Union(int root1, int root2) {
+	if (root1 != root2) {
+		if (this->_parents[root2].parent_id() < this->_parents[root1].parent_id()) {
+			// root 2 is deeper
+			this->_parents[root2].set_parent(this->_parents[root2].parent_id()
+			                                 + this->_parents[root1].parent_id());
+
+			// this->_parents[root1] = this->_parents[root2];
+			this->_parents[root1].set_parent(root2);
+		}
+		else {
+			// root1 is deeper
+			this->_parents[root1].set_parent(this->_parents[root1].parent_id()
+			                                 + this->_parents[root2].parent_id());
+
+			// this->_parents[root2] = this->_parents[root1];
+			this->_parents[root2].set_parent(root1);
+		}
+	}
+}
+
+int SubwaySystem::insert_stations() {
+	int sets = 0;
+	for (unsigned int i = 0; i < MAX_STATIONS; i++) {
+		// make sure we are inserting routes
+		if (this->_parents[i].parent_id() < 0) {
+			// get its position in the array
+			int position = this->_p_names.find(__ItemType(this->_parents[i].portal_name(), 0));
+
+			// get list of stations
+			list<string> stations = this->_parents[i].names();
+			for (const auto& station : stations) {
+				// store in hashtable
+				this->_s_names.insert(__ItemType(station, position));
+				sets++;
+			}
+		}
+	}
+
+	return sets;
 }
 
 int SubwaySystem::form_stations() {
@@ -51,9 +121,22 @@ int SubwaySystem::form_stations() {
 	if (0 == this->p_array_index)
 		return 0;
 
-	int sets_created = 0;
-
 	// Union the sets and do stuff down here
+	for (unsigned int i = 0; i < (MAX_STATIONS - 1); i++) {
+		for (unsigned int j = i + 1; j < MAX_STATIONS; j++) {
+			// check for connectivity
+			if (connected(this->_parents[i], this->_parents[j])) {
+				int root1 = find(i);
+				int root2 = find(j);
+
+				Union(root1, root2);
+			}
+		}
+	}
+
+	int sets_created = insert_stations();
+
+	return sets_created;
 }
 
 bool SubwaySystem::get_portal(string name_to_find, SubwayPortal& portal) const {
@@ -66,7 +149,9 @@ bool SubwaySystem::get_portal(string name_to_find, SubwayPortal& portal) const {
 		return false;
 
 	// copy data into parameter
-	portal = this->_parents[res];
+	SubwayPortal portal_to_copy;
+	this->_parents[res].get_portal(portal_to_copy);
+	portal = portal_to_copy;
 	return true;
 };
 
@@ -77,11 +162,13 @@ string SubwaySystem::nearest_portal(double latitude, double longitude) const {
 	double distance;
 
 	for (unsigned int i = 0; i < MAX_STATIONS; i++) {
-		distance = distance_between(this->_parents[i].p_location(), GPS(longitude, latitude));
+		SubwayPortal portal;
+		this->_parents[i].get_portal(portal);
+		distance = distance_between(portal.p_location(), GPS(longitude, latitude));
 
 		if (distance < min) {
 			min = distance;
-			closest_portal = this->_parents[i].name();
+			closest_portal = portal.name();
 		}
 	}
 
@@ -94,11 +181,13 @@ string SubwaySystem::nearest_routes(double latitude, double longitude) const {
 	route_set closest_routes = 0;
 
 	for (unsigned int i = 0; i < MAX_STATIONS; i++) {
-		distance = distance_between(this->_parents[i].s_location(), GPS(longitude, latitude));
+		SubwayPortal portal;
+		this->_parents[i].get_portal(portal);
+		distance = distance_between(portal.s_location(), GPS(longitude, latitude));
 
 		if (distance < min) {
 			min = distance;
-			closest_routes = this->_parents[i].routes();
+			closest_routes = portal.routes();
 		}
 	}
 

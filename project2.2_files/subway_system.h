@@ -88,6 +88,25 @@ class SubwaySystem : public _SubwaySystem {
 	string nearest_routes(double latitude, double longitude) const;
 
   private:
+	// private helper method to help with form_stations()
+	// unions two subway stations
+	/*
+	    *Courtesy to professor Weiss' notes
+	    on the algorithms for find and union
+	*/
+	void Union(int root1, int root2);
+
+	// private helper, finds the root of the indicated subway station
+	int find(int index);
+
+	/*
+	    pre: proper unions have been made to connected stations
+
+	    post: inserts all SubwayStations that are roots and returns the amount of sets formed
+
+	*/
+	int insert_stations();
+
 	// hashtable to store portal names
 	HashTable _p_names;
 
@@ -95,13 +114,10 @@ class SubwaySystem : public _SubwaySystem {
 	HashTable _s_names;
 
 	// array of parent trees
-	SubwayPortal _parents[MAX_STATIONS];
+	SubwayStation _parents[MAX_STATIONS];
 
 	// index to keep track of where portal was inserted
 	int p_array_index = 0;
-
-	// index to keep track of where station was inserted
-	int s_array_index = 0;
 
 	// array of route_masks
 	route_set route_masks[MAX_STATIONS];
