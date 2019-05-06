@@ -2,7 +2,7 @@
 
 CXX 		:= g++
 CXXFLAGS	:= $(CXXFLAGS) -std=c++11 
-CPPS 		:= subway_portal.cpp subway_route.cpp subway_station.cpp subway_system.cpp _hash_item.cpp hash_table.cpp gps.cpp
+CPPS 		:= subway_portal.cpp subway_route.cpp subway_station.cpp subway_system.cpp _hash_item.cpp hash_table.cpp gps.cpp disjoint_set.cpp
 HDRS		:= $(patsubst %.cpp, %.h, $(CPPS))
 OBJS 		:= $(patsubst %.cpp, %.o, $(CPPS)) main.o
 EXEC 		:= main

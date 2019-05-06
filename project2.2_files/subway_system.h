@@ -21,7 +21,7 @@
 
 class SubwaySystem : public _SubwaySystem {
   public:
-		/** add_portal()  adds the given portal to the array of portals
+	/** add_portal()  adds the given portal to the array of portals
 	 *  It also creates a hash table entry for this portal that points to
 	 *  its location in the array.
 	 *  @param  SubwayPortal [in] portal: an initialized portal
@@ -88,14 +88,23 @@ class SubwaySystem : public _SubwaySystem {
 	string nearest_routes(double latitude, double longitude) const;
 
   private:
-	// using my hashtable to store station names
-	HashTable _names;
+	// hashtable to store portal names
+	HashTable _p_names;
 
-	// hashtable to store portals
-	unordered_map<SubwayPortal, int> _portals;
+	// using my hashtable to store station names
+	HashTable _s_names;
+
+	// array of parent trees
+	SubwayPortal _parents[MAX_STATIONS];
 
 	// index to keep track of where portal was inserted
-	int _array_index = 0;
+	int p_array_index = 0;
+
+	// index to keep track of where portal was inserted
+	int s_array_index = 0;
+
+	// index to keep track of where route masks were inserted
+	int r_array_index = 0;
 
 	// array of route_masks
 	route_set route_masks[MAX_STATIONS];

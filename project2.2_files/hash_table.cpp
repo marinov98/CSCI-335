@@ -137,7 +137,11 @@ int HashTable::find(const __ItemType& item) const {
 
 		// item is found and indicated as non_empty
 		if (!this->hash_table[index].is_empty && this->hash_table[index].data == item) {
-			return 1;
+			// *MODIFICATION to return position of the item instead of 0 or 1
+			int position;
+			string s;
+			this->hash_table[index].data.get(s, position);
+			return position;
 		} // if item is found but is empty then exit the loop
 		else if (this->hash_table[index].is_empty && this->hash_table[index].data == item) {
 			break;
@@ -162,7 +166,7 @@ int HashTable::find(const __ItemType& item) const {
 
 int HashTable::insert(const __ItemType& item) {
 	// index is already in the table or not initialized
-	if (0 == item.code() || 1 == find(item))
+	if (0 == item.code() || 0 != find(item))
 		return 0;
 
 	/*
@@ -194,7 +198,7 @@ int HashTable::insert(const __ItemType& item) {
 
 int HashTable::insert(__ItemType&& item) {
 	// index is already in the table or not initialized
-	if (0 == item.code() || 1 == find(item))
+	if (0 == item.code() || 0 != find(item))
 		return 0;
 
 	/*

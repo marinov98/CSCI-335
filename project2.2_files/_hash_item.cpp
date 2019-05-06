@@ -12,7 +12,7 @@
 
 __ItemType::__ItemType() {
 	this->name = "";
-	this->position = 0;
+	this->position = -1;
 }
 
 __ItemType::__ItemType(string key, int value) {

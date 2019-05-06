@@ -18,5 +18,7 @@ add_executable(project2_2_files
         subway_route.cpp
         subway_station.cpp
         subway_station.h
+        disjoint_set.cpp
+        disjoint_set.h
         subway_system.cpp
         subway_system.h)
