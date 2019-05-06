@@ -100,11 +100,8 @@ class SubwaySystem : public _SubwaySystem {
 	// index to keep track of where portal was inserted
 	int p_array_index = 0;
 
-	// index to keep track of where portal was inserted
+	// index to keep track of where station was inserted
 	int s_array_index = 0;
-
-	// index to keep track of where route masks were inserted
-	int r_array_index = 0;
 
 	// array of route_masks
 	route_set route_masks[MAX_STATIONS];

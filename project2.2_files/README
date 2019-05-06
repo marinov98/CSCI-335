@@ -2,6 +2,16 @@
 
 # Changes 
     - I mentionened it before in the files, but if I treated a file as an interface, I removed
-    its constructors because interfaces should not have have constructors 
+    its constructors because interfaces should not have have constructors
 
-# strategy 
+## HashTable class Changes
+    - find now returned either -1 (if not found) or the position of the item
+        - I made this change because I believed it was the easiest way to get the postion of the item
+        in the array of parent trees
+    - parameters of find, insert, and remove are marked as const reference to minimize copying
+    - an r-value insert has been added for temporary object insertion (works the same as regular insert)
+    - an public empty() function was added to check for emptiness (it was for my testing)
+
+# Other modifications
+    - Portal class has a get_station_name method that returns the station it belongs to
+    This helps with implementing list_all_portals in SubWaySystem class

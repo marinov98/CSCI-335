@@ -15,12 +15,13 @@
 int SubwaySystem::add_portal(SubwayPortal portal) {
 	// make sure we have not passed our limit
 	if (this->p_array_index < MAX_STATIONS) {
-		if (0 == this->_p_names.insert(__ItemType(portal.name(), this->p_array_index)))
+		if (-1 == this->_p_names.insert(__ItemType(portal.name(), this->p_array_index)))
 			return 0;
 		else {
 			// store in array of parent trees
-			this->_parents[this->p_array_index++] = portal;
-			this->route_masks[this->r_array_index++] = portal.routes();
+			this->_parents[this->p_array_index] = portal;
+			this->route_masks[this->p_array_index] = portal.routes();
+			this->p_array_index++;
 			return 1;
 		}
 	}
@@ -45,7 +46,8 @@ void SubwaySystem::list_stations_of_route(ostream& out, route_id route) const {
 }
 
 int SubwaySystem::form_stations() {
-	// check if vector of portals was created
+	// check if array of portals was created
+	// if p_array index is still 0, that means nothing was inserted yet
 	if (0 == this->p_array_index)
 		return 0;
 
@@ -60,7 +62,7 @@ bool SubwaySystem::get_portal(string name_to_find, SubwayPortal& portal) const {
 	// 1 , I can now use it find the portal in the parent trees array
 	int res = this->_p_names.find(__ItemType(name_to_find, 0));
 
-	if (0 == res)
+	if (-1 == res)
 		return false;
 
 	// copy data into parameter

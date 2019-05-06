@@ -126,7 +126,7 @@ void HashTable::rehash() {
 int HashTable::find(const __ItemType& item) const {
 	// item not initialized or table is empty
 	if (0 == item.code() || empty())
-		return 0;
+		return -1;
 
 	int index;
 	int next_index;
@@ -161,12 +161,12 @@ int HashTable::find(const __ItemType& item) const {
 		}
 	}
 
-	return 0;
+	return -1;
 }
 
 int HashTable::insert(const __ItemType& item) {
 	// index is already in the table or not initialized
-	if (0 == item.code() || 0 != find(item))
+	if (0 == item.code() || -1 != find(item))
 		return 0;
 
 	/*
@@ -198,7 +198,7 @@ int HashTable::insert(const __ItemType& item) {
 
 int HashTable::insert(__ItemType&& item) {
 	// index is already in the table or not initialized
-	if (0 == item.code() || 0 != find(item))
+	if (0 == item.code() || -1 != find(item))
 		return 0;
 
 	/*
