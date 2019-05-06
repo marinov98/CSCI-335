@@ -26,7 +26,7 @@ int SubwaySystem::add_portal(SubwayPortal portal) {
 		else {
 			// store in array of parent trees
 			this->_parents[this->p_array_index] = portal;
-			this->route_masks[this->p_array_index] = portal.routes();
+			this->bit_masks[this->p_array_index] = portal.routes();
 			this->p_array_index++;
 			return 1;
 		}
@@ -53,12 +53,10 @@ void SubwaySystem::list_all_portals(ostream& out, string station_name) const {
 
 void SubwaySystem::list_stations_of_route(ostream& out, route_id route) const {
 	// probably wrong to be fixed later
-	for (unsigned int i = 0; i < MAX_STATIONS; i++) {
-		SubwayPortal portal;
-		this->_parents[i].get_portal(portal);
-		if (portal.routes() == routestring2int(route)) {
+	for (unsigned int i = 0; i < this->p_array_index; i++) {
+		// check if the routsets match
+		if (this->bit_masks[i] == routestring2int(route)) {
 			list<string> names = this->_parents[i].names();
-
 			for (const auto& name : names) {
 				out << name;
 			}
@@ -96,7 +94,7 @@ void SubwaySystem::Union(int root1, int root2) {
 
 int SubwaySystem::insert_stations() {
 	int sets = 0;
-	for (unsigned int i = 0; i < MAX_STATIONS; i++) {
+	for (unsigned int i = 0; i < this->p_array_index; i++) {
 		// make sure we are inserting routes
 		if (this->_parents[i].parent_id() < 0) {
 			// get its position in the array
@@ -122,8 +120,8 @@ int SubwaySystem::form_stations() {
 		return 0;
 
 	// Union the sets and do stuff down here
-	for (unsigned int i = 0; i < (MAX_STATIONS - 1); i++) {
-		for (unsigned int j = i + 1; j < MAX_STATIONS; j++) {
+	for (unsigned int i = 0; i < (this->p_array_index - 1); i++) {
+		for (unsigned int j = i + 1; j < this->p_array_index; j++) {
 			// check for connectivity
 			if (connected(this->_parents[i], this->_parents[j])) {
 				int root1 = find(i);

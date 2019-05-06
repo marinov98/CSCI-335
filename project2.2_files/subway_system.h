@@ -120,7 +120,7 @@ class SubwaySystem : public _SubwaySystem {
 	int p_array_index = 0;
 
 	// array of route_masks
-	route_set route_masks[MAX_STATIONS];
+	route_set bit_masks[MAX_STATIONS];
 };
 
 #endif /* SUBWAY_SYSTEM_H */
