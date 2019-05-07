@@ -55,7 +55,7 @@ void SubwaySystem::list_stations_of_route(ostream& out, route_id route) {
 	// probably wrong to be fixed later
 	for (unsigned int i = 0; i < this->p_array_index; i++) {
 		// check if the routsets match
-		if (this->bit_masks[i] == routestring2int(route)) {
+		if ((this->bit_masks[i] & routestring2int(route)) != 0) {
 			list<string> names = this->_parents[i].names();
 			for (const auto& name : names) {
 				out << name;
