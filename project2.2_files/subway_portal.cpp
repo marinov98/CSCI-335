@@ -191,7 +191,7 @@ string SubwayPortal::name() const {
 }
 
 bool SubwayPortal::can_access(route_set route) const {
-	return (0 != (p_routes && route));
+	return (0 != (this->p_routes & route));
 }
 
 GPS SubwayPortal::p_location() const {
