@@ -35,11 +35,11 @@ int SubwaySystem::add_portal(SubwayPortal portal) {
 	return 0;
 }
 
-void SubwaySystem::list_all_stations(ostream& out) const {
+void SubwaySystem::list_all_stations(ostream& out) {
 	out << _s_names.listall(out);
 }
 
-void SubwaySystem::list_all_portals(ostream& out, string station_name) const {
+void SubwaySystem::list_all_portals(ostream& out, string station_name) {
 	int position = this->_s_names.find(__ItemType(station_name, 0));
 	// in case item was not found
 	if (position != -1) {
@@ -51,7 +51,7 @@ void SubwaySystem::list_all_portals(ostream& out, string station_name) const {
 	}
 }
 
-void SubwaySystem::list_stations_of_route(ostream& out, route_id route) const {
+void SubwaySystem::list_stations_of_route(ostream& out, route_id route) {
 	// probably wrong to be fixed later
 	for (unsigned int i = 0; i < this->p_array_index; i++) {
 		// check if the routsets match
@@ -137,7 +137,7 @@ int SubwaySystem::form_stations() {
 	return sets_created;
 }
 
-bool SubwaySystem::get_portal(string name_to_find, SubwayPortal& portal) const {
+bool SubwaySystem::get_portal(string name_to_find, SubwayPortal& portal) {
 	// if its not found, we cannot get the name
 	// Since I modified find in my hash table to return the position instead of just
 	// 1 , I can now use it find the portal in the parent trees array
@@ -153,7 +153,7 @@ bool SubwaySystem::get_portal(string name_to_find, SubwayPortal& portal) const {
 	return true;
 };
 
-string SubwaySystem::nearest_portal(double latitude, double longitude) const {
+string SubwaySystem::nearest_portal(double latitude, double longitude) {
 	double min = numeric_limits<double>::max();
 
 	string closest_portal("");
@@ -173,7 +173,7 @@ string SubwaySystem::nearest_portal(double latitude, double longitude) const {
 	return closest_portal;
 }
 
-string SubwaySystem::nearest_routes(double latitude, double longitude) const {
+string SubwaySystem::nearest_routes(double latitude, double longitude) {
 	double min = numeric_limits<double>::max();
 	double distance;
 	route_set closest_routes = 0;

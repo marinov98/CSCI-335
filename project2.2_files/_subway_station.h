@@ -14,7 +14,6 @@
 #define __SUBWAY_STATION_H__
 
 #include "subway_portal.h"
-#include "subway_system.h"
 #include <iostream>
 #include <list>
 #include <set>

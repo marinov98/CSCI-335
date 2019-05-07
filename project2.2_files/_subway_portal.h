@@ -15,6 +15,7 @@
 
 #include "gps.h"
 #include "subway_route.h"
+
 #include <string>
 #include <vector>
 
@@ -22,15 +23,12 @@ using namespace std;
 
 struct Invalid_Portal_Data {};
 
-class SubwayStation;
+// class SubwayStation;
 
 class _SubwayPortal {
   public:
-	
 	/** returns the distance between station and a gps location  */
 	double distance_from(double latitude, double longitude);
-
-	friend class SubwayStation;
 
 	/*  Accessor  Functions */
 	/**  name() returns name of portal as a unique string

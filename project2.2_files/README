@@ -13,5 +13,4 @@
     - an public empty() function was added to check for emptiness (it was for my testing)
 
 # Other modifications
-    - Portal class has a get_station_name method that returns the station it belongs to
-    This helps with implementing list_all_portals in SubWaySystem class
+    - const methods removed from SubwaySystem as in piazza it was mentioned that they give errors
