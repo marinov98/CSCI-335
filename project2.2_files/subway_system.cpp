@@ -14,20 +14,20 @@
 
 int SubwaySystem::add_portal(SubwayPortal portal) {
 	// make sure we have not passed our limit
-	if (this->p_array_index < MAX_STATIONS) {
+	if (this->_array_index < MAX_STATIONS) {
 		// create subway station object
 		SubwayStation object_to_insert(portal);
 
 		int res =
-		    this->_p_names.insert(__ItemType(object_to_insert.portal_name(), this->p_array_index));
+		    this->_p_names.insert(__ItemType(object_to_insert.portal_name(), this->_array_index));
 
 		if (-1 == res)
 			return 0;
 		else {
 			// store in array of parent trees
-			this->_parents[this->p_array_index] = portal;
-			this->bit_masks[this->p_array_index] = portal.routes();
-			this->p_array_index++;
+			this->_parents[this->_array_index] = portal;
+			this->bit_masks[this->_array_index] = portal.routes();
+			this->_array_index++;
 			return 1;
 		}
 	}
@@ -53,8 +53,13 @@ void SubwaySystem::list_all_portals(ostream& out, string station_name) {
 
 void SubwaySystem::list_stations_of_route(ostream& out, route_id route) {
 	// probably wrong to be fixed later
-	for (unsigned int i = 0; i < this->p_array_index; i++) {
-		// check if the routsets match
+	/*
+	 * NOTE I use array index instead of MAX_STATIONS in my for loops becuase
+	 * That is how many objects I have inserted and searching anything after the _array_index
+	 * Will be some empty SubwayStation object
+	 */
+	for (unsigned int i = 0; i < this->_array_index; i++) {
+		// check if the routsets bits match
 		if ((this->bit_masks[i] & routestring2int(route)) != 0) {
 			list<string> names = this->_parents[i].names();
 			for (const auto& name : names) {
@@ -94,7 +99,7 @@ void SubwaySystem::Union(int root1, int root2) {
 
 int SubwaySystem::insert_stations() {
 	int sets = 0;
-	for (unsigned int i = 0; i < this->p_array_index; i++) {
+	for (unsigned int i = 0; i < this->_array_index; i++) {
 		// make sure we are inserting routes
 		if (this->_parents[i].parent_id() < 0) {
 			// get its position in the array
@@ -116,12 +121,12 @@ int SubwaySystem::insert_stations() {
 int SubwaySystem::form_stations() {
 	// check if array of portals was created
 	// if p_array index is still 0, that means nothing was inserted yet
-	if (0 == this->p_array_index)
+	if (0 == this->_array_index)
 		return 0;
 
-	// Union the sets and do stuff down here
-	for (unsigned int i = 0; i < (this->p_array_index - 1); i++) {
-		for (unsigned int j = i + 1; j < this->p_array_index; j++) {
+	// Union the sets
+	for (unsigned int i = 0; i < (this->_array_index - 1); i++) {
+		for (unsigned int j = i + 1; j < this->_array_index; j++) {
 			// check for connectivity
 			if (connected(this->_parents[i], this->_parents[j])) {
 				int root1 = find(i);
@@ -178,7 +183,7 @@ string SubwaySystem::nearest_routes(double latitude, double longitude) {
 	double distance;
 	route_set closest_routes = 0;
 
-	for (unsigned int i = 0; i < MAX_STATIONS; i++) {
+	for (unsigned int i = 0; i < this->_array_index; i++) {
 		SubwayPortal portal;
 		this->_parents[i].get_portal(portal);
 		distance = distance_between(portal.s_location(), GPS(longitude, latitude));

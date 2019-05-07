@@ -116,8 +116,8 @@ class SubwaySystem : public _SubwaySystem {
 	// array of parent trees
 	SubwayStation _parents[MAX_STATIONS];
 
-	// index to keep track of where portal was inserted
-	int p_array_index = 0;
+	// index to keep track of where Stations and bit_masks are inserted
+	int _array_index = 0;
 
 	// array of route_masks
 	route_set bit_masks[MAX_STATIONS];
