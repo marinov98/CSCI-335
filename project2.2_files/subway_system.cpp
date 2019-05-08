@@ -83,9 +83,10 @@ void SubwaySystem::list_stations_of_route(ostream& out, route_id route) {
 	 */
 	list<int> stations_of_route;
 	for (int i = 1; i < 36; i++) {
-		// if the routsets match , get the list of indeces for each station
-		bool bit = this->bit_masks[i].get_routeset() & routestring2int(route);
-		if (bit) {
+		// routestring2int returns an int denoting which bit is 1 not the actual bit and the index
+		// of bit masks is the position of the bit so we can just compare the index to the route and
+		// then we know that that ith bit is where the route is 1
+		if (i == routestring2int(route)) {
 			stations_of_route = this->bit_masks[i].station_list();
 			break;
 		}
