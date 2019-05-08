@@ -88,6 +88,16 @@ class SubwaySystem : public _SubwaySystem {
 	string nearest_routes(double latitude, double longitude);
 
   private:
+	/*
+	    pre: nothing
+
+	    post: initializes bit mask routes 1-35
+	*/
+	void initialize_bit_masks();
+
+	// true when bit masks have been initialized , false when not
+	bool initialized = false;
+
 	// private helper method to help with form_stations()
 	// unions two subway stations
 	/*
@@ -100,12 +110,28 @@ class SubwaySystem : public _SubwaySystem {
 	int find(int index);
 
 	/*
-	    pre: proper unions have been made to connected stations
+	    pre: sets have been formed
+
+	    post: inserts all children indices in the list of children of the roots
+	*/
+	void add_children();
+
+	/*
+	    pre: sets have been formed
+
+	    post: inserts station names of the Stations that are not roots into the
+	    ones that are.
+	*/
+
+	void add_station_names();
+
+	/*
+	    pre: sets have formed
 
 	    post: inserts all SubwayStations that are roots and returns the amount of sets formed
 
 	*/
-	int insert_stations();
+	int hash_stations();
 
 	// hashtable to store portal names
 	HashTable _p_names;
@@ -119,8 +145,8 @@ class SubwaySystem : public _SubwaySystem {
 	// index to keep track of where Stations and bit_masks are inserted
 	int _array_index = 0;
 
-	// array of route_masks
-	route_set bit_masks[MAX_STATIONS];
+	// array of bit_masks
+	SubwayRoute bit_masks[35];
 };
 
 #endif /* SUBWAY_SYSTEM_H */

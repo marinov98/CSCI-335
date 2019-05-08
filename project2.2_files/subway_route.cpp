@@ -51,12 +51,12 @@ string str_from_routeset(route_set s) {
 
 	for (int i = 1; i < 36; i++) {
 		// get ith bit
-		bool bit = (s & (1 << i));
+		bool bit = (s & (1 << (i - 1)));
 		// check if bit is one or 0
 		if (bit == 1) {
 			route_str += int2route_id(i);
 			// separate routes by  a space
-			route_str += " ";
+			route_str += ",";
 		}
 	}
 
@@ -120,13 +120,13 @@ string int2route_id(int k) {
  ******************************************************************************/
 
 list<int> SubwayRoute::station_list() const {
-	return stations;
+	return this->stations;
 }
 
 void SubwayRoute::add_station_to_route(int station_id) {
-	stations.emplace_back(station_id);
+	this->stations.emplace_back(station_id);
 }
 
 route_set SubwayRoute::get_routeset() const {
-	return routes;
+	return this->routes;
 }

@@ -12,7 +12,18 @@
 
 #include "subway_system.h"
 
+void SubwaySystem::initialize_bit_masks() {
+	// NOTE : my mapping begins at 1 so my routes should begin at 1 NOT 0
+	for (unsigned int i = 0; i < 35; i++)
+		this->bit_masks[i].routes = (i + 1);
+
+	this->initialized = true;
+}
+
 int SubwaySystem::add_portal(SubwayPortal portal) {
+	if (!this->initialized)
+		initialize_bit_masks();
+
 	// make sure we have not passed our limit
 	if (this->_array_index < MAX_STATIONS) {
 		// create subway station object
@@ -25,8 +36,14 @@ int SubwaySystem::add_portal(SubwayPortal portal) {
 			return 0;
 		else {
 			// store in array of parent trees
-			this->_parents[this->_array_index] = portal;
-			this->bit_masks[this->_array_index] = portal.routes();
+			this->_parents[this->_array_index] = object_to_insert;
+			// add to routes
+			for (unsigned int i = 0; i < 35; i++) {
+				if ((this->bit_masks[i].routes & portal.routes()) == 1) {
+					this->bit_masks[i].add_station_to_route(this->_array_index);
+				}
+			}
+
 			this->_array_index++;
 			return 1;
 		}
@@ -43,10 +60,14 @@ void SubwaySystem::list_all_portals(ostream& out, string station_name) {
 	int position = this->_s_names.find(__ItemType(station_name, 0));
 	// in case item was not found
 	if (position != -1) {
-		list<string> names = this->_parents[position].names();
+		// cout portal of current object
+		out << this->_parents[position].portal_name();
 
-		for (const auto& name : names) {
-			out << name;
+		// get the indeces of the children of that station that have connected portals
+		list<int> meddling_kids = this->_parents[position].portal_list();
+
+		for (const auto& trouble_maker : meddling_kids) {
+			out << this->_parents[trouble_maker].portal_name();
 		}
 	}
 }
@@ -58,13 +79,22 @@ void SubwaySystem::list_stations_of_route(ostream& out, route_id route) {
 	 * That is how many objects I have inserted and searching anything after the _array_index
 	 * Will be some empty SubwayStation object
 	 */
-	for (unsigned int i = 0; i < this->_array_index; i++) {
-		// check if the routsets bits match
-		if ((this->bit_masks[i] & routestring2int(route)) != 0) {
-			list<string> names = this->_parents[i].names();
-			for (const auto& name : names) {
-				out << name;
-			}
+	list<int> stations_of_route;
+	for (int i = 0; i < 35; i++) {
+		// if the routsets match , get the list of indeces for each station
+		if ((this->bit_masks[i].get_routeset() == routestring2int(route))) {
+			stations_of_route = this->bit_masks[i].station_list();
+			break;
+		}
+	}
+
+	// from each station get, its list of names
+	// the second for-range loop is in case that station is a parent
+	for (const auto& station_index : stations_of_route) {
+		list<string> station_names = this->_parents[station_index].names();
+
+		for (const auto& station_name : station_names) {
+			out << station_name;
 		}
 	}
 }
@@ -97,20 +127,50 @@ void SubwaySystem::Union(int root1, int root2) {
 	}
 }
 
-int SubwaySystem::insert_stations() {
+void SubwaySystem::add_children() {
+	for (unsigned int i = 0; i < this->_array_index; i++) {
+		// ensure its a child
+		if (this->_parents[i].parent_id() > 0)
+			this->_parents[find(i)].add_child(i);
+	}
+}
+
+void SubwaySystem::add_station_names() {
+	for (unsigned int i = 0; i < this->_array_index; i++) {
+		// ensure index is a root
+		if (this->_parents[i].parent_id() < 0) {
+			list<int> kids = this->_parents[i].portal_list();
+			for (const auto& brat : kids) {
+				/*
+				    As mentioned in the pdf list of children can become
+				        invalid if we change it every time we union. Now that
+				        all sets are formed every station thats not a root will have
+				        only one station in their set of station names and that will
+				        be the sets primary_name
+				*/
+				if (this->_parents[brat].primary_name() != "")
+					this->_parents[i].add_station_name(this->_parents[brat].primary_name());
+			}
+		}
+	}
+}
+
+int SubwaySystem::hash_stations() {
 	int sets = 0;
 	for (unsigned int i = 0; i < this->_array_index; i++) {
-		// make sure we are inserting routes
+		// find an index that is a root
 		if (this->_parents[i].parent_id() < 0) {
 			// get its position in the array
-			int position = this->_p_names.find(__ItemType(this->_parents[i].portal_name(), 0));
+			int position = i;
+			// every time we come by a root, we know its a set
+			// the number of roots is the same as the amount of sets created
+			sets++;
 
 			// get list of stations
 			list<string> stations = this->_parents[i].names();
-			for (const auto& station : stations) {
+			for (const auto& station_name : stations) {
 				// store in hashtable
-				this->_s_names.insert(__ItemType(station, position));
-				sets++;
+				this->_s_names.insert(__ItemType(station_name, position));
 			}
 		}
 	}
@@ -124,7 +184,7 @@ int SubwaySystem::form_stations() {
 	if (0 == this->_array_index)
 		return 0;
 
-	// Union the sets
+	// Form sets
 	for (unsigned int i = 0; i < (this->_array_index - 1); i++) {
 		for (unsigned int j = i + 1; j < this->_array_index; j++) {
 			// check for connectivity
@@ -137,7 +197,14 @@ int SubwaySystem::form_stations() {
 		}
 	}
 
-	int sets_created = insert_stations();
+	// forms proper lists of children
+	add_children();
+
+	// utilize the lists of children to insert the station names
+	add_station_names();
+
+	// insert the sets of stations names of the roots into my hashtable
+	int sets_created = hash_stations();
 
 	return sets_created;
 }

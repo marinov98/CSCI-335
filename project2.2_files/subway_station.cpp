@@ -21,9 +21,6 @@ SubwayStation::SubwayStation(SubwayPortal portal) :
 	// insert into set of station names
 	// because its a hash set, it will not store dublicates
 	this->m_station_names.emplace(portal.station_name);
-
-	// id insertion
-	this->children.emplace_back(portal.id);
 }
 
 void SubwayStation::set_parent(int newparent) {
@@ -39,7 +36,7 @@ bool connected(SubwayStation s1, SubwayStation s2) {
 	// the set of routes is identical
 	// distance between them is at most 0.28
 	return (s1.portal.routes() == s2.portal.routes())
-	       && distance_between(s1.portal.s_location(), s2.portal.s_location()) <= 0.28;
+	       || distance_between(s1.portal.s_location(), s2.portal.s_location()) <= 0.28;
 }
 
 int SubwayStation::add_station_name(string newname) {

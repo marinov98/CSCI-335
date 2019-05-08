@@ -1,46 +1,21 @@
-# Makefile for project 2
+# A Sample Makefile
 
-CXX 		:= g++
-CXXFLAGS	:= $(CXXFLAGS) -std=c++11 
-CPPS 		:= subway_portal.cpp subway_route.cpp subway_station.cpp subway_system.cpp _hash_item.cpp hash_table.cpp gps.cpp disjoint_set.cpp
-HDRS		:= $(patsubst %.cpp, %.h, $(CPPS))
-OBJS 		:= $(patsubst %.cpp, %.o, $(CPPS)) main.o
-EXEC 		:= main
-# Doctest executable
-TEST 		:= tests
+SRCS       = $(wildcard *.cpp)
+OBJS       := $(patsubst %.cpp, %.o, $(SRCS))  
+EXEC       := project2 
+CXX        := /usr/bin/g++
+CXXFLAGS   += -Wall -g -std=c++11
 
-$(EXEC): $(OBJS)
-	@echo 'building executable...'
-	$(CXX) -o $@ $^
+$(EXEC): $(OBJS) main.o subway_route.o
+	$(CXX) $(CXXFLAGS)  -o $@  $(OBJS) main.o subway_route.o
 
-#main.o: main.o.in
-#	cp -f $< $@
-
-%.o: %.cpp %.h
-	@echo 'building object => $@'
-	$(CXX) $(CXXFLAGS) -c $<
-
-
-$(TEST): test.cpp $(CPPS)
-	$(CXX) -o $(TEST) $^
-
-debug: CXXFLAGS:=$(CXXFLAGS) -g -fsanitize=address,undefined
-
-debug: main
-
-.PHONY: clean cleanall cleantests
-
-cleanall:
-	@echo 'removing all objects and executables...'
-	$(RM) $(EXEC) $(OBJS)
-
-cleantests:
-	@echo 'removing tests executable'
-	$(RM) $(TEST) 
+.PHONY: clean cleanall
+cleanall: clean
+	$(RM) $(EXEC)
 
 clean:
-	@echo 'removing executable and objects except main.o...'
-	$(RM) $(EXEC) subway_portal.o subway_route.o subway_station.o subway_system.o gps.o _hash_item.o hash_table.o
+	$(RM) $(OBJS)
 
-run:
-	./main
+
+
+
