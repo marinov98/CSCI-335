@@ -113,7 +113,6 @@ void SubwaySystem::Union(int root1, int root2) {
 			this->_parents[root2].set_parent(this->_parents[root2].parent_id()
 			                                 + this->_parents[root1].parent_id());
 
-			// this->_parents[root1] = this->_parents[root2];
 			this->_parents[root1].set_parent(root2);
 		}
 		else {
@@ -121,7 +120,6 @@ void SubwaySystem::Union(int root1, int root2) {
 			this->_parents[root1].set_parent(this->_parents[root1].parent_id()
 			                                 + this->_parents[root2].parent_id());
 
-			// this->_parents[root2] = this->_parents[root1];
 			this->_parents[root2].set_parent(root1);
 		}
 	}
