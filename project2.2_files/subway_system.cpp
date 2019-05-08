@@ -39,7 +39,7 @@ int SubwaySystem::add_portal(SubwayPortal portal) {
 			this->_parents[this->_array_index] = object_to_insert;
 			// add to routes
 			for (unsigned int i = 0; i < 35; i++) {
-				if ((this->bit_masks[i].routes & portal.routes()) == 1) {
+				if (0 != (this->bit_masks[i].routes & portal.routes())) {
 					this->bit_masks[i].add_station_to_route(this->_array_index);
 				}
 			}
