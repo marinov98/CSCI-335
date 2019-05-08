@@ -14,8 +14,9 @@
 
 void SubwaySystem::initialize_bit_masks() {
 	// NOTE : my mapping begins at 1 so my routes should begin at 1 NOT 0
-	for (unsigned int i = 0; i < 35; i++)
-		this->bit_masks[i].routes = (i + 1);
+	for (unsigned int i = 1; i < 36; i++) {
+		this->bit_masks[i].routes = 1 << i;
+	}
 
 	this->initialized = true;
 }
@@ -38,8 +39,9 @@ int SubwaySystem::add_portal(SubwayPortal portal) {
 			// store in array of parent trees
 			this->_parents[this->_array_index] = object_to_insert;
 			// add to routes
-			for (unsigned int i = 0; i < 35; i++) {
-				if (0 != (this->bit_masks[i].routes & portal.routes())) {
+			for (unsigned int i = 1; i < 36; i++) {
+				bool bit = this->bit_masks[i].routes & portal.routes();
+				if (bit) {
 					this->bit_masks[i].add_station_to_route(this->_array_index);
 				}
 			}
@@ -80,9 +82,10 @@ void SubwaySystem::list_stations_of_route(ostream& out, route_id route) {
 	 * Will be some empty SubwayStation object
 	 */
 	list<int> stations_of_route;
-	for (int i = 0; i < 35; i++) {
+	for (int i = 1; i < 36; i++) {
 		// if the routsets match , get the list of indeces for each station
-		if ((this->bit_masks[i].get_routeset() == routestring2int(route))) {
+		bool bit = this->bit_masks[i].get_routeset() & routestring2int(route);
+		if (bit) {
 			stations_of_route = this->bit_masks[i].station_list();
 			break;
 		}

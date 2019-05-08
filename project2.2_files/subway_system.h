@@ -145,8 +145,8 @@ class SubwaySystem : public _SubwaySystem {
 	// index to keep track of where Stations and bit_masks are inserted
 	int _array_index = 0;
 
-	// array of bit_masks
-	SubwayRoute bit_masks[35];
+	// array of bit_masks 36 instead of 35 because I start at 1
+	SubwayRoute bit_masks[36];
 };
 
 #endif /* SUBWAY_SYSTEM_H */

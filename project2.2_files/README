@@ -14,3 +14,10 @@
 
 # Other modifications
     - const methods removed from SubwaySystem as in piazza it was mentioned that they give errors
+
+# Bit mask strategy
+    - 1-7 are mapped to bits 1-7, GS and FS are mapped to bits 8 and 9, A-Z are mapped to bits 10-35
+
+# Lists and Sets
+    - I kept the set of station names and only converted to lists after sets were formed
+    - I modified children/station names after sets were formed as reccommended in the PDF

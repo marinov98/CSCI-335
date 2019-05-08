@@ -108,7 +108,7 @@ route_set SubwayPortal::set_routes(vector<string> dataset) {
 		if ("" != dataset[i]) {
 			int k = routestring2int(dataset[i]);
 			// set kth bit
-			routes |= (1 << (k - 1));
+			routes |= (1 << k);
 		}
 	}
 

@@ -91,8 +91,8 @@ class SubwayRoute {
 	friend class SubwaySystem;
 
   private:
-	route_set routes = 0; // bit string for this route
-	list<int> stations;   // list of indices of stations on this route,
+	route_set routes;   // bit string for this route
+	list<int> stations; // list of indices of stations on this route,
 };
 
 #endif /* __SUBWAY_ROUTE_H__ */
