@@ -19,7 +19,7 @@ SubwayStation::SubwayStation(SubwayPortal portal) :
     portal_unique_name(portal.name()),
     m_parent_id(-1) {
 	// insert into set of station names
-	// because its a hash set, it will not store dublicates
+	// because its a set, it will not store dublicates
 	this->m_station_names.emplace(portal.station_name);
 }
 
