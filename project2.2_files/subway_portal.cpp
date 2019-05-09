@@ -184,6 +184,7 @@ bool same_station(SubwayPortal portal1, SubwayPortal portal2) {
 
 ostream& operator<<(ostream& out, SubwayPortal e) {
 	out << "coordinates of entrance: " << e._e_location;
+	return out;
 }
 
 string SubwayPortal::name() const {

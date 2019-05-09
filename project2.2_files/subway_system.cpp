@@ -12,19 +12,14 @@
 
 #include "subway_system.h"
 
-void SubwaySystem::initialize_bit_masks() {
+SubwaySystem::SubwaySystem() {
 	// NOTE : my mapping begins at 1 so my routes should begin at 1 NOT 0
 	for (unsigned int i = 1; i < 36; i++) {
 		this->bit_masks[i].routes = 1 << i;
 	}
-
-	this->initialized = true;
 }
 
 int SubwaySystem::add_portal(SubwayPortal portal) {
-	if (!this->initialized)
-		initialize_bit_masks();
-
 	// make sure we have not passed our limit
 	if (this->_array_index < MAX_STATIONS) {
 		// create subway station object

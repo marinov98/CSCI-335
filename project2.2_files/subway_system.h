@@ -21,6 +21,7 @@
 
 class SubwaySystem : public _SubwaySystem {
   public:
+	SubwaySystem();
 	/** add_portal()  adds the given portal to the array of portals
 	 *  It also creates a hash table entry for this portal that points to
 	 *  its location in the array.
@@ -93,7 +94,7 @@ class SubwaySystem : public _SubwaySystem {
 
 	    post: initializes bit mask routes 1-35
 	*/
-	void initialize_bit_masks();
+	// void initialize_bit_masks();
 
 	// true when bit masks have been initialized , false when not
 	bool initialized = false;
@@ -143,7 +144,7 @@ class SubwaySystem : public _SubwaySystem {
 	SubwayStation _parents[MAX_STATIONS];
 
 	// index to keep track of where Stations and bit_masks are inserted
-	int _array_index = 0;
+	unsigned int _array_index = 0;
 
 	/*
 	    array of bit_masks 36 instead of 35 because I start at 1

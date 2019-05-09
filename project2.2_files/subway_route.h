@@ -14,7 +14,7 @@
 #define __SUBWAY_ROUTE_H__
 
 #include <list>
-#include <string.h>
+//#include <string.h>
 #include <string>
 
 using namespace std;

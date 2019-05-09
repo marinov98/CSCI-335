@@ -15,9 +15,9 @@ Modifications  :
 SubwayStation::SubwayStation() : m_parent_id(-1), portal_unique_name("") {}
 
 SubwayStation::SubwayStation(SubwayPortal portal) :
-    portal(portal),
+    m_parent_id(-1),
     portal_unique_name(portal.name()),
-    m_parent_id(-1) {
+    portal(portal) {
 	// insert into set of station names
 	// because its a set, it will not store dublicates
 	this->m_station_names.emplace(portal.station_name);
