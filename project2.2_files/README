@@ -15,6 +15,14 @@
 # Other modifications
     - const methods removed from SubwaySystem as in piazza it was mentioned that they give errors
 
+# Makefile
+    - I had some extra files that should not have been compiled so I made SRCS the cpp files I know I needed
+    - Added -no-pie -Iincludes in CXXFLAGS because it would not compile otherwise
+
+# Includes changes for linking
+    - class SubwayStation at the top of SubwayPortal was removed (it was producing a warning)
+    - #include "SubwaySystem.h" in SubwayStation.h (I might have put it there) because it was giving a linking error 
+
 # Bit mask strategy
     - 1-7 are mapped to bits 1-7, GS and FS are mapped to bits 8 and 9, A-Z are mapped to bits 10-35
 

@@ -177,8 +177,8 @@ int SubwaySystem::hash_stations() {
 
 int SubwaySystem::form_stations() {
 	// check if array of portals was created
-	// if p_array index is still 0, that means nothing was inserted yet
-	if (0 == this->_array_index)
+	// if hash table is empty then the array of portals was never initialized
+	if (this->_p_names.empty())
 		return 0;
 
 	// Form sets

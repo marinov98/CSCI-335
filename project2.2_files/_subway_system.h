@@ -16,6 +16,7 @@
 #include "subway_portal.h"
 #include "subway_route.h"
 #include <iostream>
+#include <stdlib.h>
 #include <string>
 #include <vector>
 
