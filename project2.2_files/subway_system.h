@@ -28,12 +28,12 @@ class SubwaySystem : public _SubwaySystem {
 	 *  @param  SubwayPortal [in] portal: an initialized portal
 	 *  @return int  1 if successful, 0 if portal is not added.
 	 */
-	int add_portal(SubwayPortal portal);
+	int add_portal(SubwayPortal portal) final;
 
 	/** list_all_stations() lists all subway station names on the given stream
 	 *  @param [inout] ostream out is an open output stream
 	 */
-	void list_all_stations(ostream& out);
+	void list_all_stations(ostream& out) final;
 
 	/** list_all_portals() lists all portals to a given station on given stream
 	 *  @param [inout] ostream is an open output stream
@@ -41,7 +41,7 @@ class SubwaySystem : public _SubwaySystem {
 	 *          which must be the name of the set of portal names. These can
 	 *          be obtained from the output of list_all_stations().
 	 */
-	void list_all_portals(ostream& out, string station_name);
+	void list_all_portals(ostream& out, string station_name) final;
 
 	/** list_stations_of_route() lists all station names on the given route on
 	 *          the given output stream
@@ -49,7 +49,7 @@ class SubwaySystem : public _SubwaySystem {
 	 *  @param [in]  route_id route is the name of the subway route whose
 	 *          stations are to be printed onto the stream
 	 */
-	void list_stations_of_route(ostream& out, route_id route);
+	void list_stations_of_route(ostream& out, route_id route) final;
 
 	/** form_stations()
 	 *  Note: form_stations should be called once after the array of portals
@@ -62,7 +62,7 @@ class SubwaySystem : public _SubwaySystem {
 	 *  computed.
 	 *  @return int : number of sets created
 	 */
-	int form_stations();
+	int form_stations() final;
 
 	/** get_portal() searches for a portal whose name equals name_to_find
 	 *  @param string [in]  name_to_find is the portal name to look up
@@ -70,7 +70,7 @@ class SubwaySystem : public _SubwaySystem {
 	 *         if it is found, or is an empty Portal whose name is ""
 	 *  @return bool true if anf only if the portal is found
 	 */
-	bool get_portal(string name_to_find, SubwayPortal& portal);
+	bool get_portal(string name_to_find, SubwayPortal& portal) final;
 
 	/** nearest_portal() returns a string representation of the portal that
 	 *  is nearest to the given point
@@ -78,7 +78,7 @@ class SubwaySystem : public _SubwaySystem {
 	 *  @param  double [in]  longitude of point
 	 *  @return string       portal's name (as defined in subway_portal.h)
 	 */
-	string nearest_portal(double latitude, double longitude);
+	string nearest_portal(double latitude, double longitude) final;
 
 	/** nearest_routes() returns a string representation of the routes that
 	 *  are nearest to the given point
@@ -86,7 +86,7 @@ class SubwaySystem : public _SubwaySystem {
 	 *  @param  double [in]  longitude of point
 	 *  @return string       representation of set of routes
 	 */
-	string nearest_routes(double latitude, double longitude);
+	string nearest_routes(double latitude, double longitude) final;
 
   private:
 	/*
@@ -144,7 +144,7 @@ class SubwaySystem : public _SubwaySystem {
 	SubwayStation _parents[MAX_STATIONS];
 
 	// index to keep track of where Stations and bit_masks are inserted
-	unsigned int _array_index = 0;
+	unsigned int _array_index;
 
 	/*
 	    array of bit_masks 36 instead of 35 because I start at 1

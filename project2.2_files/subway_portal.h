@@ -18,10 +18,25 @@
 class SubwayPortal : public _SubwayPortal {
   public:
 	SubwayPortal();
-	SubwayPortal(string data_row);
+	explicit SubwayPortal(string data_row);
+
+	// move assignment operator
+	SubwayPortal& operator=(SubwayPortal&& other) noexcept;
+
+	// move constructor
+	SubwayPortal(SubwayPortal&& other) noexcept;
+
+	// copy constructor
+	SubwayPortal(const SubwayPortal& other);
+
+	// copy assignment operator
+	SubwayPortal& operator=(const SubwayPortal& other);
+
+	// destructor
+	~SubwayPortal() = default;
 
 	/** returns the distance between station and a gps location  */
-	double distance_from(double latitude, double longitude);
+	double distance_from(double latitude, double longitude) final;
 
 	/** returns the distance between the two portals  */
 	friend double distance_between(SubwayPortal portal1, SubwayPortal portal2);
@@ -39,23 +54,22 @@ class SubwayPortal : public _SubwayPortal {
 	/*  Accessor  Functions */
 	/**  name() returns name of portal as a unique string
 	 */
-	string name() const;
+	string name() const final;
 
 	/** can_access() returns true if given route is accessible
 	 *  @param route_set [in]  a bitstring with a 1 bit for route
 	 *  @return bool  true iff route is accessible from this portal
 	 */
-	bool can_access(route_set route) const;
+	bool can_access(route_set route) const final;
 
 	/**  p_location() returns GPS location of portal  */
-	GPS p_location() const;
+	GPS p_location() const final;
 
 	/**  s_location() returns GPS location of portal's station */
-	GPS s_location() const;
+	GPS s_location() const final;
 
 	/**  routes() returns route set of portal */
-	route_set routes() const;
-
+	route_set routes() const final;
 
   private:
 	/*

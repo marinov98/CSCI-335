@@ -14,6 +14,8 @@
 
 # Other modifications
     - const methods removed from SubwaySystem as in piazza it was mentioned that they give errors
+    - I took the files you gave us including subwaystation and made them abstract, when I created the derived
+    classes I marked the methods "final" 
 
 # Makefile
     - I had some extra files that should not have been compiled so I made SRCS the cpp files I know I needed
@@ -29,3 +31,4 @@
 # Lists and Sets
     - I kept the set of station names and only converted to lists after sets were formed
     - I modified children/station names after sets were formed as reccommended in the PDF
+    - Subway System has two private methods added "

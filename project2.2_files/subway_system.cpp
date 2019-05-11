@@ -12,15 +12,19 @@
 
 #include "subway_system.h"
 
-SubwaySystem::SubwaySystem() {
+SubwaySystem::SubwaySystem() : _array_index(0) {
+	cout << " Constructor Subway System called!" << '\n';
 	// NOTE : my mapping begins at 1 so my routes should begin at 1 NOT 0
 	for (unsigned int i = 1; i < 36; i++) {
 		this->bit_masks[i].routes = 1 << i;
 	}
+
+	cout << "Default Subway System end";
 }
 
 int SubwaySystem::add_portal(SubwayPortal portal) {
 	// make sure we have not passed our limit
+	cout << "System:: Add portal called" << '\n';
 	if (this->_array_index < MAX_STATIONS) {
 		// create subway station object
 		SubwayStation object_to_insert(portal);
@@ -50,6 +54,7 @@ int SubwaySystem::add_portal(SubwayPortal portal) {
 }
 
 void SubwaySystem::list_all_stations(ostream& out) {
+	cout << "list_all_stations!: " << '\n';
 	out << _s_names.listall(out);
 }
 

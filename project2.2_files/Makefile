@@ -4,7 +4,7 @@ SRCS 		= subway_portal.cpp subway_station.cpp subway_system.cpp _hash_item.cpp h
 OBJS       := $(patsubst %.cpp, %.o, $(SRCS))  
 EXEC       := project2 
 CXX        := /usr/bin/g++
-CXXFLAGS   += -Wall -g -std=c++11  -no-pie -Iincludes 
+CXXFLAGS   += -Wall -g -fsanitize=address,undefined -std=c++11  -no-pie -Iincludes
 $(EXEC): $(OBJS) main.o subway_route.o
 	$(CXX) $(CXXFLAGS)  -o $@  $(OBJS) main.o subway_route.o
 

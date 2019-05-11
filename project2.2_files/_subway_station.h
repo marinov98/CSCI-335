@@ -26,40 +26,41 @@ class _SubwayStation {
 	/** set_parent() sets the parent id of the station
 	 * @param int [in] the id of the parent
 	 */
-	void set_parent(int newparent);
+	virtual void set_parent(int newparent) = 0;
 	/** add_child() adds a new child to the station's list of children
 	 * @param int [in] the index of the child to add
 	 */
-	void add_child(int child);
+	virtual void add_child(int child) = 0;
 	/** A friend function that determines when two stations are connected
 	 * @param SubwayStation [in] s1
 	 * @param SubwayStation [in] s2
 	 * @return bool true iff s1 and s2 are connected according to rules defined
 	 * in the assignment specification
 	 */
-	friend bool connected(_SubwayStation s1, _SubwayStation s2);
+	/*  * CONNECTED REMOVED BECAUSE I MADE THIS AN ABSTRACT CLASS
+	 */
 	/** add_station_name() adds a new name to station
 	 * @Note: It does not add a name if it is already in the set of names for
 	 * the station.
 	 * @param string [in] newname is name to be added
 	 * @return 1 if name is added and 0 if not
 	 */
-	int add_station_name(string newname);
+	virtual int add_station_name(string newname) = 0;
 	/** names() returns a list of the names of the station as a list of strings
 	 */
-	list<string> names() const;
+	virtual list<string> names() const = 0;
 	// primary_name() is the first station name in its set of names
-	string primary_name() const;
+	virtual string primary_name() const = 0;
 	// parent_id() is the index in the array of the parent of the station
-	int parent_id() const;
+	virtual int parent_id() const = 0;
 	/** portal_list() returns a list of the ids in the list of the portals in
 	 * this station set
 	 */
-	list<int> portal_list() const;
+	virtual list<int> portal_list() const = 0;
 	// returns the name of the embedded portal
-	string portal_name() const;
+	virtual string portal_name() const = 0;
 	// returns the portal that is embedded in this station object
-	void get_portal(SubwayPortal&) const;
+	virtual void get_portal(SubwayPortal&) const = 0;
 };
 
 #endif

@@ -36,20 +36,122 @@ SubwayPortal::SubwayPortal() :
     _e_latitude(0),
     _e_longitude(0),
     _s_location({0, 0}),
-    _e_location({0, 0}) {}
+    _e_location({0, 0}) {
+	// cout << "defualt Portal called!" << '\n';
+}
 
+SubwayPortal::SubwayPortal(const SubwayPortal& other) :
+    _name(other._name),
+    division(other.division),
+    station_name(other.station_name),
+    _s_latitude(other._s_latitude),
+    _s_longitude(other._s_longitude),
+    p_routes(other.p_routes),
+    entrance_type(other.entrance_type),
+    entry(other.entry),
+    exit_only(other.exit_only),
+    vending(other.vending),
+    staffing(other.staffing),
+    staff_hours(other.staff_hours),
+    ada(other.ada),
+    ada_notes(other.ada_notes),
+    free_crossover(other.free_crossover),
+    n_s_street(other.n_s_street),
+    e_w_street(other.e_w_street),
+    corner(other.corner),
+    id(other.id),
+    _e_latitude(other._e_latitude),
+    _e_longitude(other._e_longitude) {}
+
+SubwayPortal::SubwayPortal(SubwayPortal&& other) noexcept :
+    _name(other._name),
+    division(other.division),
+    station_name(other.station_name),
+    _s_latitude(other._s_latitude),
+    _s_longitude(other._s_longitude),
+    p_routes(other.p_routes),
+    entrance_type(other.entrance_type),
+    entry(other.entry),
+    exit_only(other.exit_only),
+    vending(other.vending),
+    staffing(other.staffing),
+    staff_hours(other.staff_hours),
+    ada(other.ada),
+    ada_notes(other.ada_notes),
+    free_crossover(other.free_crossover),
+    n_s_street(other.n_s_street),
+    e_w_street(other.e_w_street),
+    corner(other.corner),
+    id(other.id),
+    _e_latitude(other._e_latitude),
+    _e_longitude(other._e_longitude) {}
+
+SubwayPortal& SubwayPortal::operator=(const SubwayPortal& other) {
+	this->_name = other._name;
+	this->division = other.division;
+	this->station_name = other.station_name;
+	this->_s_latitude = other._s_latitude;
+	this->_s_longitude = other._s_longitude;
+	this->p_routes = other.p_routes;
+	this->entrance_type = other.entrance_type;
+	this->entry = other.entry;
+	this->exit_only = other.exit_only;
+	this->vending = other.vending;
+	this->staffing = other.staffing;
+	this->staff_hours = other.staff_hours;
+	this->ada = other.ada;
+	this->ada_notes = other.ada_notes;
+	this->free_crossover = other.free_crossover;
+	this->n_s_street = other.n_s_street;
+	this->e_w_street = other.e_w_street;
+	this->corner = other.corner;
+	this->id = other.id;
+	this->_e_latitude = other._e_latitude;
+	this->_e_longitude = other._e_longitude;
+
+	return *this;
+}
+
+SubwayPortal& SubwayPortal::operator=(SubwayPortal&& other) noexcept {
+	this->_name = other._name;
+	this->division = other.division;
+	this->station_name = other.station_name;
+	this->_s_latitude = other._s_latitude;
+	this->_s_longitude = other._s_longitude;
+	this->p_routes = other.p_routes;
+	this->entrance_type = other.entrance_type;
+	this->entry = other.entry;
+	this->exit_only = other.exit_only;
+	this->vending = other.vending;
+	this->staffing = other.staffing;
+	this->staff_hours = other.staff_hours;
+	this->ada = other.ada;
+	this->ada_notes = other.ada_notes;
+	this->free_crossover = other.free_crossover;
+	this->n_s_street = other.n_s_street;
+	this->e_w_street = other.e_w_street;
+	this->corner = other.corner;
+	this->id = other.id;
+	this->_e_latitude = other._e_latitude;
+	this->_e_longitude = other._e_longitude;
+
+	return *this;
+}
 vector<string> SubwayPortal::get_contents(string s) {
 	string name("");
 
 	// vector to store contents of each row
 	vector<string> collector;
 
-	// researve space, I use 33 because I know that there are 33 fields in total
-	collector.reserve(33);
-
-	for (unsigned int i = 0; i < s.size(); i++) {
-		if (',' != s[i]) {
-			name += s[i];
+	// reserve space, I use 31 because I know that I will us the first 31 and last 2
+	// are just string representations of GPS values
+	collector.reserve(31);
+	for (const auto& content : s) {
+		// we do not need the last two fields
+		if (collector.size() >= 31)
+			break;
+		if (',' != content) {
+			name += content;
 		}
 		else {
 			collector.emplace_back(name);
@@ -95,7 +197,8 @@ string SubwayPortal::create_name(vector<string> dataset) {
 	this->id = stoi(dataset[28]);
 
 	// remove excessive whitespaces
-	// *NOTE: I add dataset[28] instead of id because I dont want to convert it back to a string
+	// *NOTE: I add dataset[28] instead of id because I dont want to convert it back to a
+	// string
 	return remove_excess(this->n_s_street + "," + this->e_w_street + "," + this->corner + ","
 	                     + dataset[28]);
 }

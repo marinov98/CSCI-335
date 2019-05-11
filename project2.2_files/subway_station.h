@@ -28,11 +28,11 @@ class SubwayStation : public _SubwayStation {
 	/** set_parent() sets the parent id of the station
 	 * @param int [in] the id of the parent
 	 */
-	void set_parent(int newparent);
+	void set_parent(int newparent) final;
 	/** add_child() adds a new child to the station's list of children
 	 * @param int [in] the index of the child to add
 	 */
-	void add_child(int child);
+	void add_child(int child) final;
 	/** A friend function that determines when two stations are connected
 	 * @param SubwayStation [in] s1
 	 * @param SubwayStation [in] s2
@@ -46,22 +46,22 @@ class SubwayStation : public _SubwayStation {
 	 * @param string [in] newname is name to be added
 	 * @return 1 if name is added and 0 if not
 	 */
-	int add_station_name(string newname);
+	int add_station_name(string newname) final;
 	/** names() returns a list of the names of the station as a list of strings
 	 */
-	list<string> names() const;
+	list<string> names() const final;
 	// primary_name() is the first station name in its set of names
-	string primary_name() const;
+	string primary_name() const final;
 	// parent_id() is the index in the array of the parent of the station
-	int parent_id() const;
+	int parent_id() const final;
 	/** portal_list() returns a list of the ids in the list of the portals in
 	 * this station set
 	 */
-	list<int> portal_list() const;
+	list<int> portal_list() const final;
 	// returns the name of the embedded portal
-	string portal_name() const;
+	string portal_name() const final;
 	// returns the portal that is embedded in this station object
-	void get_portal(SubwayPortal&) const;
+	void get_portal(SubwayPortal&) const final;
 
   private:
 	int m_parent_id;

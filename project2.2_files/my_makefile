@@ -1,7 +1,7 @@
 # Makefile for project 2
 
 CXX 		:= g++
-CXXFLAGS	:= $(CXXFLAGS) -std=c++11 
+CXXFLAGS	:= $(CXXFLAGS) -Wall -g -std=c++11  -no-pie -Iincludes 
 CPPS 		:= subway_portal.cpp subway_route.cpp subway_station.cpp subway_system.cpp _hash_item.cpp hash_table.cpp gps.cpp disjoint_set.cpp
 HDRS		:= $(patsubst %.cpp, %.h, $(CPPS))
 OBJS 		:= $(patsubst %.cpp, %.o, $(CPPS)) main.o
@@ -12,9 +12,6 @@ TEST 		:= tests
 $(EXEC): $(OBJS)
 	@echo 'building executable...'
 	$(CXX) -o $@ $^
-
-#main.o: main.o.in
-#	cp -f $< $@
 
 %.o: %.cpp %.h
 	@echo 'building object => $@'

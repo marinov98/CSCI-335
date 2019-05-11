@@ -28,27 +28,27 @@ struct Invalid_Portal_Data {};
 class _SubwayPortal {
   public:
 	/** returns the distance between station and a gps location  */
-	double distance_from(double latitude, double longitude);
+	virtual double distance_from(double latitude, double longitude) = 0;
 
 	/*  Accessor  Functions */
 	/**  name() returns name of portal as a unique string
 	 */
-	string name() const;
+	virtual string name() const = 0;
 
 	/** can_access() returns true if given route is accessible
 	 *  @param route_set [in]  a bitstring with a 1 bit for route
 	 *  @return bool  true iff route is accessible from this portal
 	 */
-	bool can_access(route_set route) const;
+	virtual bool can_access(route_set route) const = 0;
 
 	/**  p_location() returns GPS location of portal  */
-	GPS p_location() const;
+	virtual GPS p_location() const = 0;
 
 	/**  s_location() returns GPS location of portal's station */
-	GPS s_location() const;
+	virtual GPS s_location() const = 0;
 
 	/**  routes() returns route set of portal */
-	route_set routes() const;
+	virtual route_set routes() const = 0;
 };
 
 #endif /* __SUBWAY_PORTAL_H__ */
