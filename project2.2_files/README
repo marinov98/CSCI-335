@@ -1,8 +1,18 @@
 # Compiling
+    - The program compiles with my Makefile
+    - I was able to fix the initial seg fault however more problems followed
+    - IMPORTANT: When you compile with the command my program WILL COUT AN ANSWER TO THE COMMAND IF YOU SCROLL TO THE TOP
+    and BELOW it was list reasons for seg faulting, it will say MEMORY READ ERROR
+    unfortunately, I could not find where I was going out of bounds, I knew the problem
+    and I knew where it was located but I could not understand why an error was happening
+    my hashtable was thoroughly tested and I made sure all constructors and assignment
+    operators were working. I tried to step through but could not acertain what caused
+    my hashtable to go out of bounds.
 
-# Changes 
+# Class Changes 
     - I mentionened it before in the files, but if I treated a file as an interface, I removed
     its constructors because interfaces should not have have constructors
+    - Subway Portal now has defined move/copy contructor and move/copy assignment operator
 
 ## HashTable class Changes
     - find now returned either -1 (if not found) or the position of the item
@@ -14,21 +24,27 @@
 
 # Other modifications
     - const methods removed from SubwaySystem as in piazza it was mentioned that they give errors
-    - I took the files you gave us including subwaystation and made them abstract, when I created the derived
-    classes I marked the methods "final" 
+    - I took the files you gave us including subwaystation and made them abstract, when I created the derived classes I marked the methods "final" 
 
 # Makefile
     - I had some extra files that should not have been compiled so I made SRCS the cpp files I know I needed
     - Added -no-pie -Iincludes in CXXFLAGS because it would not compile otherwise
+    - added -fsanitize=address,undefined which helped a lot in finding the initial 
+    seg fault and shifting errors.
+    - added messages to better see which files were compiling correctly
 
 # Includes changes for linking
     - class SubwayStation at the top of SubwayPortal was removed (it was producing a warning)
     - #include "SubwaySystem.h" in SubwayStation.h (I might have put it there) because it was giving a linking error 
 
-# Bit mask strategy
-    - 1-7 are mapped to bits 1-7, GS and FS are mapped to bits 8 and 9, A-Z are mapped to bits 10-35
-
 # Lists and Sets
     - I kept the set of station names and only converted to lists after sets were formed
     - I modified children/station names after sets were formed as reccommended in the PDF
     - Subway System has two private methods added "
+
+# Moments
+    - I had a big "wow" moment went I carefult looked at the data set and realized how I wanted to get the data
+    - I was stuck on doing a Union and Find on the stations, but when I thought a solution, I felt really happy
+    well in the sense that I thought I implemented everything. 
+    - Again, I want to believe I implemented everything to the best of my ability.
+

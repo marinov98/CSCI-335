@@ -113,7 +113,7 @@ void HashTable::rehash() {
 	// re-insert all items into the new table
 	for (int i = 0; i < _size; i++) {
 		if (!hash_table[i].is_empty)
-			newTable.insert(move(hash_table[i].data));
+			newTable.insert(move(this->hash_table[i].data));
 	}
 
 	/*

@@ -205,13 +205,15 @@ string SubwayPortal::create_name(vector<string> dataset) {
 
 route_set SubwayPortal::set_routes(vector<string> dataset) {
 	route_set routes = 0;
+	// avoid shifting errors
+	long one = 1;
 	// Indeces 5 to 16 contain the necessary information needed to set route bits
 	for (int i = 5; i < 16; i++) {
 		// ensure a route exists in current index
 		if ("" != dataset[i]) {
 			int k = routestring2int(dataset[i]);
 			// set kth bit
-			routes |= (1 << k);
+			routes |= (one << k);
 		}
 	}
 

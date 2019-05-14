@@ -154,7 +154,7 @@ class SubwaySystem : public _SubwaySystem {
 	        bit_masks[3] -> 8
 	        bit_masks[5] -> 32
 	*/
-	SubwayRoute bit_masks[36];
+	SubwayRoute bit_masks[NUM_ROUTES_MAX];
 };
 
 #endif /* SUBWAY_SYSTEM_H */

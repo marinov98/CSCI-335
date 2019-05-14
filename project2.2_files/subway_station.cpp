@@ -31,12 +31,22 @@ void SubwayStation::add_child(int child) {
 	this->children.emplace_back(child);
 }
 
+SubwayStation& SubwayStation::operator=(const SubwayStation& other) {
+	this->m_parent_id = other.m_parent_id;
+	this->m_station_names = other.m_station_names;
+	this->children = other.children;
+	this->portal_unique_name = other.portal_unique_name;
+	this->portal = other.portal;
+
+	return *this;
+}
+
 bool connected(SubwayStation s1, SubwayStation s2) {
 	// according to specifications two stations are connected if:
 	// the set of routes is identical
-	// distance between them is at most 0.28
+	// distance between them is at most 0.32 (piazza)
 	return (s1.portal.routes() == s2.portal.routes())
-	       || distance_between(s1.portal.s_location(), s2.portal.s_location()) <= 0.28;
+	       && distance_between(s1.portal.s_location(), s2.portal.s_location()) <= 0.32;
 }
 
 int SubwayStation::add_station_name(string newname) {

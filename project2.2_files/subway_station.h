@@ -25,6 +25,9 @@ class SubwayStation : public _SubwayStation {
 	 * It makes the portal the embedded portal.
 	 */
 	SubwayStation(SubwayPortal portal);
+
+	SubwayStation& operator=(const SubwayStation& other);
+
 	/** set_parent() sets the parent id of the station
 	 * @param int [in] the id of the parent
 	 */

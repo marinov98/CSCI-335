@@ -13,18 +13,15 @@
 #include "subway_system.h"
 
 SubwaySystem::SubwaySystem() : _array_index(0) {
-	cout << " Constructor Subway System called!" << '\n';
-	// NOTE : my mapping begins at 1 so my routes should begin at 1 NOT 0
-	for (unsigned int i = 1; i < 36; i++) {
-		this->bit_masks[i].routes = 1 << i;
+	// avoiding runtime errors with shifting 'int'
+	long one = 1;
+	for (unsigned int i = 0; i < NUM_ROUTES_MAX; i++) {
+		this->bit_masks[i].routes = (one << i);
 	}
-
-	cout << "Default Subway System end";
 }
 
 int SubwaySystem::add_portal(SubwayPortal portal) {
 	// make sure we have not passed our limit
-	cout << "System:: Add portal called" << '\n';
 	if (this->_array_index < MAX_STATIONS) {
 		// create subway station object
 		SubwayStation object_to_insert(portal);
@@ -38,7 +35,7 @@ int SubwaySystem::add_portal(SubwayPortal portal) {
 			// store in array of parent trees
 			this->_parents[this->_array_index] = object_to_insert;
 			// add to routes
-			for (unsigned int i = 1; i < 36; i++) {
+			for (unsigned int i = 0; i < 64; i++) {
 				bool bit = this->bit_masks[i].routes & portal.routes();
 				if (bit) {
 					this->bit_masks[i].add_station_to_route(this->_array_index);
@@ -54,12 +51,13 @@ int SubwaySystem::add_portal(SubwayPortal portal) {
 }
 
 void SubwaySystem::list_all_stations(ostream& out) {
-	cout << "list_all_stations!: " << '\n';
 	out << _s_names.listall(out);
 }
 
 void SubwaySystem::list_all_portals(ostream& out, string station_name) {
-	int position = this->_s_names.find(__ItemType(station_name, 0));
+	__ItemType item;
+	item.set(station_name, 0);
+	int position = this->_s_names.find(item);
 	// in case item was not found
 	if (position != -1) {
 		// cout portal of current object
@@ -82,7 +80,7 @@ void SubwaySystem::list_stations_of_route(ostream& out, route_id route) {
 	 * Will be some empty SubwayStation object
 	 */
 	list<int> stations_of_route;
-	for (int i = 1; i < 36; i++) {
+	for (int i = 0; i < NUM_ROUTES_MAX; i++) {
 		// routestring2int returns an int denoting which bit is 1 not the actual bit and the index
 		// of bit masks is the position of the bit so we can just compare the index to the route and
 		// then we know that that ith bit is where the route is 1
@@ -106,8 +104,11 @@ void SubwaySystem::list_stations_of_route(ostream& out, route_id route) {
 int SubwaySystem::find(int index) {
 	if (this->_parents[index].parent_id() < 0)
 		return index;
-	else
-		return find(this->_parents[index].parent_id());
+	else {
+		int x = find(this->_parents[index].parent_id());
+		this->_parents[index].set_parent(find(x));
+		return x;
+	}
 }
 
 void SubwaySystem::Union(int root1, int root2) {
@@ -132,8 +133,9 @@ void SubwaySystem::Union(int root1, int root2) {
 void SubwaySystem::add_children() {
 	for (unsigned int i = 0; i < this->_array_index; i++) {
 		// ensure its a child
-		if (this->_parents[i].parent_id() > 0)
+		if (this->_parents[i].parent_id() > 0) {
 			this->_parents[find(i)].add_child(i);
+		}
 	}
 }
 
@@ -163,7 +165,6 @@ int SubwaySystem::hash_stations() {
 		// find an index that is a root
 		if (this->_parents[i].parent_id() < 0) {
 			// get its position in the array
-			int position = i;
 			// every time we come by a root, we know its a set
 			// the number of roots is the same as the amount of sets created
 			sets++;
@@ -172,7 +173,7 @@ int SubwaySystem::hash_stations() {
 			list<string> stations = this->_parents[i].names();
 			for (const auto& station_name : stations) {
 				// store in hashtable
-				this->_s_names.insert(__ItemType(station_name, position));
+				this->_s_names.insert(__ItemType(station_name, i));
 			}
 		}
 	}
@@ -215,7 +216,9 @@ bool SubwaySystem::get_portal(string name_to_find, SubwayPortal& portal) {
 	// if its not found, we cannot get the name
 	// Since I modified find in my hash table to return the position instead of just
 	// 1 , I can now use it find the portal in the parent trees array
-	int res = this->_p_names.find(__ItemType(name_to_find, 0));
+	__ItemType item;
+	item.set(name_to_find, 0);
+	int res = this->_p_names.find(item);
 
 	if (-1 == res)
 		return false;

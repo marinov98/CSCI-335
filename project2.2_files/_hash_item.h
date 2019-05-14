@@ -65,7 +65,6 @@ class __ItemType {
 	 */
 	friend ostream& operator<<(ostream& os, __ItemType item);
 
-
   private:
 	string name;
 	int position;
