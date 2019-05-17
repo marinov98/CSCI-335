@@ -48,11 +48,12 @@ int DisjSets::find(int x) const {
 
 void DisjSets::unionSets(int root1, int root2) {
 	if (s[root2] < s[root1]) // root2 is deeper
-		s[root1] = root2; // Make root2 new root
+		s[root2] += s[root1]; // Make root2 new root
+		s[root1] = root2;
 	else {
-		if (s[root1] == s[root2])
-			--s[root1];  // update height if same
-		s[root2] = root1; // make root1 new root
+		// root1 is deeper
+		s[root1] += s[root2];
+		s[root2] = root1;
 	}
 }
 
