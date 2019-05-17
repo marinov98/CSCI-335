@@ -43,7 +43,40 @@ void AvlTree<Comparable>::insert(const Comparable& x) {
  */
 template <class Comparable>
 void AvlTree<Comparable>::remove(const Comparable& x) {
-	cout << "Sorry, remove unimplemented; " << x << " still present" << endl;
+	remove(x,root);
+}
+
+template <class Comparable>
+void AvlTree<Comparable>::remove(const Comparable& x, AvlNode<Comparable>*& t) {
+	if (t == nullptr)
+		return;
+	// delete from left subtree
+	if (x < t->element) {
+		remove(x,t->left);
+		
+		if (height((t->right)->right) >= height((t->right)->left))
+			rotateWithRightChild(t);
+		else
+			rotateWithLeftChild(t);
+	} // delete from right subtree
+	else if (t->element < x) {
+		remove(x,t->right);
+		
+		if(height(t->left) - height(t->right) == 2) {
+			if(height((t->left)->left) >= height((t->left)->right))
+				doubleWithLeftChild(t);
+			else
+				doubleWithRightChild(t);
+		}
+	}
+	else {
+		AVLNode<Comparable>* OldNode = t;
+		t = (t->left != nullptr)? t->left : t->right;
+		delete OldNode;
+	}
+	
+	if (nullptr != t)
+		t->height = max(height(t->left), height(t->right)) + 1;
 }
 
 /**
