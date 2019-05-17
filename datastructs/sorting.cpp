@@ -80,10 +80,10 @@ int partition(int arr[], int l, int h)
     for (int j = l; j <= h - 1; j++) { 
         if (arr[j] <= x) { 
             i++; 
-			std::swap(arr[i],arr[j]); 
+	    std::swap(arr[i],arr[j]); 
         } 
-    } 
-	std::swap(arr[i + 1],arr[h]); 
+    }
+    std::swap(arr[i + 1],arr[h]); 
     return (i + 1); 
 } 
   
