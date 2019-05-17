@@ -10,7 +10,25 @@ Modifications  :
 
 ******************************************************************************/
 
-#include "disjoint_sets.h"
+
+#include <vector>
+
+// courtesy of Mark A. Weiss textbook implementation of
+// disjoint sets
+
+class DisjSets {
+ public:
+    explicit DisjSets(int num_elements);
+
+    int find(int x) const;
+    int find(int x);
+
+    void unionSets(int root1, int root2);
+
+ private:
+	std::vector<int> s;
+};
+
 
 DisjSets::DisjSets(int num_elements): (s{num_elements, -1}) {}
 
