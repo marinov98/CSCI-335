@@ -52,9 +52,9 @@ void Priority_Queue<Comparable>::insert(const Comparable& x) {
 template <class Comparable>
 void Priority_Queue<Comparable>::percolateDown(int hole) {
 	int child;
-	Comparable temp = array[hole]; // copy element for later
+	Comparable temp = std::move(array[hole]); // copy element for later
 
-	while( (2 * hole) <= this->currentSize) {
+	while((2 * hole) <= this->currentSize) {
 		child = (hole * 2);
 
 		if (child != this->currentSize && array[child + 1] < array[child]) {
@@ -72,7 +72,7 @@ void Priority_Queue<Comparable>::percolateDown(int hole) {
 		// repeat with hole being child that was copied up
 		hole = child;		
 	}
-	array[hole] = temp;
+	array[hole] = std::move(temp);
 }
 
 template<class Comparable>
