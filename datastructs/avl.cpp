@@ -64,6 +64,7 @@ class AvlTree {
 	const Comparable& elementAt(AvlNode<Comparable>* t) const;
 
 	void insert(const Comparable& x, AvlNode<Comparable>*& t) const;
+	void remove(const Comparable& x, AvlNode<Comparable>*& t);
 	AvlNode<Comparable>* findMin(AvlNode<Comparable>* t) const;
 	AvlNode<Comparable>* findMax(AvlNode<Comparable>* t) const;
 	AvlNode<Comparable>* find(const Comparable& x, AvlNode<Comparable>* t) const;
@@ -137,18 +138,18 @@ void AvlTree<Comparable>::remove(const Comparable& x, AvlNode<Comparable>*& t) {
 		remove(x,t->left);
 		
 		if (height((t->right)->right) >= height((t->right)->left))
-			RR_rotation(t);
+			rotateWithRightChild(t);
 		else
-			RL_rotation(t);
+			rotateWithLeftChild(t);
 	} // delete from right subtree
 	else if (t->element < x) {
 		remove(x,t->right);
 		
 		if(height(t->left) - height(t->right) == 2) {
 			if(height((t->left)->left) >= height((t->left)->right))
-				LL_rotation(t);
+				doubleWithLeftChild(t);
 			else
-				RR_rotation(t);
+				doubleWithRightChild(t);
 		}
 	}
 	else {
