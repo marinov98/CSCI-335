@@ -69,6 +69,7 @@ class AvlTree {
 	const Comparable& elementAt(AvlNode<Comparable>* t) const;
 
 	void insert(const Comparable& x, AvlNode<Comparable>*& t) const;
+	void remove(const Comparable& x, AvlNode<Comparable>*& t);
 	AvlNode<Comparable>* findMin(AvlNode<Comparable>* t) const;
 	AvlNode<Comparable>* findMax(AvlNode<Comparable>* t) const;
 	AvlNode<Comparable>* find(const Comparable& x, AvlNode<Comparable>* t) const;
